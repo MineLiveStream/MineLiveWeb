@@ -226,7 +226,7 @@ function buy(type = "ALIPAY", month = 1) {
                 qrCodeImage.onload = function() {
                     qrCodeElement.appendChild(qrCodeImage);
                 };
-                qrcodeDialog.description = '付款价格：' + (data.price / 100) + ' 元(新平台优惠)';
+                qrcodeDialog.description = '付款价格：' + (data.price / 100) + ' 元';
                 qrcodeDialog.open = true;
                 pollOrderStatus(data.order, 3000);
             } else {
