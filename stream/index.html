@@ -16,13 +16,13 @@
         <div style="flex-grow: 1"></div>
         <mdui-top-app-bar-title>推流列表</mdui-top-app-bar-title>
         <div style="flex-grow: 1"></div>
-        <mdui-button-icon variant="tonal" icon="add" id="createStreamBtn"></mdui-button-icon>
+        <mdui-button-icon variant="tonal" icon="add" id="createStreamBtn" title="创建推流"></mdui-button-icon>
         <div style="flex-grow: 1"></div>
-        <mdui-button-icon variant="tonal" icon="refresh" id="refreshBtn"></mdui-button-icon>
+        <mdui-button-icon variant="tonal" icon="refresh" id="refreshBtn" title="刷新列表"></mdui-button-icon>
         <div style="flex-grow: 1"></div>
-        <mdui-button-icon variant="tonal" icon="help_outline" id="helpBtn"></mdui-button-icon>
+        <mdui-button-icon variant="tonal" icon="help_outline" id="helpBtn" title="使用教程"></mdui-button-icon>
         <div style="flex-grow: 1"></div>
-        <mdui-button-icon variant="tonal" icon="logout" id="logoutBtn"></mdui-button-icon>
+        <mdui-button-icon variant="tonal" icon="logout" id="logoutBtn" title="退出登录"></mdui-button-icon>
         <div style="flex-grow: 1"></div>
     </mdui-top-app-bar>
       
@@ -34,7 +34,7 @@
                         <th>名称</th>  
                         <th>推流地址</th>  
                         <th>推流密钥</th>  
-                        <th>素材 ID</th>  
+                        <th>素材名称</th>
                         <th>过期时间</th>
                         <th>当前状态</th>
                         <th>操作</th> 
@@ -63,13 +63,15 @@
 
     <mdui-dialog
             id = "paymentDialog"
+            stacked-actions
             close-on-overlay-click
             headline="购买月数"
             description="价格：30元/月（上线优惠）"
             class="example-action">
         <mdui-slider value="1" min="1" max="12" id="monthSlider"></mdui-slider>
-        <mdui-button slot="action" variant="text" id="dialogWechatBtn">微信</mdui-button>
         <mdui-button slot="action" variant="text" id="dialogAlipayBtn">支付宝</mdui-button>
+        <mdui-button slot="action" variant="text" id="dialogWechatBtn">微信</mdui-button>
+        <mdui-button slot="action" variant="text" id="cancelPaymentBtn">取消</mdui-button>
     </mdui-dialog>
 
     <mdui-dialog
@@ -77,14 +79,13 @@
             close-on-overlay-click
             headline="新增推流"
             class="example-action">
-        <mdui-text-field label="名称" id="streamName"></mdui-text-field>
-        <div style="flex-grow: 1"></div>
-        <mdui-text-field label="推流地址" id="streamUrl"></mdui-text-field>
-        <div style="flex-grow: 1"></div>
-        <mdui-text-field label="推流密钥" id="streamKey"></mdui-text-field>
-        <div style="flex-grow: 1"></div>
-        <mdui-text-field label="素材 ID" id="materialId"></mdui-text-field>
-        <div style="flex-grow: 1"></div>
+        <mdui-text-field style="margin-bottom: 16px" label="名称" id="streamName"></mdui-text-field>
+        <mdui-text-field style="margin-bottom: 16px" label="推流地址" id="streamUrl"></mdui-text-field>
+        <mdui-text-field style="margin-bottom: 16px" label="推流密钥" id="streamKey"></mdui-text-field>
+        <mdui-dropdown>
+            <mdui-button slot="trigger" id="materialMenuBtn">选择素材</mdui-button>
+            <mdui-menu id="materialMenu"></mdui-menu>
+        </mdui-dropdown>
         <mdui-button slot="action" variant="text" id="changeCancelBtn">取消</mdui-button>
         <mdui-button slot="action" variant="tonal" id="changeConfirmBtn">确定</mdui-button>
     </mdui-dialog>

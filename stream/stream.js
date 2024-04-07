@@ -1,4 +1,11 @@
 window.onload = function() {
+    fetchStreamLibrary(1, 30)
+        .then(data => {
+            renderStreamList(data);
+        })
+        .catch(error => {
+            console.error('处理响应时出错:', error);
+        });
     fetchMaterialLibrary(1, 30)
         .then(data => {
             renderMaterialList(data);
@@ -16,6 +23,7 @@ let buyId = 0;
 const paymentDialog = document.getElementById('paymentDialog');
 const qrcodeDialog = document.getElementById('qrcodeDialog');
 const qrCodeElement = document.getElementById('qr-code');
+let changeId = 0;
 function truncateString(str) {  
     if (str.length > 20) {  
         return str.substring(0, 20)  + "...";  
@@ -23,14 +31,14 @@ function truncateString(str) {
     return str;  
 } 
 
-function renderMaterialList(data) {  
+function renderStreamList(data) {  
     const materialListTbody = document.getElementById('material-list-tbody');  
     materialListTbody.innerHTML = ''; // 清空表格内容  
       
     if (data && data.list && data.list.length > 0) {  
         data.list.forEach(item => {  
             const tr = document.createElement('tr');  
-            ['name', 'streamUrl', 'streamKey', "materialId"].forEach(key => {  
+            ['name', 'streamUrl', 'streamKey', "materialName"].forEach(key => {
                 const td = document.createElement('td');
                 td.textContent = truncateString(item[key]);
                 if (key === 'streamUrl' || key === 'streamKey') {
@@ -80,9 +88,9 @@ function renderMaterialList(data) {
                         switchBtn.checked = on;
                         snackbar.textContent = '推流已' + (on ? "开启" : "关闭");
                         setTimeout(() => {
-                            fetchMaterialLibrary(1, 30)
+                            fetchStreamLibrary(1, 30)
                                 .then(data => {
-                                    renderMaterialList(data);
+                                    renderStreamList(data);
                                 })
                                 .catch(error => {
                                     console.error('处理响应时出错:', error);
@@ -164,59 +172,7 @@ function renderMaterialList(data) {
                 changeDialog.headline = "更新推流";
                 changeDialog.description = "无变更内容可留空";
                 changeDialog.open = true;
-                const changeConfirmBtn = document.getElementById('changeConfirmBtn');
-                changeConfirmBtn.addEventListener('click', function() {
-                    const token = localStorage.getItem('userToken');
-                    const streamName = document.getElementById('streamName').value;
-                    const streamUrl = document.getElementById('streamUrl').value;
-                    const streamKey = document.getElementById('streamKey').value;
-                    const materialId = document.getElementById('materialId').value;
-
-                    const params = {
-                        id: item.id,
-                        name: streamName ? streamName : undefined,
-                        url: streamUrl ? streamUrl : undefined,
-                        key: streamKey ? streamKey : undefined,
-                        materialId: materialId ? materialId : undefined
-                    };
-
-                    fetch('https://stmcicp.ranmc.cc:24021/stream', {
-                        method: 'PUT',
-                        headers: {
-                            'Authorization': 'Bearer ' + token,
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(params)
-                    })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok.');
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            changeDialog.open = false;
-                            if (data.code === 200) {
-                                snackbar.textContent = '更新成功';
-                                fetchMaterialLibrary(1, 30)
-                                    .then(data => {
-                                        renderMaterialList(data);
-                                    })
-                                    .catch(error => {
-                                        console.error('处理响应时出错:', error);
-                                    });
-                            } else {
-                                snackbar.textContent = data.msg;
-                            }
-                            snackbar.open = true;
-
-                        })
-                        .catch(error => {
-                            console.error('There has been a problem with your fetch operation:', error);
-                            snackbar.textContent = '操作出错，请重试！';
-                            snackbar.open = true;
-                        });
-                });
+                changeId = item.id;
             });
 
             btnTd.appendChild(payButton);
@@ -292,9 +248,9 @@ async function pollOrderStatus(orderId, interval = 3000) {
             qrcodeDialog.open = false;
             snackbar.textContent = "支付成功"
             snackbar.open = true;
-            fetchMaterialLibrary(1, 30)
+            fetchStreamLibrary(1, 30)
                 .then(data => {
-                    renderMaterialList(data);
+                    renderStreamList(data);
                 })
                 .catch(error => {
                     console.error('处理响应时出错:', error);
@@ -338,7 +294,7 @@ async function checkOrder(order) {
     }
 }
 
-async function fetchMaterialLibrary(page = 1, size = 10) {
+async function fetchStreamLibrary(page = 1, size = 30) {
     try {
         const token = localStorage.getItem('userToken');
         if (!token) {
@@ -399,6 +355,10 @@ document.addEventListener('DOMContentLoaded', function() {
         buy("ALIPAY", monthSlider.value);
         paymentDialog.open = false;
     });
+    const cancelPaymentBtn = document.getElementById('cancelPaymentBtn');
+    cancelPaymentBtn.addEventListener('click', function() {
+        paymentDialog.open = false;
+    });
     const dialogWechatBtn = document.getElementById('dialogWechatBtn');
     dialogWechatBtn.addEventListener('click', function() {
         buy("WECHAT", monthSlider.value);
@@ -410,14 +370,17 @@ document.addEventListener('DOMContentLoaded', function() {
         changeDialog.headline = "新增推流";
         changeDialog.description = "";
         changeDialog.open = true;
-        const changeConfirmBtn = document.getElementById('changeConfirmBtn');
-        changeConfirmBtn.addEventListener('click', function() {
-            const token = localStorage.getItem('userToken');
+        changeId = 0;
+    });
+    const changeConfirmBtn = document.getElementById('changeConfirmBtn');
+    changeConfirmBtn.addEventListener('click', function() {
+        const token = localStorage.getItem('userToken');
+        if (changeId === 0) {
             const params = {
                 name: document.getElementById('streamName').value,
                 url: document.getElementById('streamUrl').value,
                 key: document.getElementById('streamKey').value,
-                materialId: document.getElementById('materialId').value
+                materialId: materialId
             };
             fetch('https://stmcicp.ranmc.cc:24021/stream', {
                 method: 'POST',
@@ -437,9 +400,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     changeDialog.open = false;
                     if (data.code === 200) {
                         snackbar.textContent = '创建成功';
-                        fetchMaterialLibrary(1, 30)
+                        fetchStreamLibrary(1, 30)
                             .then(data => {
-                                renderMaterialList(data);
+                                renderStreamList(data);
                             })
                             .catch(error => {
                                 console.error('处理响应时出错:', error);
@@ -455,7 +418,56 @@ document.addEventListener('DOMContentLoaded', function() {
                     snackbar.textContent = '操作出错，请重试！';
                     snackbar.open = true;
                 });
-        });
+        } else {
+            const streamName = document.getElementById('streamName').value;
+            const streamUrl = document.getElementById('streamUrl').value;
+            const streamKey = document.getElementById('streamKey').value;
+
+            const params = {
+                id: changeId,
+                name: streamName ? streamName : undefined,
+                url: streamUrl ? streamUrl : undefined,
+                key: streamKey ? streamKey : undefined,
+                materialId: materialId ? materialId : undefined
+            };
+
+            fetch('https://stmcicp.ranmc.cc:24021/stream', {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(params)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    changeDialog.open = false;
+                    if (data.code === 200) {
+                        snackbar.textContent = '更新成功';
+                        fetchStreamLibrary(1, 30)
+                            .then(data => {
+                                renderStreamList(data);
+                            })
+                            .catch(error => {
+                                console.error('处理响应时出错:', error);
+                            });
+                    } else {
+                        snackbar.textContent = data.msg;
+                    }
+                    snackbar.open = true;
+
+                })
+                .catch(error => {
+                    console.error('There has been a problem with your fetch operation:', error);
+                    snackbar.textContent = '操作出错，请重试！';
+                    snackbar.open = true;
+                });
+        }
     });
     const groupBtn = document.getElementById('groupBtn');
     groupBtn.addEventListener('click', function() {
@@ -463,7 +475,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     const helpBtn = document.getElementById('helpBtn');
     helpBtn.addEventListener('click', function() {
-        window.open('../doc', '_blank');
+        window.open('https://www.yuque.com/seeds-ejjgd/py7vim', '_blank');
     });
     const changeCancelBtn = document.getElementById('changeCancelBtn');
     changeCancelBtn.addEventListener('click', function() {
@@ -471,9 +483,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     const refreshBtn = document.getElementById('refreshBtn');
     refreshBtn.addEventListener('click', function() {
-        fetchMaterialLibrary(1, 30)
+        fetchStreamLibrary(1, 30)
             .then(data => {
-                renderMaterialList(data);
+                renderStreamList(data);
             })
             .catch(error => {
                 console.error('处理响应时出错:', error);
@@ -482,3 +494,53 @@ document.addEventListener('DOMContentLoaded', function() {
         snackbar.open = true;
     });
 });
+
+async function fetchMaterialLibrary(page = 1, size = 30) {
+    try {
+        const token = localStorage.getItem('userToken');
+        if (!token) {
+            window.location.href = '../login';
+        }
+        const params = new URLSearchParams({
+            page: page.toString(),
+            size: size.toString()
+        });
+        const url = `https://stmcicp.ranmc.cc:24021/material?${params.toString()}`;
+        const response = await fetch(url, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        // 处理请求错误
+        console.error('请求素材库时出错:', error);
+        return null;
+    }
+}
+
+let materialId = 0;
+
+function renderMaterialList(data) {
+    const materialMenuBtn = document.getElementById('materialMenuBtn');
+    const materialMenu = document.getElementById('materialMenu');
+    materialMenu.innerHTML = ''; // 清空表格内容
+
+    if (data && data.list && data.list.length > 0) {
+        data.list.forEach(item => {
+            const newMenu = document.createElement('mdui-menu-item');
+            newMenu.innerHTML = item.name;
+            newMenu.addEventListener('click', () => {
+                materialMenuBtn.textContent = item.name;
+                materialId = item.id;
+            });
+            materialMenu.appendChild(newMenu);
+        });
+    } else {
+        materialMenuBtn.textContent = '暂无素材';
+    }
+}
