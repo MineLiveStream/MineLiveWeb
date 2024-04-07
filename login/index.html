@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>login</title>
+		<link rel="stylesheet" type="text/css" href="login.css" />
+		<script src="login.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+	</head>
+	<body>
+		<div class="control">
+			<div class="item">
+				<div class="active">登录</div><div>注册</div>
+			</div>
+			<div class="content">
+				<div style="display: block;">
+					<p>邮箱</p>
+					<input type="text" id="loginEmail" name="loginEmail" placeholder="请输入邮箱" />
+					<p>密码</p>
+					<input type="password" id="loginPwd" name="loginPwd" placeholder="请输入密码" />
+					<br/>
+					<input type="submit" id="loginBtn" value="登录" />
+					<p id="forgetText">忘记密码</p>
+				</div>
+				<div>
+					<p>邮箱</p>
+					<input type="text" id="regEmail" name="regEmail" placeholder="请输入邮箱" />
+					<p>密码</p>
+					<input type="password" id="regPwd" name="regPwd" placeholder="请输入密码" />
+					<p>昵称</p>
+					<input type="text" id="regName" name="regName" placeholder="你的用户名" />
+					<br/>
+					<input type="submit" id="regBtn" value="注册" />
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+
