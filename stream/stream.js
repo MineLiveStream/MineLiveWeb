@@ -270,7 +270,7 @@ function buy(type = "ALIPAY", month = 1) {
                 qrCodeImage.onload = function() {
                     qrCodeElement.appendChild(qrCodeImage);
                 };
-                qrcodeDialog.description = '付款价格：' + (data.price / 100) + ' 元';
+                qrcodeDialog.description = '付款价格：' + (data.price / 100) + ' 元(新平台优惠)';
                 qrcodeDialog.open = true;
                 pollOrderStatus(data.order, 3000);
             } else {
@@ -460,6 +460,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const groupBtn = document.getElementById('groupBtn');
     groupBtn.addEventListener('click', function() {
         window.open('https://qm.qq.com/q/hpYH0xIsuY', '_blank');
+    });
+    const helpBtn = document.getElementById('helpBtn');
+    helpBtn.addEventListener('click', function() {
+        window.open('../doc', '_blank');
     });
     const changeCancelBtn = document.getElementById('changeCancelBtn');
     changeCancelBtn.addEventListener('click', function() {
