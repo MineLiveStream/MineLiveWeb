@@ -56,7 +56,7 @@ function renderMaterialList(data) {
                     const params = {
                         id: item.id
                     };
-                    fetch('https://stmcicp.ranmc.cc:24021/material', {
+                    fetch('https://api.minelive.top:28080/material', {
                         method: 'DELETE',
                         headers: {
                             'Authorization': 'Bearer ' + token,
@@ -96,13 +96,13 @@ async function fetchMaterialLibrary(page = 1, size = 30) {
     try {
         const token = localStorage.getItem('userToken');
         if (!token) {
-            window.location.href = '../user/login.index';
+            window.location.href = '../';
         }
         const params = new URLSearchParams({
             page: page.toString(),
             size: size.toString()
         });
-        const url = `https://stmcicp.ranmc.cc:24021/material?${params.toString()}`;
+        const url = `https://api.minelive.top:28080/material?${params.toString()}`;
         const response = await fetch(url, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const token = localStorage.getItem('userToken');
     logoutBtn.addEventListener('click', function() {
         localStorage.removeItem('userToken');
-        window.location.href = '../user/login.index';
+        window.location.href = '../';
     });
     streamBtn.addEventListener('click', function() {
         window.location.href = '../stream';
@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 };
 
                 // 发送POST请求
-                fetch('https://stmcicp.ranmc.cc:24021/material', {
+                fetch('https://api.minelive.top:28080/material', {
                     method: 'POST',
                     headers: headers,
                     body: formData

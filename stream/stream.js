@@ -68,7 +68,7 @@ function renderStreamList(data) {
               const params = {
                   id: item.id
               };
-              fetch('https://stmcicp.ranmc.cc:24021/switch-stream', {
+              fetch('https://api.minelive.top:28080/switch-stream', {
                   method: 'POST',
                   headers: {
                       'Authorization': 'Bearer ' + token,
@@ -146,7 +146,7 @@ function renderStreamList(data) {
                 const params = new URLSearchParams({
                     id: item.id
                 });
-                const url = `https://stmcicp.ranmc.cc:24021/stream-log?${params.toString()}`;
+                const url = `https://api.minelive.top:28080/stream-log?${params.toString()}`;
                 fetch(url, {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -203,7 +203,7 @@ function renderStreamList(data) {
                     const params = {
                         id: item.id
                     };
-                    fetch('https://stmcicp.ranmc.cc:24021/stream', {
+                    fetch('https://api.minelive.top:28080/stream', {
                         method: 'DELETE',
                         headers: {
                             'Authorization': 'Bearer ' + token,
@@ -253,7 +253,7 @@ function buy(type = "ALIPAY", month = 1) {
         type: type,
         month: month
     };
-    fetch('https://stmcicp.ranmc.cc:24021/pay', {
+    fetch('https://api.minelive.top:28080/pay', {
         method: 'POST',
         headers: {
             'Authorization': 'Bearer ' + token,
@@ -329,7 +329,7 @@ async function checkOrder(order) {
         const params = new URLSearchParams({
             order: order
         });
-        const url = `https://stmcicp.ranmc.cc:24021/pay?${params.toString()}`;
+        const url = `https://api.minelive.top:28080/pay?${params.toString()}`;
         const response = await fetch(url, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -358,7 +358,7 @@ async function fetchStreamLibrary(page = 1, size = 30) {
             page: page.toString(),
             size: size.toString()
         });
-        const url = `https://stmcicp.ranmc.cc:24021/stream?${params.toString()}`;
+        const url = `https://api.minelive.top:28080/stream?${params.toString()}`;
         const response = await fetch(url, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -430,7 +430,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 key: document.getElementById('streamKey').value,
                 materialId: materialId
             };
-            fetch('https://stmcicp.ranmc.cc:24021/stream', {
+            fetch('https://api.minelive.top:28080/stream', {
                 method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + token,
@@ -479,7 +479,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 materialId: materialId ? materialId : undefined
             };
 
-            fetch('https://stmcicp.ranmc.cc:24021/stream', {
+            fetch('https://api.minelive.top:28080/stream', {
                 method: 'PUT',
                 headers: {
                     'Authorization': 'Bearer ' + token,
@@ -557,7 +557,7 @@ async function fetchMaterialLibrary(page = 1, size = 30) {
             page: page.toString(),
             size: size.toString()
         });
-        const url = `https://stmcicp.ranmc.cc:24021/material?${params.toString()}`;
+        const url = `https://api.minelive.top:28080/material?${params.toString()}`;
         const response = await fetch(url, {
             headers: {
                 Authorization: `Bearer ${token}`

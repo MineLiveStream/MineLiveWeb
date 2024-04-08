@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
             key: regKeyInput.value
         };
 
-        fetch('https://stmcicp.ranmc.cc:24021/register', {
+        fetch('https://api.minelive.top:28080/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
             key: forgetKeyInput.value
         };
 
-        fetch('https://stmcicp.ranmc.cc:24021/forget', {
+        fetch('https://api.minelive.top:28080/forget', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
