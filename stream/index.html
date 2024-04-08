@@ -82,10 +82,8 @@
         <mdui-text-field style="margin-bottom: 16px" label="名称" id="streamName"></mdui-text-field>
         <mdui-text-field style="margin-bottom: 16px" label="推流地址" id="streamUrl"></mdui-text-field>
         <mdui-text-field style="margin-bottom: 16px" label="推流密钥" id="streamKey"></mdui-text-field>
-        <mdui-dropdown>
-            <mdui-button slot="trigger" id="materialMenuBtn">选择素材</mdui-button>
-            <mdui-menu id="materialMenu"></mdui-menu>
-        </mdui-dropdown>
+        <mdui-select id="selectMenu" label="素材">
+        </mdui-select>
         <mdui-button slot="action" variant="text" id="changeCancelBtn">取消</mdui-button>
         <mdui-button slot="action" variant="tonal" id="changeConfirmBtn">确定</mdui-button>
     </mdui-dialog>

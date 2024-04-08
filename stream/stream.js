@@ -580,21 +580,20 @@ async function fetchMaterialLibrary(page = 1, size = 30) {
 let materialId = 0;
 
 function renderMaterialList(data) {
-    const materialMenuBtn = document.getElementById('materialMenuBtn');
-    const materialMenu = document.getElementById('materialMenu');
-    materialMenu.innerHTML = ''; // 清空表格内容
+    const selectMenu = document.getElementById('selectMenu');
 
     if (data && data.list && data.list.length > 0) {
         data.list.forEach(item => {
             const newMenu = document.createElement('mdui-menu-item');
             newMenu.innerHTML = item.name;
+            newMenu.value = "item-" + item.id;
             newMenu.addEventListener('click', () => {
-                materialMenuBtn.textContent = item.name;
+                //selectMenu.textContent = item.name;
                 materialId = item.id;
+                //selectMenu.value = "item-" + item.id;
             });
-            materialMenu.appendChild(newMenu);
+            selectMenu.value = "item-" + item.id;
+            selectMenu.appendChild(newMenu);
         });
-    } else {
-        materialMenuBtn.textContent = '暂无素材';
     }
 }
