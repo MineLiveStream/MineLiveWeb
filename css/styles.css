@@ -5,12 +5,3 @@
     flex-direction: column;
     height: 100%;
 }
-
-.mdui-card h2 {
-    color: #000;
-    transition: color 0.5s ease;
-}
-
-.mdui-card h2.new-text {
-    color: #333;
-}
