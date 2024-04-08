@@ -1,8 +1,5 @@
-window.onload = function() {
-    document.getElementById('loginDialog').open = true;
-}
-
 document.addEventListener('DOMContentLoaded', function() {
+    const startBtn = document.getElementById('startBtn');
     const loginText = document.getElementById('loginText');
     const regText = document.getElementById('regText');
     const forgetText = document.getElementById('forgetText');
@@ -16,6 +13,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const regDialog = document.getElementById('regDialog');
     const loginDialog = document.getElementById('loginDialog');
     const snackbar = document.querySelector(".example-snackbar");
+    startBtn.addEventListener('click', function() {
+        loginDialog.open = true;
+    });
     loginText.addEventListener('click', function() {
         loginDialog.open = true;
         regDialog.open = false;

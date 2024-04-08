@@ -51,7 +51,7 @@ function renderMaterialList(data) {
                     dialog.open = false;
                     const token = localStorage.getItem('userToken');
                     if (!token) {
-                        window.location.href = '../user/login';
+                        window.location.href = '../js';
                     }
                     const params = {
                         id: item.id

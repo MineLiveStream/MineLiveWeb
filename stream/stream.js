@@ -63,7 +63,7 @@ function renderStreamList(data) {
             switchBtn.addEventListener('change', () => {
               const token = localStorage.getItem('userToken');
               if (!token) {
-                  window.location.href = '../login';
+                  window.location.href = '../';
               }
               const params = {
                   id: item.id
@@ -141,7 +141,7 @@ function renderStreamList(data) {
                 logDiv.innerHTML = '';
                 const token = localStorage.getItem('userToken');
                 if (!token) {
-                    window.location.href = '../login';
+                    window.location.href = '../';
                 }
                 const params = new URLSearchParams({
                     id: item.id
@@ -198,7 +198,7 @@ function renderStreamList(data) {
                     dialog.open = false;
                     const token = localStorage.getItem('userToken');
                     if (!token) {
-                        window.location.href = '../login';
+                        window.location.href = '../';
                     }
                     const params = {
                         id: item.id
@@ -246,7 +246,7 @@ function buy(type = "ALIPAY", month = 1) {
     snackbar.open = true;
     const token = localStorage.getItem('userToken');
     if (!token) {
-        window.location.href = '../login';
+        window.location.href = '../';
     }
     const params = {
         id: buyId,
@@ -324,7 +324,7 @@ async function checkOrder(order) {
     try {
         const token = localStorage.getItem('userToken');
         if (!token) {
-            window.location.href = '../login';
+            window.location.href = '../';
         }
         const params = new URLSearchParams({
             order: order
@@ -352,7 +352,7 @@ async function fetchStreamLibrary(page = 1, size = 30) {
     try {
         const token = localStorage.getItem('userToken');
         if (!token) {
-            window.location.href = '../login';
+            window.location.href = '../';
         }
         const params = new URLSearchParams({
             page: page.toString(),
@@ -380,7 +380,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const logoutBtn = document.getElementById('logoutBtn');
     logoutBtn.addEventListener('click', function() {
         localStorage.removeItem('userToken');
-        window.location.href = '../login';
+        window.location.href = '../';
     });
     // 取消订单
     const cancelOrderBtn = document.getElementById('cancelOrderBtn');
@@ -551,7 +551,7 @@ async function fetchMaterialLibrary(page = 1, size = 30) {
     try {
         const token = localStorage.getItem('userToken');
         if (!token) {
-            window.location.href = '../login';
+            window.location.href = '../';
         }
         const params = new URLSearchParams({
             page: page.toString(),
