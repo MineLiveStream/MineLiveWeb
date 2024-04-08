@@ -535,6 +535,10 @@ document.addEventListener('DOMContentLoaded', function() {
     changeCancelBtn.addEventListener('click', function() {
         changeDialog.open = false;
     });
+    const minepayBtn = document.getElementById('minepayBtn');
+    minepayBtn.addEventListener('click', function() {
+        window.open('https://minepay.top/#/', '_blank');
+    });
     const refreshBtn = document.getElementById('refreshBtn');
     refreshBtn.addEventListener('click', function() {
         fetchStreamLibrary(1, 30)
