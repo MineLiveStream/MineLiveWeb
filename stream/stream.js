@@ -588,11 +588,8 @@ function renderMaterialList(data) {
             newMenu.innerHTML = item.name;
             newMenu.value = "item-" + item.id;
             newMenu.addEventListener('click', () => {
-                //selectMenu.textContent = item.name;
                 materialId = item.id;
-                //selectMenu.value = "item-" + item.id;
             });
-            selectMenu.value = "item-" + item.id;
             selectMenu.appendChild(newMenu);
         });
     }
