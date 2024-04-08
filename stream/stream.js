@@ -111,6 +111,8 @@ function renderStreamList(data) {
             });
             switchTd.appendChild(switchBtn);
             tr.appendChild(switchTd);
+
+            const btnTd = document.createElement('td');
             
             const payButton = document.createElement('mdui-chip');
             payButton.innerHTML = '开通/续费';
@@ -118,8 +120,72 @@ function renderStreamList(data) {
                 paymentDialog.open = true;
                 buyId = item.id;
             });
+            btnTd.appendChild(payButton);
 
-            const btnTd = document.createElement('td');
+            const changeButton = document.createElement('mdui-chip');
+            changeButton.innerHTML = '更改';
+            changeButton.addEventListener('click', () => {
+                const changeDialog = document.getElementById("changeDialog");
+                changeDialog.headline = "更新推流";
+                changeDialog.description = "无变更内容可留空";
+                changeDialog.open = true;
+                changeId = item.id;
+            });
+            btnTd.appendChild(changeButton);
+
+            const logButton = document.createElement('mdui-chip');
+            logButton.innerHTML = '日志';
+            logButton.addEventListener('click', () => {
+                const logDialog = document.getElementById("logDialog");
+                const logDiv = document.getElementById("logDiv");
+                logDiv.innerHTML = '';
+                const token = localStorage.getItem('userToken');
+                if (!token) {
+                    window.location.href = '../login';
+                }
+                const params = new URLSearchParams({
+                    id: item.id
+                });
+                const url = `https://stmcicp.ranmc.cc:24021/stream-log?${params.toString()}`;
+                fetch(url, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        snackbar.textContent = "获取日志出错";
+                        snackbar.open = true;
+                        throw new Error('Network response was not ok.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.code === 200) {
+                        if (data.log.length === 0) {
+                            snackbar.textContent = "该推流暂无日志，请先启动";
+                            snackbar.open = true;
+                        } else {
+                            data.log.forEach(line => {
+                                const p = document.createElement('p');
+                                p.innerHTML = line;
+                                logDiv.appendChild(p);
+                            });
+                            logDialog.open = true;
+                        }
+                    } else {
+                        snackbar.textContent = "获取日志失败" + resJson.msg;
+                        snackbar.open = true;
+                    }
+                })
+                .catch(error => {
+                    console.error('There has been a problem with your fetch operation:', error);
+                });
+                const closeButton = document.getElementById("logDialogCloseBtn");
+                closeButton.addEventListener("click", () => logDialog.open = false);
+            });
+            btnTd.appendChild(logButton);
+
             const deleteButton = document.createElement('mdui-chip');
             deleteButton.innerHTML = '删除';
             deleteButton.addEventListener('click', () => {
@@ -165,18 +231,6 @@ function renderStreamList(data) {
                         });
                 });
             });
-            const changeButton = document.createElement('mdui-chip');
-            changeButton.innerHTML = '更改';
-            changeButton.addEventListener('click', () => {
-                const changeDialog = document.getElementById("changeDialog");
-                changeDialog.headline = "更新推流";
-                changeDialog.description = "无变更内容可留空";
-                changeDialog.open = true;
-                changeId = item.id;
-            });
-
-            btnTd.appendChild(payButton);
-            btnTd.appendChild(changeButton);
             btnTd.appendChild(deleteButton);
             tr.appendChild(btnTd);
 
