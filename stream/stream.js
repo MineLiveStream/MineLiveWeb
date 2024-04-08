@@ -29,7 +29,7 @@ function truncateString(str) {
         return str.substring(0, 20)  + "...";  
     }  
     return str;  
-} 
+}
 
 function renderStreamList(data) {  
     const materialListTbody = document.getElementById('material-list-tbody');  
@@ -78,7 +78,7 @@ function renderStreamList(data) {
               })  
               .then(response => {  
                   if (!response.ok) {  
-                      throw new Error('Network response was not ok.');  
+                      throw new Error('错误响应码');  
                   }  
                   return response.json();  
               })  
@@ -104,7 +104,7 @@ function renderStreamList(data) {
                 
               })  
               .catch(error => {  
-                  console.error('There has been a problem with your fetch operation:', error);
+                  console.error('检测到错误', error);
                   snackbar.textContent = '操作出错，请重试！';
                   snackbar.open = true;
               });
@@ -156,7 +156,7 @@ function renderStreamList(data) {
                     if (!response.ok) {
                         snackbar.textContent = "获取日志出错";
                         snackbar.open = true;
-                        throw new Error('Network response was not ok.');
+                        throw new Error('错误响应码');
                     }
                     return response.json();
                 })
@@ -179,7 +179,7 @@ function renderStreamList(data) {
                     }
                 })
                 .catch(error => {
-                    console.error('There has been a problem with your fetch operation:', error);
+                    console.error('检测到错误', error);
                 });
                 const closeButton = document.getElementById("logDialogCloseBtn");
                 closeButton.addEventListener("click", () => logDialog.open = false);
@@ -213,7 +213,7 @@ function renderStreamList(data) {
                     })
                         .then(response => {
                             if (!response.ok) {
-                                throw new Error('Network response was not ok.');
+                                throw new Error('错误响应码');
                             }
                             return response.json();
                         })
@@ -227,7 +227,7 @@ function renderStreamList(data) {
                             snackbar.open = true;
                         })
                         .catch(error => {
-                            console.error('There has been a problem with your fetch operation:', error);
+                            console.error('检测到错误', error);
                         });
                 });
             });
@@ -263,7 +263,7 @@ function buy(type = "ALIPAY", month = 1) {
     })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok.');
+                throw new Error('错误响应码');
             }
             return response.json();
         })
@@ -289,7 +289,7 @@ function buy(type = "ALIPAY", month = 1) {
             }
         })
         .catch(error => {
-            console.error('There has been a problem with your fetch operation:', error);
+            console.error('检测到错误', error);
             snackbar.textContent = '请求支付时出错，请重试！';
             snackbar.open = true;
         });
@@ -364,19 +364,12 @@ async function fetchStreamLibrary(page = 1, size = 30) {
                 Authorization: `Bearer ${token}`
             }
         });
-
-        // 检查响应状态码
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-
-        // 解析JSON响应
         const result = await response.json();
-
-        // 返回解析后的数据
         return result;
     } catch (error) {
-        // 处理请求错误
         console.error('请求推流时出错:', error);
         return null;
     }
@@ -409,6 +402,7 @@ document.addEventListener('DOMContentLoaded', function() {
         buy("ALIPAY", monthSlider.value);
         paymentDialog.open = false;
     });
+    // 取消支付
     const cancelPaymentBtn = document.getElementById('cancelPaymentBtn');
     cancelPaymentBtn.addEventListener('click', function() {
         paymentDialog.open = false;
@@ -446,7 +440,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Network response was not ok.');
+                        throw new Error('错误响应码');
                     }
                     return response.json();
                 })
@@ -468,7 +462,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 })
                 .catch(error => {
-                    console.error('There has been a problem with your fetch operation:', error);
+                    console.error('检测到错误', error);
                     snackbar.textContent = '操作出错，请重试！';
                     snackbar.open = true;
                 });
@@ -495,7 +489,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Network response was not ok.');
+                        throw new Error('错误响应码');
                     }
                     return response.json();
                 })
@@ -517,7 +511,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 })
                 .catch(error => {
-                    console.error('There has been a problem with your fetch operation:', error);
+                    console.error('检测到错误', error);
                     snackbar.textContent = '操作出错，请重试！';
                     snackbar.open = true;
                 });
@@ -585,7 +579,6 @@ let materialId = 0;
 
 function renderMaterialList(data) {
     const selectMenu = document.getElementById('selectMenu');
-
     if (data && data.list && data.list.length > 0) {
         data.list.forEach(item => {
             const newMenu = document.createElement('mdui-menu-item');

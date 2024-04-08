@@ -1,26 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" class="mdui-theme-auto">
 	<head>
 		<meta charset="utf-8">
 		<title>忘记密码 - MineLive</title>
-		<link rel="stylesheet" type="text/css" href="forget.css" />
+		<link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css">
 		<script src="forget.js"></script>
+		<script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
 		<link rel="icon" href="https://s21.ax1x.com/2024/04/07/pFqgviq.png">
 	</head>
 	<body>
-		<div class="control">
-			<div class="item">
-				<div class="active">忘记密码</div>
-			</div>
-			<div class="content">
-				<div style="display: block;">
-					<p>验证码</p>
-					<input type="text" id="forgetKey" name="forgetKey" placeholder="请输入验证码" />
-					<br/>
-					<input type="submit" id="forgetBtn" value="确认" />
-				</div>
-			</div>
-		</div>
+		<mdui-dialog
+				id = "forgetDialog"
+				headline="忘记密码"
+				class="example-action">
+			<mdui-text-field label="验证码" id="forgetKey" style="margin-bottom: 24px"></mdui-text-field>
+			<mdui-button full-width id="forgetBtn">确认</mdui-button>
+		</mdui-dialog>
+
+		<mdui-snackbar class="example-snackbar"></mdui-snackbar>
 	</body>
 </html>
 

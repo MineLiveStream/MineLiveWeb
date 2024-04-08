@@ -1,58 +1,50 @@
-window.onload = function(){
-	var item = document.getElementsByClassName("item");
-	var it = item[0].getElementsByTagName("div");
-	
-	var content = document.getElementsByClassName("content");
-	var con = content[0].getElementsByTagName("div");
-	
-	for(let i=0;i<it.length;i++){
-		it[i].onclick = function(){
-			for(let j=0;j<it.length;j++){
-				it[j].className = '';
-				con[j].style.display = "none";
-			}
-			this.className = "active";
-			it[i].index=i;
-			con[i].style.display = "block";
-		}
-	}
+window.onload = function() {
+    document.getElementById('regDialog').open = true;
+    const snackbar = document.querySelector(".example-snackbar");
+    snackbar.textContent = "请检查邮箱验证码";
+    snackbar.open = true;
 }
-document.addEventListener('DOMContentLoaded', function() {  
-    const regBtn = document.getElementById('regBtn');  
-    const regKeyInput = document.getElementById('regKey');  
 
+document.addEventListener('DOMContentLoaded', function() {
+    const regBtn = document.getElementById('regBtn');
+    const regKeyInput = document.getElementById('regKey');
+    const snackbar = document.querySelector(".example-snackbar");
 
-    regBtn.addEventListener('click', function() {  
-        const regKey = regKeyInput.value;  
-  
-        const data = {  
-            key: regKey
-        };  
-  
-        fetch('https://stmcicp.ranmc.cc:24021/register', {  
-            method: 'POST',  
-            headers: {  
-                'Content-Type': 'application/json'  
-            },  
-            body: JSON.stringify(data)  
-        })  
-        .then(response => {  
-            if (!response.ok) {  
-                throw new Error('Network response was not ok');  
-            }  
-            return response.json();  
-        })  
-        .then(data => {  
-            if (data.code === 200) {  
-                localStorage.setItem('userToken', data.token);
-                window.location.href = '../stream';  
-            } else {  
-                alert(data.msg);  
-            }  
-        })  
-        .catch(error => {  
-            console.error('There has been a problem with your fetch operation:', error);  
-            alert('注册出错，请检查你的网络连接');  
-        });  
-    }); 
+    regBtn.addEventListener('click', function() {
+        regBtn.loading = true;
+        const data = {
+            key: regKeyInput.value
+        };
+
+        fetch('https://stmcicp.ranmc.cc:24021/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    regBtn.loading = false;
+                    throw new Error('错误响应码');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.code === 200) {
+                    localStorage.setItem('userToken', data.token);
+                    window.location.href = '../stream';
+                } else {
+                    snackbar.textContent = data.msg;
+                    snackbar.open = true;
+                }
+                regBtn.loading = false;
+            })
+            .catch(error => {
+                console.error('检测到错误', error);
+                snackbar.textContent = '注册出错，请检查你的网络连接';
+                snackbar.open = true;
+                regBtn.loading = false;
+            });
+    });
 });

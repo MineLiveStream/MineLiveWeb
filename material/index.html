@@ -1,0 +1,70 @@
+<!DOCTYPE html>  
+<html lang="en" class="mdui-theme-auto">
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>素材 - MineLive</title>
+    <link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="icon" href="https://s21.ax1x.com/2024/04/07/pFqgviq.png">
+</head>  
+<body>
+
+    <mdui-top-app-bar>
+        <div style="flex-grow: 1"></div>
+        <img src="https://s21.ax1x.com/2024/04/07/pFq2AoR.png" alt="alternative" style="width: 2.5rem; height: 2.5rem;">
+        <div style="flex-grow: 1"></div>
+        <mdui-top-app-bar-title>素材列表</mdui-top-app-bar-title>
+        <div style="flex-grow: 1"></div>
+        <mdui-button-icon variant="tonal" icon="upload" id="uploadBtn" title="上传素材"></mdui-button-icon>
+        <input type="file" id="fileInput" style="display: none;">
+        <div style="flex-grow: 1"></div>
+        <mdui-button-icon variant="tonal" icon="refresh" id="refreshBtn" title="刷新列表"></mdui-button-icon>
+        <div style="flex-grow: 1"></div>
+        <mdui-button-icon variant="tonal" icon="help_outline" id="helpBtn" title="使用教程"></mdui-button-icon>
+        <div style="flex-grow: 1"></div>
+        <mdui-button-icon variant="tonal" icon="local_fire_department" id="minepayBtn" title="收款插件"></mdui-button-icon>
+        <div style="flex-grow: 1"></div>
+        <mdui-button-icon variant="tonal" icon="logout" id="logoutBtn" title="退出登录"></mdui-button-icon>
+        <div style="flex-grow: 1"></div>
+    </mdui-top-app-bar>
+      
+    <mdui-container class="mdui-m-t-2">
+        <mdui-table-fluid>
+            <table class="mdui-table mdui-table-striped">
+                <thead>  
+                    <tr>
+                        <th>名称</th>
+                        <th>类型</th>
+                        <th>上传时间</th>
+                        <th>大小</th>
+                        <th>操作</th>
+                    </tr>  
+                </thead>  
+                <tbody id="material-list-tbody">  
+                </tbody>  
+            </table>
+        </mdui-table-fluid>
+    </mdui-container>
+
+    <mdui-navigation-bar value="item-2">
+        <mdui-navigation-bar-item icon="videocam" id="streamBtn" value="item-1">推流</mdui-navigation-bar-item>
+        <mdui-navigation-bar-item icon="topic" id="materialBtn" value="item-2">素材</mdui-navigation-bar-item>
+        <mdui-navigation-bar-item icon="group" id="groupBtn" value="item-3">加群</mdui-navigation-bar-item>
+    </mdui-navigation-bar>
+
+    <mdui-dialog
+            id = "deleteDialog"
+            close-on-overlay-click
+            headline="确认删除素材?"
+            class="example-action">
+        <mdui-button slot="action" variant="text" id="dialogCancelBtn">取消</mdui-button>
+        <mdui-button slot="action" variant="tonal" id="dialogConfirmBtn">删除</mdui-button>
+    </mdui-dialog>
+
+    <mdui-snackbar class="example-snackbar">成功</mdui-snackbar>
+
+    <script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
+    <script src="material.js"></script>
+</body>  
+</html>

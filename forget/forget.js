@@ -1,35 +1,21 @@
-window.onload = function(){
-	var item = document.getElementsByClassName("item");
-	var it = item[0].getElementsByTagName("div");
-	
-	var content = document.getElementsByClassName("content");
-	var con = content[0].getElementsByTagName("div");
-	
-	for(let i=0;i<it.length;i++){
-		it[i].onclick = function(){
-			for(let j=0;j<it.length;j++){
-				it[j].className = '';
-				con[j].style.display = "none";
-			}
-			this.className = "active";
-			it[i].index=i;
-			con[i].style.display = "block";
-		}
-	}
+window.onload = function() {
+    document.getElementById('forgetDialog').open = true;
+    const snackbar = document.querySelector(".example-snackbar");
+    snackbar.textContent = "请检查邮箱验证码";
+    snackbar.open = true;
 }
-document.addEventListener('DOMContentLoaded', function() {  
+document.addEventListener('DOMContentLoaded', function() {
     const forgetBtn = document.getElementById('forgetBtn');  
-    const forgetKeyInput = document.getElementById('forgetKey');  
+    const forgetKeyInput = document.getElementById('forgetKey');
+    const snackbar = document.querySelector(".example-snackbar");
 
-
-    forgetBtn.addEventListener('click', function() {  
-        const forgetKey = forgetKeyInput.value;  
-  
+    forgetBtn.addEventListener('click', function() {
+        forgetBtn.loading = true;
         const data = {  
-            key: forgetKey
+            key: forgetKeyInput.value
         };  
   
-        fetch('https://stmcicp.ranmc.cc:24021/forget', {  
+        fetch('https://stmcicp.ranmc.cc:24021/forget', {
             method: 'POST',  
             headers: {  
                 'Content-Type': 'application/json'  
@@ -37,8 +23,9 @@ document.addEventListener('DOMContentLoaded', function() {
             body: JSON.stringify(data)  
         })  
         .then(response => {  
-            if (!response.ok) {  
-                throw new Error('Network response was not ok');  
+            if (!response.ok) {
+                forgetBtn.loading = false;
+                throw new Error('错误响应码');
             }  
             return response.json();  
         })  
@@ -46,13 +33,17 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.code === 200) {  
                 localStorage.setItem('userToken', data.token);
                 window.location.href = '../stream';  
-            } else {  
-                alert(data.msg);  
-            }  
+            } else {
+                snackbar.textContent = data.msg;
+                snackbar.open = true;
+            }
+            forgetBtn.loading = false;
         })  
         .catch(error => {  
-            console.error('There has been a problem with your fetch operation:', error);  
-            alert('注册出错，请检查你的网络连接');  
+            console.error('检测到错误', error);
+            snackbar.textContent = '重置出错，请检查你的网络连接';
+            snackbar.open = true;
+            forgetBtn.loading = false;
         });  
     }); 
 });
