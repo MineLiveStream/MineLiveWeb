@@ -54,7 +54,7 @@
 			// Called after the entrance animation is executed.
 		}
     });
-    
+  
 
     /* Card Slider - Swiper */
 	var cardSlider = new Swiper('.card-slider', {
@@ -81,7 +81,7 @@
         }
     });
 
-    
+  
     /* Lightbox - Magnific Popup */
 	$('.popup-with-move-anim').magnificPopup({
 		type: 'inline',
@@ -94,7 +94,7 @@
 		removalDelay: 300,
 		mainClass: 'my-mfp-slide-bottom'
     });
-    
+  
 
     /* Filter - Isotope */
     var $grid = $('.grid').isotope({
@@ -102,13 +102,13 @@
         itemSelector: '.element-item',
         layoutMode: 'fitRows'
     });
-    
+  
     // filter items on button click
     $('.filters-button-group').on( 'click', 'a', function() {
         var filterValue = $(this).attr('data-filter');
         $grid.isotope({ filter: filterValue });
     });
-    
+  
     // change is-checked class on buttons
     $('.button-group').each( function( i, buttonGroup ) {
         var $buttonGroup = $( buttonGroup );
@@ -117,7 +117,7 @@
             $( this ).addClass('is-checked');
         });	
     });
-    
+  
 
     /* Counter - CountTo */
 	var a = 0;
@@ -182,7 +182,7 @@
 		var email = $("#lemail").val();
 		var select = $("#lselect").val();
         var terms = $("#lterms").val();
-        
+      
         $.ajax({
             type: "POST",
             url: "php/callmeform-process.php",
@@ -296,7 +296,7 @@
 		var email = $("#pemail").val();
         var select = $("#pselect").val();
         var terms = $("#pterms").val();
-        
+      
         $.ajax({
             type: "POST",
             url: "php/privacyform-process.php",
@@ -332,7 +332,7 @@
         }
         $("#pmsgSubmit").removeClass().addClass(msgClasses).text(msg);
     }
-    
+  
 
     /* Back To Top Button */
     // create the back to top button

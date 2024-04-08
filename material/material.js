@@ -14,33 +14,33 @@ const dialogCancelBtn = document.getElementById('dialogCancelBtn');
 const dialogConfirmBtn = document.getElementById('dialogConfirmBtn');
 
 function renderMaterialList(data) {
-    const materialListTbody = document.getElementById('material-list-tbody');  
+    const materialListTbody = document.getElementById('material-list-tbody');
     materialListTbody.innerHTML = ''; // 清空表格内容
 
-    if (data && data.list && data.list.length > 0) {  
-        data.list.forEach(item => {  
-            const tr = document.createElement('tr');  
+    if (data && data.list && data.list.length > 0) {
+        data.list.forEach(item => {
+            const tr = document.createElement('tr');
             ['name', 'type'].forEach(key => {
-                const td = document.createElement('td');  
+                const td = document.createElement('td');
                 td.textContent = item[key];
-                tr.appendChild(td);  
-            });  
+                tr.appendChild(td);
+            });
 
-            const uploadTime = new Date(item.uploadTime).toLocaleString();  
-            const tdUploadTime = document.createElement('td');  
-            tdUploadTime.textContent = uploadTime;  
-            tr.appendChild(tdUploadTime);  
+            const uploadTime = new Date(item.uploadTime).toLocaleString();
+            const tdUploadTime = document.createElement('td');
+            tdUploadTime.textContent = uploadTime;
+            tr.appendChild(tdUploadTime);
 
-            // 处理文件大小  
-            const sizeInBytes = item.size;  
-            const sizeInMB = (sizeInBytes / (1024 * 1024)).toFixed(2);  
-            const tdSize = document.createElement('td');  
-            tdSize.textContent = sizeInMB + ' MB';  
-            tr.appendChild(tdSize);  
-            
-            const deleteButton = document.createElement('td');  
+            // 处理文件大小
+            const sizeInBytes = item.size;
+            const sizeInMB = (sizeInBytes / (1024 * 1024)).toFixed(2);
+            const tdSize = document.createElement('td');
+            tdSize.textContent = sizeInMB + ' MB';
+            tr.appendChild(tdSize);
+          
+            const deleteButton = document.createElement('td');
             deleteButton.className = 'div';
-            deleteButton.innerHTML = '<mdui-chip>删除</mdui-chip>';  
+            deleteButton.innerHTML = '<mdui-chip>删除</mdui-chip>';
             deleteButton.addEventListener('click', () => {
                 dialog.open = true;
                 dialog.description = item.name;
@@ -84,12 +84,12 @@ function renderMaterialList(data) {
                         });
                 });
             });
-            tr.appendChild(deleteButton);  
-            materialListTbody.appendChild(tr); // 将行添加到表格中  
-        });  
+            tr.appendChild(deleteButton);
+            materialListTbody.appendChild(tr); // 将行添加到表格中
+        });
     } else {
-        materialListTbody.innerHTML = '<tr><td colspan="6" class="mdui-text-center">没有素材可展示</td></tr>'; // 显示无内容提示  
-    }  
+        materialListTbody.innerHTML = '<tr><td colspan="6" class="mdui-text-center">没有素材可展示</td></tr>'; // 显示无内容提示
+    }
 }
 
 async function fetchMaterialLibrary(page = 1, size = 30) {
@@ -120,9 +120,9 @@ async function fetchMaterialLibrary(page = 1, size = 30) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function() {  
-    const streamBtn = document.getElementById('streamBtn');   
-    const uploadBtn = document.getElementById('uploadBtn');  
+document.addEventListener('DOMContentLoaded', function() {
+    const streamBtn = document.getElementById('streamBtn'); 
+    const uploadBtn = document.getElementById('uploadBtn');
     const fileInput = document.getElementById('fileInput');
     const logoutBtn = document.getElementById('logoutBtn');
     const token = localStorage.getItem('userToken');
@@ -130,15 +130,15 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.removeItem('userToken');
         window.location.href = '../user/login.index';
     });
-    streamBtn.addEventListener('click', function() {  
-        window.location.href = '../stream';  
+    streamBtn.addEventListener('click', function() {
+        window.location.href = '../stream';
     });
     uploadBtn.addEventListener('click', function() {
-        fileInput.click();  
+        fileInput.click();
     });
-    fileInput.addEventListener('change', function() {  
+    fileInput.addEventListener('change', function() {
         const file = fileInput.files[0];
-  
+
         if (file) {
             const maxFileSizeInBytes = 60 * 1024 * 1024;
             if (file.size > maxFileSizeInBytes) {
@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             snackbar.textContent = "请选择要上传的文件";
             snackbar.open = true;
-        }  
+        }
     });
     const refreshBtn = document.getElementById('refreshBtn');
     refreshBtn.addEventListener('click', function() {

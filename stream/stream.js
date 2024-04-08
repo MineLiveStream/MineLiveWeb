@@ -24,32 +24,32 @@ const paymentDialog = document.getElementById('paymentDialog');
 const qrcodeDialog = document.getElementById('qrcodeDialog');
 const qrCodeElement = document.getElementById('qr-code');
 let changeId = 0;
-function truncateString(str) {  
-    if (str.length > 20) {  
-        return str.substring(0, 20)  + "...";  
-    }  
-    return str;  
+function truncateString(str) {
+    if (str.length > 20) {
+        return str.substring(0, 20)  + "...";
+    }
+    return str;
 }
 
-function renderStreamList(data) {  
-    const materialListTbody = document.getElementById('material-list-tbody');  
-    materialListTbody.innerHTML = ''; // 清空表格内容  
-      
-    if (data && data.list && data.list.length > 0) {  
-        data.list.forEach(item => {  
-            const tr = document.createElement('tr');  
+function renderStreamList(data) {
+    const materialListTbody = document.getElementById('material-list-tbody');
+    materialListTbody.innerHTML = ''; // 清空表格内容
+    
+    if (data && data.list && data.list.length > 0) {
+        data.list.forEach(item => {
+            const tr = document.createElement('tr');
             ['name', 'streamUrl', 'streamKey', "materialName"].forEach(key => {
                 const td = document.createElement('td');
                 td.textContent = truncateString(item[key]);
                 if (key === 'streamUrl' || key === 'streamKey') {
                     td.title = item[key];
                 }
-                tr.appendChild(td);  
-            });  
+                tr.appendChild(td);
+            });
 
-            const uploadTime = new Date(item.expired).toLocaleString();  
-            const tdUploadTime = document.createElement('td');  
-            tdUploadTime.textContent = uploadTime;  
+            const uploadTime = new Date(item.expired).toLocaleString();
+            const tdUploadTime = document.createElement('td');
+            tdUploadTime.textContent = uploadTime;
             tr.appendChild(tdUploadTime);
 
             const switchTd = document.createElement('td');
@@ -60,28 +60,28 @@ function renderStreamList(data) {
             } else {
                 switchBtn.checked = true;
             }
-            switchBtn.addEventListener('change', () => {  
+            switchBtn.addEventListener('change', () => {
               const token = localStorage.getItem('userToken');
               if (!token) {
                   window.location.href = '../login';
               }
-              const params = {  
+              const params = {
                   id: item.id
-              };  
-              fetch('https://stmcicp.ranmc.cc:24021/switch-stream', {  
-                  method: 'POST',  
-                  headers: {  
-                      'Authorization': 'Bearer ' + token,  
+              };
+              fetch('https://stmcicp.ranmc.cc:24021/switch-stream', {
+                  method: 'POST',
+                  headers: {
+                      'Authorization': 'Bearer ' + token,
                       'Content-Type': 'application/json'
                   },
-                  body: JSON.stringify(params)  
-              })  
-              .then(response => {  
-                  if (!response.ok) {  
-                      throw new Error('错误响应码');  
-                  }  
-                  return response.json();  
-              })  
+                  body: JSON.stringify(params)
+              })
+              .then(response => {
+                  if (!response.ok) {
+                      throw new Error('错误响应码');
+                  }
+                  return response.json();
+              })
               .then(data => {
                     if (data.code === 200) {
                         const on = data.status === "ON";
@@ -101,9 +101,9 @@ function renderStreamList(data) {
                         snackbar.textContent = data.msg;
                     }
                   snackbar.open = true;
-                
-              })  
-              .catch(error => {  
+              
+              })
+              .catch(error => {
                   console.error('检测到错误', error);
                   snackbar.textContent = '操作出错，请重试！';
                   snackbar.open = true;
@@ -113,7 +113,7 @@ function renderStreamList(data) {
             tr.appendChild(switchTd);
 
             const btnTd = document.createElement('td');
-            
+          
             const payButton = document.createElement('mdui-chip');
             payButton.innerHTML = '开通/续费';
             payButton.addEventListener('click', () => {
@@ -235,10 +235,10 @@ function renderStreamList(data) {
             tr.appendChild(btnTd);
 
             materialListTbody.appendChild(tr);
-        });  
-    } else {  
-        materialListTbody.innerHTML = '<tr><td colspan="6" class="mdui-text-center">没有推流可展示</td></tr>'; // 显示无内容提示  
-    }  
+        });
+    } else {
+        materialListTbody.innerHTML = '<tr><td colspan="6" class="mdui-text-center">没有推流可展示</td></tr>'; // 显示无内容提示
+    }
 }
 
 function buy(type = "ALIPAY", month = 1) {
@@ -392,8 +392,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     // 素材
     const materialBtn = document.getElementById('materialBtn');
-    materialBtn.addEventListener('click', function() {  
-        window.location.href = '../material';  
+    materialBtn.addEventListener('click', function() {
+        window.location.href = '../material';
     });
     // 支付
     const monthSlider = document.getElementById('monthSlider');

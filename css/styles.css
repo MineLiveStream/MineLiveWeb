@@ -211,7 +211,7 @@ strong {
 }
 
 /* IE10+ hack to solve lower label text position compared to the rest of the browsers */
-@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {  
+@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
 	.label-control {
 		top: 0.9375rem;
 	}
@@ -250,7 +250,7 @@ strong {
 }
 
 /* IE10+ hack to solve lower label text position compared to the rest of the browsers */
-@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {  
+@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
 	.form-control-input {
 		padding-top: 1.25rem;
 		padding-bottom: 0.75rem;
@@ -319,7 +319,7 @@ input[type='checkbox'] {
 }
 
 /* IE10+ hack to raise checkbox field position compared to the rest of the browsers */
-@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {  
+@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
 	input[type='checkbox'] {
 		vertical-align: -9%;
 	}
@@ -539,7 +539,7 @@ input[type='checkbox'] {
 	right: 0;
 	bottom: 0;
 	left: 0;
-	background: #00bcd4;
+	background: #56b3f6;
 }
 
 .spinner {
@@ -1658,7 +1658,7 @@ input[type='checkbox'] {
 /**********************/
 .footer {
 	padding-top: 5rem;
-	background-color: #00bcd4;
+	background-color: #56b3f6;
 }
 
 .footer .text-container {
@@ -1683,7 +1683,7 @@ input[type='checkbox'] {
 .copyright {
 	padding-top: 1rem;
 	padding-bottom: 0.5rem;
-	background-color: #00bcd4;
+	background-color: #56b3f6;
 	text-align: center;
 }
 
