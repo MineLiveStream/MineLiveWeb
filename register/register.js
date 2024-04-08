@@ -44,8 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })  
         .then(data => {  
             if (data.code === 200) {  
-                localStorage.setItem('userToken', data.token);  
-            	alert('注册成功');  
+                localStorage.setItem('userToken', data.token);
                 window.location.href = '../stream';  
             } else {  
                 alert(data.msg);  
