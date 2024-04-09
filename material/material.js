@@ -218,16 +218,8 @@ document.addEventListener('DOMContentLoaded', function() {
         snackbar.textContent = "刷新成功";
         snackbar.open = true;
     });
-    const minepayBtn = document.getElementById('minepayBtn');
-    minepayBtn.addEventListener('click', function() {
-        window.open('https://minepay.top/#/', '_blank');
-    });
     const groupBtn = document.getElementById('groupBtn');
     groupBtn.addEventListener('click', function() {
         window.open('https://qm.qq.com/q/hpYH0xIsuY', '_blank');
-    });
-    const helpBtn = document.getElementById('helpBtn');
-    helpBtn.addEventListener('click', function() {
-        window.open('https://www.yuque.com/seeds-ejjgd/py7vim', '_blank');
     });
 });

@@ -34,8 +34,8 @@ window.onload = function() {
             } else {
                 switchBtn.checked = false;
                 snackbar.textContent = data.msg;
+                snackbar.open = true;
             }
-            snackbar.open = true;
 
         })
         .catch(error => {
@@ -414,7 +414,7 @@ async function fetchStreamLibrary(page = 1, size = 30) {
 }
 
 function updatePriceText() {
-    if (picPrice === 0 || videoPrice === 0) {
+    if (picPrice === 0 || videoPrice === 0) {1
         snackbar.textContent = "获取价格出错，请刷新页面";
         snackbar.open = true;
         return;
@@ -584,17 +584,9 @@ document.addEventListener('DOMContentLoaded', function() {
     groupBtn.addEventListener('click', function() {
         window.open('https://qm.qq.com/q/hpYH0xIsuY', '_blank');
     });
-    const helpBtn = document.getElementById('helpBtn');
-    helpBtn.addEventListener('click', function() {
-        window.open('https://www.yuque.com/seeds-ejjgd/py7vim', '_blank');
-    });
     const changeCancelBtn = document.getElementById('changeCancelBtn');
     changeCancelBtn.addEventListener('click', function() {
         changeDialog.open = false;
-    });
-    const minepayBtn = document.getElementById('minepayBtn');
-    minepayBtn.addEventListener('click', function() {
-        window.open('https://minepay.top/#/', '_blank');
     });
     const refreshBtn = document.getElementById('refreshBtn');
     refreshBtn.addEventListener('click', function() {
