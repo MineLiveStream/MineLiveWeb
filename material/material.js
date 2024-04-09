@@ -147,9 +147,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const file = fileInput.files[0];
 
         if (file) {
-            const maxFileSizeInBytes = 60 * 1024 * 1024;
+            const maxFileSizeInBytes = 100 * 1024 * 1024;
             if (file.size > maxFileSizeInBytes) {
-                snackbar.textContent = '文件大小不得超过60MB';
+                snackbar.textContent = '文件大小不得超过100MB';
                 snackbar.open = true;
             } else {
                 snackbar.textContent = "正在上传，请耐心等待";
