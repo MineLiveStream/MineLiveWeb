@@ -6,52 +6,12 @@ window.onload = function() {
         .catch(error => {
             console.error('处理响应时出错:', error);
         });
-    fetchMaterialLibrary(1, 30)
-        .then(data => {
-            renderMaterialList(data);
-        })
-        .catch(error => {
-            console.error('处理响应时出错:', error);
-        });
-    const token = localStorage.getItem('userToken');
-    if (!token) {
-        window.location.href = '../';
-    }
-    fetch('https://api.minelive.top:28080/price', {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    }).then(response => {
-        if (!response.ok) {
-            throw new Error('错误响应码');
-        }
-        return response.json();
-    })
-        .then(data => {
-            if (data.code === 200) {
-                picPrice = data.picPrice;
-                videoPrice = data.videoPrice;
-            } else {
-                switchBtn.checked = false;
-                snackbar.textContent = data.msg;
-                snackbar.open = true;
-            }
-
-        })
-        .catch(error => {
-            console.error('检测到错误', error);
-        });
 }
-let videoPrice = 0;
-let picPrice = 0;
 const dialog = document.getElementById("deleteDialog");
 const snackbar = document.querySelector(".example-snackbar");
 const dialogCancelBtn = document.getElementById('dialogCancelBtn');
 const dialogConfirmBtn = document.getElementById('dialogConfirmBtn');
-let buyId = 0;
 const paymentDialog = document.getElementById('paymentDialog');
-const qrcodeDialog = document.getElementById('qrcodeDialog');
-const qrCodeElement = document.getElementById('qr-code');
 let changeId = 0;
 function truncateString(str) {
     if (str.length > 20) {
@@ -67,7 +27,7 @@ function renderStreamList(data) {
     if (data && data.list && data.list.length > 0) {
         data.list.forEach(item => {
             const tr = document.createElement('tr');
-            ['name', 'streamUrl', 'streamKey', "materialName"].forEach(key => {
+            ['name', 'streamUrl', 'streamKey', "materialName", "email"].forEach(key => {
                 const td = document.createElement('td');
                 td.textContent = truncateString(item[key]);
                 if (key === 'streamUrl' || key === 'streamKey') {
@@ -142,15 +102,6 @@ function renderStreamList(data) {
             tr.appendChild(switchTd);
 
             const btnTd = document.createElement('td');
-          
-            const payButton = document.createElement('mdui-chip');
-            payButton.innerHTML = '开通/续费';
-            payButton.addEventListener('click', () => {
-                updatePriceText();
-                paymentDialog.open = true;
-                buyId = item.id;
-            });
-            btnTd.appendChild(payButton);
 
             const changeButton = document.createElement('mdui-chip');
             changeButton.innerHTML = '更改';
@@ -271,121 +222,6 @@ function renderStreamList(data) {
     }
 }
 
-function buy(type = "ALIPAY", month = 1) {
-    snackbar.textContent = '正在创建订单，请稍后...';
-    snackbar.open = true;
-    const token = localStorage.getItem('userToken');
-    if (!token) {
-        window.location.href = '../';
-    }
-    let materialType;
-    const radio = document.getElementById('radio');
-    if (radio.value === "pic") {
-        materialType = "PIC";
-    } else {
-        materialType = "VIDEO";
-    }
-    const params = {
-        id: buyId,
-        type: type,
-        month: month,
-        materialType: materialType
-    };
-    fetch('https://api.minelive.top:28080/pay', {
-        method: 'POST',
-        headers: {
-            'Authorization': 'Bearer ' + token,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(params)
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('错误响应码');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.code === 200) {
-                var qr = new QRious();
-                qr.backgroundAlpha = 0.5;
-                qr.foregroundAlpha = 0.9;
-                qr.size = 250;
-                qr.value = data.qrcode;
-                const qrCodeDataUrl = qr.toDataURL();
-                const qrCodeImage = new Image();
-                qrCodeImage.src = qrCodeDataUrl;
-                qrCodeImage.onload = function() {
-                    qrCodeElement.appendChild(qrCodeImage);
-                };
-                qrcodeDialog.description = '付款价格：' + (data.price / 100) + ' 元';
-                qrcodeDialog.open = true;
-                pollOrderStatus(data.order, 3000);
-            } else {
-                snackbar.textContent = data.msg;
-                snackbar.open = true;
-            }
-        })
-        .catch(error => {
-            console.error('检测到错误', error);
-            snackbar.textContent = '请求支付时出错，请重试！';
-            snackbar.open = true;
-        });
-}
-
-async function pollOrderStatus(orderId, interval = 3000) {
-    do {
-        const data = await checkOrder(orderId);
-        if (data.code === 200) {
-            qrcodeDialog.open = false;
-            snackbar.textContent = "支付成功"
-            snackbar.open = true;
-            fetchStreamLibrary(1, 30)
-                .then(data => {
-                    renderStreamList(data);
-                })
-                .catch(error => {
-                    console.error('处理响应时出错:', error);
-                });
-            break;
-        } else if (data.code !== 5000) {
-            snackbar.textContent = data.msg;
-            snackbar.open = true;
-            qrcodeDialog.open = false;
-            break;
-        }
-        await new Promise(resolve => setTimeout(resolve, interval));
-    } while (true);
-}
-
-async function checkOrder(order) {
-    try {
-        const token = localStorage.getItem('userToken');
-        if (!token) {
-            window.location.href = '../';
-        }
-        const params = new URLSearchParams({
-            order: order
-        });
-        const url = `https://api.minelive.top:28080/pay?${params.toString()}`;
-        const response = await fetch(url, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-
-        // 检查响应状态码
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return await response.json();
-    } catch (error) {
-        // 处理请求错误
-        console.error('请求推流时出错:', error);
-        return null;
-    }
-}
-
 async function fetchStreamLibrary(page = 1, size = 30) {
     try {
         const token = localStorage.getItem('userToken');
@@ -396,7 +232,7 @@ async function fetchStreamLibrary(page = 1, size = 30) {
             page: page.toString(),
             size: size.toString()
         });
-        const url = `https://api.minelive.top:28080/stream?${params.toString()}`;
+        const url = `https://api.minelive.top:28080/admin/stream?${params.toString()}`;
         const response = await fetch(url, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -413,69 +249,12 @@ async function fetchStreamLibrary(page = 1, size = 30) {
     }
 }
 
-function updatePriceText() {
-    if (picPrice === 0 || videoPrice === 0) {1
-        snackbar.textContent = "获取价格出错，请刷新页面";
-        snackbar.open = true;
-        return;
-    }
-    const priceText = document.getElementById('priceText');
-    const radio = document.getElementById('radio');
-    let price;
-    if (radio.value === "pic") {
-        price = picPrice;
-    } else {
-        price = videoPrice;
-    }
-    priceText.textContent = (monthSlider.value * price) + " 元";
-}
-
 document.addEventListener('DOMContentLoaded', function() {
     // 登出
     const logoutBtn = document.getElementById('logoutBtn');
     logoutBtn.addEventListener('click', function() {
         localStorage.removeItem('userToken');
         window.location.href = '../';
-    });
-    // 取消订单
-    const cancelOrderBtn = document.getElementById('cancelOrderBtn');
-    cancelOrderBtn.addEventListener('click', function() {
-        qrcodeDialog.open = false;
-        while (qrCodeElement.firstChild) {
-            qrCodeElement.removeChild(qrCodeElement.firstChild);
-        }
-    });
-    const radio = document.getElementById('radio');
-    radio.addEventListener('click', function() {
-        updatePriceText();
-    });
-    // 支付
-    const monthSlider = document.getElementById('monthSlider');
-    monthSlider.addEventListener('input', function() {
-        updatePriceText();
-    });
-    const dialogAlipayBtn = document.getElementById('dialogAlipayBtn');
-    dialogAlipayBtn.addEventListener('click', function() {
-        buy("ALIPAY", monthSlider.value);
-        paymentDialog.open = false;
-    });
-    // 取消支付
-    const cancelPaymentBtn = document.getElementById('cancelPaymentBtn');
-    cancelPaymentBtn.addEventListener('click', function() {
-        paymentDialog.open = false;
-    });
-    const dialogWechatBtn = document.getElementById('dialogWechatBtn');
-    dialogWechatBtn.addEventListener('click', function() {
-        buy("WECHAT", monthSlider.value);
-        paymentDialog.open = false;
-    });
-    const createStreamBtn = document.getElementById('createStreamBtn');
-    createStreamBtn.addEventListener('click', function() {
-        const changeDialog = document.getElementById("changeDialog");
-        changeDialog.headline = "新增推流";
-        changeDialog.description = "";
-        changeDialog.open = true;
-        changeId = 0;
     });
     const changeConfirmBtn = document.getElementById('changeConfirmBtn');
     changeConfirmBtn.addEventListener('click', function() {
@@ -484,8 +263,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const params = {
                 name: document.getElementById('streamName').value,
                 url: document.getElementById('streamUrl').value,
-                key: document.getElementById('streamKey').value,
-                materialId: materialId
+                key: document.getElementById('streamKey').value
             };
             fetch('https://api.minelive.top:28080/stream', {
                 method: 'POST',
@@ -533,7 +311,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 name: streamName ? streamName : undefined,
                 url: streamUrl ? streamUrl : undefined,
                 key: streamKey ? streamKey : undefined,
-                materialId: materialId ? materialId : undefined
             };
 
             fetch('https://api.minelive.top:28080/stream', {
@@ -591,48 +368,3 @@ document.addEventListener('DOMContentLoaded', function() {
         snackbar.open = true;
     });
 });
-
-async function fetchMaterialLibrary(page = 1, size = 30) {
-    try {
-        const token = localStorage.getItem('userToken');
-        if (!token) {
-            window.location.href = '../';
-        }
-        const params = new URLSearchParams({
-            page: page.toString(),
-            size: size.toString()
-        });
-        const url = `https://api.minelive.top:28080/material?${params.toString()}`;
-        const response = await fetch(url, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const result = await response.json();
-        return result;
-    } catch (error) {
-        // 处理请求错误
-        console.error('请求素材库时出错:', error);
-        return null;
-    }
-}
-
-let materialId = 0;
-
-function renderMaterialList(data) {
-    const selectMenu = document.getElementById('selectMenu');
-    if (data && data.list && data.list.length > 0) {
-        data.list.forEach(item => {
-            const newMenu = document.createElement('mdui-menu-item');
-            newMenu.innerHTML = item.name;
-            newMenu.value = "item-" + item.id;
-            newMenu.addEventListener('click', () => {
-                materialId = item.id;
-            });
-            selectMenu.appendChild(newMenu);
-        });
-    }
-}

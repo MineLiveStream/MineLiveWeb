@@ -132,7 +132,6 @@ async function fetchMaterialLibrary(page = 1, size = 30) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    const streamBtn = document.getElementById('streamBtn'); 
     const uploadBtn = document.getElementById('uploadBtn');
     const fileInput = document.getElementById('fileInput');
     const logoutBtn = document.getElementById('logoutBtn');
@@ -140,9 +139,6 @@ document.addEventListener('DOMContentLoaded', function() {
     logoutBtn.addEventListener('click', function() {
         localStorage.removeItem('userToken');
         window.location.href = '../';
-    });
-    streamBtn.addEventListener('click', function() {
-        window.location.href = '../stream';
     });
     uploadBtn.addEventListener('click', function() {
         fileInput.click();
@@ -217,9 +213,5 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         snackbar.textContent = "刷新成功";
         snackbar.open = true;
-    });
-    const groupBtn = document.getElementById('groupBtn');
-    groupBtn.addEventListener('click', function() {
-        window.open('https://qm.qq.com/q/hpYH0xIsuY', '_blank');
     });
 });
