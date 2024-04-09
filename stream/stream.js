@@ -13,8 +13,37 @@ window.onload = function() {
         .catch(error => {
             console.error('处理响应时出错:', error);
         });
-}
+    const token = localStorage.getItem('userToken');
+    if (!token) {
+        window.location.href = '../';
+    }
+    fetch('https://api.minelive.top:28080/price', {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error('错误响应码');
+        }
+        return response.json();
+    })
+        .then(data => {
+            if (data.code === 200) {
+                picPrice = data.picPrice;
+                videoPrice = data.videoPrice;
+            } else {
+                switchBtn.checked = false;
+                snackbar.textContent = data.msg;
+            }
+            snackbar.open = true;
 
+        })
+        .catch(error => {
+            console.error('检测到错误', error);
+        });
+}
+let videoPrice = 0;
+let picPrice = 0;
 const dialog = document.getElementById("deleteDialog");
 const snackbar = document.querySelector(".example-snackbar");
 const dialogCancelBtn = document.getElementById('dialogCancelBtn');
@@ -117,6 +146,7 @@ function renderStreamList(data) {
             const payButton = document.createElement('mdui-chip');
             payButton.innerHTML = '开通/续费';
             payButton.addEventListener('click', () => {
+                updatePriceText();
                 paymentDialog.open = true;
                 buyId = item.id;
             });
@@ -248,10 +278,18 @@ function buy(type = "ALIPAY", month = 1) {
     if (!token) {
         window.location.href = '../';
     }
+    let materialType;
+    const radio = document.getElementById('radio');
+    if (radio.value === "pic") {
+        materialType = "PIC";
+    } else {
+        materialType = "VIDEO";
+    }
     const params = {
         id: buyId,
         type: type,
-        month: month
+        month: month,
+        materialType: materialType
     };
     fetch('https://api.minelive.top:28080/pay', {
         method: 'POST',
@@ -375,6 +413,23 @@ async function fetchStreamLibrary(page = 1, size = 30) {
     }
 }
 
+function updatePriceText() {
+    if (picPrice === 0 || videoPrice === 0) {
+        snackbar.textContent = "获取价格出错，请刷新页面";
+        snackbar.open = true;
+        return;
+    }
+    const priceText = document.getElementById('priceText');
+    const radio = document.getElementById('radio');
+    let price;
+    if (radio.value === "pic") {
+        price = picPrice;
+    } else {
+        price = videoPrice;
+    }
+    priceText.textContent = (monthSlider.value * price) + " 元";
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // 登出
     const logoutBtn = document.getElementById('logoutBtn');
@@ -395,8 +450,16 @@ document.addEventListener('DOMContentLoaded', function() {
     materialBtn.addEventListener('click', function() {
         window.location.href = '../material';
     });
+
+    const radio = document.getElementById('radio');
+    radio.addEventListener('click', function() {
+        updatePriceText();
+    });
     // 支付
     const monthSlider = document.getElementById('monthSlider');
+    monthSlider.addEventListener('input', function() {
+        updatePriceText();
+    });
     const dialogAlipayBtn = document.getElementById('dialogAlipayBtn');
     dialogAlipayBtn.addEventListener('click', function() {
         buy("ALIPAY", monthSlider.value);

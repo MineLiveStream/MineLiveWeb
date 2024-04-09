@@ -67,10 +67,17 @@
             id = "paymentDialog"
             stacked-actions
             close-on-overlay-click
-            headline="购买月数"
-            description="价格：30元/月（上线优惠）"
+            headline="开通续费"
             class="example-action">
+        <p>订单价格</p>
+        <h3 id="priceText">0 元</h3>
+        <p>购买月数</p>
         <mdui-slider value="1" min="1" max="12" id="monthSlider"></mdui-slider>
+        <p>素材类型</p>
+        <mdui-radio-group value="video" id="radio">
+            <mdui-radio value="video">视频</mdui-radio>
+            <mdui-radio value="pic">图片</mdui-radio>
+        </mdui-radio-group>
         <mdui-button slot="action" variant="text" id="dialogAlipayBtn">支付宝</mdui-button>
         <mdui-button slot="action" variant="text" id="dialogWechatBtn">微信</mdui-button>
         <mdui-button slot="action" variant="text" id="cancelPaymentBtn">取消</mdui-button>

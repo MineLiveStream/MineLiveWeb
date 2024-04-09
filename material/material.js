@@ -20,24 +20,35 @@ function renderMaterialList(data) {
     if (data && data.list && data.list.length > 0) {
         data.list.forEach(item => {
             const tr = document.createElement('tr');
-            ['name', 'type'].forEach(key => {
-                const td = document.createElement('td');
-                td.textContent = item[key];
-                tr.appendChild(td);
-            });
 
+            // 文件名称
+            const nameText = document.createElement('td');
+            nameText.textContent = item["name"];
+            tr.appendChild(nameText);
+
+            // 文件类型
+            const materialTypeText = document.createElement('td');
+            if (item.type === "PIC") {
+                materialTypeText.textContent = "图片";
+            } else {
+                materialTypeText.textContent = "视频";
+            }
+            tr.appendChild(materialTypeText);
+
+            // 上传时间
             const uploadTime = new Date(item.uploadTime).toLocaleString();
             const tdUploadTime = document.createElement('td');
             tdUploadTime.textContent = uploadTime;
             tr.appendChild(tdUploadTime);
 
-            // 处理文件大小
+            // 文件大小
             const sizeInBytes = item.size;
             const sizeInMB = (sizeInBytes / (1024 * 1024)).toFixed(2);
             const tdSize = document.createElement('td');
             tdSize.textContent = sizeInMB + ' MB';
             tr.appendChild(tdSize);
-          
+
+            // 删除按钮
             const deleteButton = document.createElement('td');
             deleteButton.className = 'div';
             deleteButton.innerHTML = '<mdui-chip>删除</mdui-chip>';
