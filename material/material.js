@@ -8,12 +8,11 @@ window.onload = function(){
         });
 }
 
-const dialog = document.getElementById("deleteDialog");
-const snackbar = document.querySelector(".example-snackbar");
-const dialogCancelBtn = document.getElementById('dialogCancelBtn');
-const dialogConfirmBtn = document.getElementById('dialogConfirmBtn');
-
 function renderMaterialList(data) {
+    const dialog = document.getElementById("deleteDialog");
+    const snackbar = document.querySelector(".example-snackbar");
+    const dialogCancelBtn = document.getElementById('dialogCancelBtn');
+    const dialogConfirmBtn = document.getElementById('dialogConfirmBtn');
     const materialListTbody = document.getElementById('material-list-tbody');
     materialListTbody.innerHTML = ''; // 清空表格内容
 
@@ -60,17 +59,13 @@ function renderMaterialList(data) {
                 });
                 dialogConfirmBtn.addEventListener('click', () => {
                     dialog.open = false;
-                    const token = localStorage.getItem('userToken');
-                    if (!token) {
-                        window.location.href = '../js';
-                    }
                     const params = {
                         id: item.id
                     };
-                    fetch('https://api.minelive.top:28080/material', {
+                    fetch(api + '/material', {
                         method: 'DELETE',
                         headers: {
-                            'Authorization': 'Bearer ' + token,
+                            'Authorization': 'Bearer ' + token(),
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(params)
@@ -105,25 +100,20 @@ function renderMaterialList(data) {
 
 async function fetchMaterialLibrary(page = 1, size = 30) {
     try {
-        const token = localStorage.getItem('userToken');
-        if (!token) {
-            window.location.href = '../';
-        }
         const params = new URLSearchParams({
             page: page.toString(),
             size: size.toString()
         });
-        const url = `https://api.minelive.top:28080/material?${params.toString()}`;
+        const url = api + `/material?${params.toString()}`;
         const response = await fetch(url, {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token()}`
             }
         });
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const result = await response.json();
-        return result;
+        return await response.json();
     } catch (error) {
         // 处理请求错误
         console.error('请求素材库时出错:', error);
@@ -132,17 +122,17 @@ async function fetchMaterialLibrary(page = 1, size = 30) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    const uploadBtn = document.getElementById('uploadBtn');
-    const fileInput = document.getElementById('fileInput');
-    const logoutBtn = document.getElementById('logoutBtn');
-    const token = localStorage.getItem('userToken');
-    logoutBtn.addEventListener('click', function() {
+    const snackbar = document.querySelector(".example-snackbar");
+    document.getElementById('logoutBtn')
+        .addEventListener('click', function() {
         localStorage.removeItem('userToken');
         window.location.href = '../';
     });
+    const uploadBtn = document.getElementById('uploadBtn');
     uploadBtn.addEventListener('click', function() {
         fileInput.click();
     });
+    const fileInput = document.getElementById('fileInput');
     fileInput.addEventListener('change', function() {
         const file = fileInput.files[0];
 
@@ -159,11 +149,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 formData.append('file', file);
                 formData.append('name', file.name.replace(/\s/g, "_"));
                 const headers = {
-                    'Authorization': `Bearer ${token || 'undefined'}`
+                    'Authorization': `Bearer ${token() || 'undefined'}`
                 };
 
                 // 发送POST请求
-                fetch('https://api.minelive.top:28080/material', {
+                fetch(api + '/material', {
                     method: 'POST',
                     headers: headers,
                     body: formData
@@ -190,11 +180,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             snackbar.open = true;
                         }
                         uploadBtn.loading = false;
-                    })
-                    .catch(error => {
-                        snackbar.textContent = "处理上传时发送错误";
-                        snackbar.open = true;
-                        uploadBtn.loading = false;
                     });
             }
         } else {
@@ -202,8 +187,8 @@ document.addEventListener('DOMContentLoaded', function() {
             snackbar.open = true;
         }
     });
-    const refreshBtn = document.getElementById('refreshBtn');
-    refreshBtn.addEventListener('click', function() {
+    document.getElementById('refreshBtn')
+        .addEventListener('click', function() {
         fetchMaterialLibrary(1, 30)
             .then(data => {
                 renderMaterialList(data);

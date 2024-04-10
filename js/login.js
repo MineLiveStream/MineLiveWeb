@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
             email: email,
             pwd: pwd
         };
-        fetch('https://api.minelive.top:28080/login', {
+        fetch(api + '/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	        pwd: pwd
         };
 
-        fetch('https://api.minelive.top:28080/pre-forget', {
+        fetch(api + '/pre-forget', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
             pwd: pwd
         };
 
-        fetch('https://api.minelive.top:28080/pre-register', {
+        fetch(api + '/pre-register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

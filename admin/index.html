@@ -22,6 +22,8 @@
         <div style="flex-grow: 1"></div>
     </mdui-top-app-bar>
 
+    <mdui-text-field label="搜索" type="search" icon="search" id="search"></mdui-text-field>
+
     <mdui-container class="mdui-m-t-2">
         <mdui-table-fluid>
             <table class="mdui-table mdui-table-striped">
@@ -66,6 +68,7 @@
         <mdui-text-field style="margin-bottom: 16px" label="名称" id="streamName"></mdui-text-field>
         <mdui-text-field style="margin-bottom: 16px" label="推流地址" id="streamUrl"></mdui-text-field>
         <mdui-text-field style="margin-bottom: 16px" label="推流密钥" id="streamKey"></mdui-text-field>
+        <mdui-text-field type="date" label="到期时间" id="expiredTime"></mdui-text-field>
         <mdui-button slot="action" variant="text" id="changeCancelBtn">取消</mdui-button>
         <mdui-button slot="action" variant="tonal" id="changeConfirmBtn">确定</mdui-button>
     </mdui-dialog>
@@ -79,6 +82,7 @@
 
     <script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <script src="../js/api.js"></script>
     <script src="admin.js"></script>
 </body>
 </html>

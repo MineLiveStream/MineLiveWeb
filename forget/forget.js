@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
             key: forgetKeyInput.value
         };
 
-        fetch('https://api.minelive.top:28080/forget', {
+        fetch(api + '/forget', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

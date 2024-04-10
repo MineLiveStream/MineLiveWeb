@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
             key: regKeyInput.value
         };
 
-        fetch('https://api.minelive.top:28080/register', {
+        fetch(api + '/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
