@@ -1,4 +1,9 @@
 window.onload = function() {
+    const admin = localStorage.getItem('userAdmin');
+    if (!admin) {
+        window.location.href = '../';
+        return;
+    }
     refresh();
 }
 const dialog = document.getElementById("deleteDialog");
