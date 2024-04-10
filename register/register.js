@@ -9,7 +9,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const regBtn = document.getElementById('regBtn');
     const regKeyInput = document.getElementById('regKey');
     const snackbar = document.querySelector(".example-snackbar");
-
+    regKeyInput.addEventListener('keydown', function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            regBtn.click();
+        }
+    });
     regBtn.addEventListener('click', function() {
         regBtn.loading = true;
         const data = {

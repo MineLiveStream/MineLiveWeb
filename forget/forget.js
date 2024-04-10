@@ -8,7 +8,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const forgetBtn = document.getElementById('forgetBtn');
     const forgetKeyInput = document.getElementById('forgetKey');
     const snackbar = document.querySelector(".example-snackbar");
-
+    forgetKeyInput.addEventListener('keydown', function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            forgetBtn.click();
+        }
+    });
     forgetBtn.addEventListener('click', function() {
         forgetBtn.loading = true;
         const data = {

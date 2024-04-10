@@ -13,6 +13,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const regDialog = document.getElementById('regDialog');
     const loginDialog = document.getElementById('loginDialog');
     const snackbar = document.querySelector(".example-snackbar");
+
+    loginPwdInput.addEventListener('keydown', function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            loginBtn.click();
+        }
+    });
+
+    regPwdInput.addEventListener('keydown', function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                regBtn.click();
+            }
+        });
+
     startBtn.addEventListener('click', function() {
         loginDialog.open = true;
     });
@@ -64,10 +79,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 loginBtn.loading = false;
             });
     });
-    let forgetLoding = false;
+    let forgetLoading = false;
     forgetText.addEventListener('click', function() {
-        if (forgetLoding) return;
-        forgetLoding = true;
+        if (forgetLoading) return;
+        forgetLoading = true;
         const email = loginEmailInput.value;
         const pwd = sha1(loginPwdInput.value);
 
@@ -85,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => {
             if (!response.ok) {
-                forgetLoding = false;
+                forgetLoading = false;
                 throw new Error('错误响应码');
             }
             return response.json();
@@ -98,13 +113,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 snackbar.textContent = data.msg;
                 snackbar.open = true;
             }
-            forgetLoding = false;
+            forgetLoading = false;
         })
         .catch(error => {
             console.error('检测到错误', error);
             snackbar.textContent = '登录出错，请检查你的网络连接';
             snackbar.open = true;
-            forgetLoding = false;
+            forgetLoading = false;
         });
     }); 
     regBtn.addEventListener('click', function() {
