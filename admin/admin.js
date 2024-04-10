@@ -34,16 +34,12 @@ function renderStreamList(data) {
                 if (key === 'streamUrl' || key === 'streamKey') {
                     const a = document.createElement('a');
                     const tip = document.createElement('mdui-tooltip');
-                    tip.content = item[key];
+                    tip.content = "点击复制";
                     td.addEventListener('click', () => {
-                        const tempTextarea = document.createElement("textarea");
-                        tempTextarea.value = item[key];
-                        document.body.appendChild(tempTextarea);
-                        tempTextarea.select();
-                        document.execCommand("copy");
-                        document.body.removeChild(tempTextarea);
-                        snackbar.textContent = "复制成功";
-                        snackbar.open = true;
+                        navigator.clipboard.writeText(item[key]).then(r => {
+                            snackbar.textContent = "复制成功";
+                            snackbar.open = true;
+                        });
                     });
                     a.innerHTML = truncateString(item[key]);
                     tip.appendChild(a);
