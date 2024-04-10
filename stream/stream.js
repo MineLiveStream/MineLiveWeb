@@ -66,6 +66,8 @@ function renderStreamList(data) {
             return;
         }
         data.list.forEach(item => {
+            const expiredDate = new Date(item.expired);
+            const expired = expiredDate.getTime() < new Date().getTime();
             const tr = document.createElement('tr');
             ['name', 'streamUrl', 'streamKey', "materialName"].forEach(key => {
                 const td = document.createElement('td');
@@ -97,16 +99,25 @@ function renderStreamList(data) {
                         tooltip.content = "该推流允许使用视频或图片素材"
                         icon.style = "color: orange";
                     } else {
-                        tooltip.content = "该推流仅能使用图片素材"
+                        tooltip.content = "该推流仅能使用图片素材" + (expired ? "" : "，点击升级")
                         icon.style = "color: gray";
+                        if (!expired) {
+                            icon.addEventListener('click', () => {
+                                const priceDay = (videoPrice - picPrice) / 30;
+                                const day = (expiredDate.getTime() - new Date().getTime()) / (24 * 60 * 60 * 1000);
+                                document.getElementById('lastDayText').textContent = day.toFixed() + " 天";
+                                document.getElementById('updatePriceText').textContent = (priceDay * day).toFixed(2) + " 元";
+                                document.getElementById('updateDialog').open = true;
+                                buyId = item.id;
+                            });
+                        }
                     }
                     tooltip.appendChild(icon);
                     td.appendChild(tooltip);
                 }
                 tr.appendChild(td);
             });
-
-            const expiredTime = new Date(item.expired).toLocaleString();
+            const expiredTime = expiredDate.toLocaleString();
             const tdExpiredTime = document.createElement('td');
             tdExpiredTime.textContent = expiredTime;
             tr.appendChild(tdExpiredTime);
@@ -171,7 +182,6 @@ function renderStreamList(data) {
           
             const payButton = document.createElement('mdui-chip');
 
-            const expired = new Date(item.expired).getTime() < new Date().getTime();
             if (expired) {
                 payButton.innerHTML = '开通';
             } else {
@@ -470,7 +480,6 @@ document.addEventListener('DOMContentLoaded', function() {
     radio.addEventListener('click', function() {
         updatePriceText();
     });
-    // 支付
     const monthSlider = document.getElementById('monthSlider');
     monthSlider.addEventListener('input', function() {
         updatePriceText();
@@ -480,7 +489,6 @@ document.addEventListener('DOMContentLoaded', function() {
         buy("ALIPAY", monthSlider.value);
         paymentDialog.open = false;
     });
-    // 取消支付
     const cancelPaymentBtn = document.getElementById('cancelPaymentBtn');
     cancelPaymentBtn.addEventListener('click', function() {
         paymentDialog.open = false;
@@ -490,6 +498,23 @@ document.addEventListener('DOMContentLoaded', function() {
         buy("WECHAT", monthSlider.value);
         paymentDialog.open = false;
     });
+
+    const updateDialog = document.getElementById('updateDialog');
+    const cancelUpdateBtn = document.getElementById('cancelUpdateBtn');
+    cancelUpdateBtn.addEventListener('click', function() {
+        updateDialog.open = false;
+    });
+    const updateAlipayBtn = document.getElementById('updateAlipayBtn');
+    updateAlipayBtn.addEventListener('click', function() {
+        buy("ALIPAY", 0);
+        updateDialog.open = false;
+    });
+    const updateWechatBtn = document.getElementById('updateWechatBtn');
+    updateWechatBtn.addEventListener('click', function() {
+        buy("WECHAT", 0);
+        updateDialog.open = false;
+    });
+
     const createStreamBtn = document.getElementById('createStreamBtn');
     createStreamBtn.addEventListener('click', function() {
         const changeDialog = document.getElementById("changeDialog");

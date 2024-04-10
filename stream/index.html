@@ -72,10 +72,25 @@
     </mdui-dialog>
 
     <mdui-dialog
+            id = "updateDialog"
+            stacked-actions
+            close-on-overlay-click
+            headline="升级推流"
+            class="example-action">
+        <p>距离到期</p>
+        <h3 id="lastDayText">0 元</h3>
+        <p>预估价格</p>
+        <h3 id="updatePriceText">0 元</h3>
+        <mdui-button slot="action" variant="text" id="updateAlipayBtn">支付宝</mdui-button>
+        <mdui-button slot="action" variant="text" id="updateWechatBtn">微信</mdui-button>
+        <mdui-button slot="action" variant="text" id="cancelUpdateBtn">取消</mdui-button>
+    </mdui-dialog>
+
+    <mdui-dialog
             id = "paymentDialog"
             stacked-actions
             close-on-overlay-click
-            headline="开通"
+            headline="开通推流"
             class="example-action">
         <p>订单价格</p>
         <h3 id="priceText">0 元</h3>
