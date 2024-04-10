@@ -18,7 +18,10 @@ function renderStreamList(data) {
     const materialListTbody = document.getElementById('material-list-tbody');
     materialListTbody.innerHTML = ''; // 清空表格内容
     
-    if (data && data.list && data.list.length > 0) {
+    if (data && data.list) {
+        if (data.list.length === 0) {
+            materialListTbody.innerHTML = '<tr><td colspan="6" class="mdui-text-center">没有推流可展示</td></tr>';
+        }
         data.list.forEach(item => {
             const tr = document.createElement('tr');
             ['name', 'streamUrl', 'streamKey', "materialName", "email"].forEach(key => {
@@ -199,7 +202,7 @@ function renderStreamList(data) {
             materialListTbody.appendChild(tr);
         });
     } else {
-        materialListTbody.innerHTML = '<tr><td colspan="6" class="mdui-text-center">没有推流可展示</td></tr>'; // 显示无内容提示
+        materialListTbody.innerHTML = '<tr><td colspan="6" class="mdui-text-center">获取推流失败，请刷新列表</td></tr>';
     }
 }
 

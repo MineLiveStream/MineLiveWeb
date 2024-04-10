@@ -60,7 +60,11 @@ function renderStreamList(data) {
     const materialListTbody = document.getElementById('material-list-tbody');
     materialListTbody.innerHTML = ''; // 清空表格内容
     
-    if (data && data.list && data.list.length > 0) {
+    if (data && data.list) {
+        if (data.list.length === 0) {
+            materialListTbody.innerHTML = '<tr><td colspan="6" class="mdui-text-center">目前没有推流，请先创建</td></tr>';
+            return;
+        }
         data.list.forEach(item => {
             const tr = document.createElement('tr');
             ['name', 'streamUrl', 'streamKey', "materialName"].forEach(key => {
@@ -251,7 +255,7 @@ function renderStreamList(data) {
             materialListTbody.appendChild(tr);
         });
     } else {
-        materialListTbody.innerHTML = '<tr><td colspan="6" class="mdui-text-center">没有推流可展示</td></tr>'; // 显示无内容提示
+        materialListTbody.innerHTML = '<tr><td colspan="6" class="mdui-text-center">获取推流失败，请刷新列表</td></tr>';
     }
 }
 
@@ -578,8 +582,7 @@ async function fetchMaterialLibrary(page = 1, size = 30) {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const result = await response.json();
-        return result;
+        return await response.json();
     } catch (error) {
         // 处理请求错误
         console.error('请求素材库时出错:', error);
@@ -591,7 +594,12 @@ let materialId = 0;
 
 function renderMaterialList(data) {
     const selectMenu = document.getElementById('selectMenu');
-    if (data && data.list && data.list.length > 0) {
+    if (data && data.list) {
+        if (data.list.length === 0) {
+            selectMenu.label = "请先上传素材";
+            selectMenu.disabled = true;
+            return;
+        }
         data.list.forEach(item => {
             const newMenu = document.createElement('mdui-menu-item');
             newMenu.innerHTML = item.name;
@@ -601,5 +609,8 @@ function renderMaterialList(data) {
             });
             selectMenu.appendChild(newMenu);
         });
+    } else {
+        selectMenu.label = "获取素材失败";
+        selectMenu.disabled = true;
     }
 }

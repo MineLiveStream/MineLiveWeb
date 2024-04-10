@@ -16,7 +16,11 @@ function renderMaterialList(data) {
     const materialListTbody = document.getElementById('material-list-tbody');
     materialListTbody.innerHTML = ''; // 清空表格内容
 
-    if (data && data.list && data.list.length > 0) {
+    if (data && data.list) {
+        if (data.list.length === 0) {
+            materialListTbody.innerHTML = '<tr><td colspan="6" class="mdui-text-center">目前没有素材，请先上传</td></tr>';
+            return;
+        }
         data.list.forEach(item => {
             const tr = document.createElement('tr');
 
@@ -91,10 +95,10 @@ function renderMaterialList(data) {
                 });
             });
             tr.appendChild(deleteButton);
-            materialListTbody.appendChild(tr); // 将行添加到表格中
+            materialListTbody.appendChild(tr);
         });
     } else {
-        materialListTbody.innerHTML = '<tr><td colspan="6" class="mdui-text-center">没有素材可展示</td></tr>'; // 显示无内容提示
+        materialListTbody.innerHTML = '<tr><td colspan="6" class="mdui-text-center">获取推流失败，请刷新列表</td></tr>';
     }
 }
 
