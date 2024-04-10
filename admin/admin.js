@@ -242,8 +242,8 @@ async function fetchStreamLibrary(page = 1, size = 30) {
         const params = new URLSearchParams({
             page: page.toString(),
             size: size.toString(),
-            email: search.value ? search.value : null
         });
+        if (search.value) params.append("email", search.value);
         const url = api + `/admin/stream?${params.toString()}`;
         const response = await fetch(url, {
             headers: {
