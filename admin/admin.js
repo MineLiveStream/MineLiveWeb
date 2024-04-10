@@ -26,9 +26,39 @@ function renderStreamList(data) {
             const tr = document.createElement('tr');
             ['name', 'streamUrl', 'streamKey', "materialName", "email"].forEach(key => {
                 const td = document.createElement('td');
-                td.textContent = truncateString(item[key]);
                 if (key === 'streamUrl' || key === 'streamKey') {
-                    td.title = item[key];
+                    const a = document.createElement('a');
+                    const tip = document.createElement('mdui-tooltip');
+                    tip.content = item[key];
+                    td.addEventListener('click', () => {
+                        const tempTextarea = document.createElement("textarea");
+                        tempTextarea.value = item[key];
+                        document.body.appendChild(tempTextarea);
+                        tempTextarea.select();
+                        document.execCommand("copy");
+                        document.body.removeChild(tempTextarea);
+                        snackbar.textContent = "复制成功";
+                        snackbar.open = true;
+                    });
+                    a.innerHTML = truncateString(item[key]);
+                    tip.appendChild(a);
+                    td.appendChild(tip);
+                } else {
+                    td.textContent = truncateString(item[key]);
+                }
+                if (key === 'materialName') {
+                    const tooltip = document.createElement('mdui-tooltip');
+                    const icon = document.createElement('mdui-icon');
+                    icon.name = "ondemand_video";
+                    if (item.materialType === "VIDEO") {
+                        tooltip.content = "该推流允许使用视频或图片素材"
+                        icon.style = "color: orange";
+                    } else {
+                        tooltip.content = "该推流仅能使用图片素材"
+                        icon.style = "color: gray";
+                    }
+                    tooltip.appendChild(icon);
+                    td.appendChild(tooltip);
                 }
                 tr.appendChild(td);
             });
@@ -258,13 +288,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const streamUrl = document.getElementById('streamUrl').value;
         const streamKey = document.getElementById('streamKey').value;
         const expiredTime = document.getElementById('expiredTime').value;
-
+        const materialType = document.getElementById('selectMenu').value;
         const params = {
             id: changeId,
             name: streamName ? streamName : undefined,
             url: streamUrl ? streamUrl : undefined,
             key: streamKey ? streamKey : undefined,
-            expired: expiredTime ? new Date(expiredTime) : undefined
+            expired: expiredTime ? new Date(expiredTime) : undefined,
+            materialType: materialType ? materialType : undefined
         };
 
         fetch(api + '/stream', {

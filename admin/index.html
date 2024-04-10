@@ -68,7 +68,11 @@
         <mdui-text-field style="margin-bottom: 16px" label="名称" id="streamName"></mdui-text-field>
         <mdui-text-field style="margin-bottom: 16px" label="推流地址" id="streamUrl"></mdui-text-field>
         <mdui-text-field style="margin-bottom: 16px" label="推流密钥" id="streamKey"></mdui-text-field>
-        <mdui-text-field type="date" label="到期时间" id="expiredTime"></mdui-text-field>
+        <mdui-text-field style="margin-bottom: 16px" type="date" label="到期时间" id="expiredTime"></mdui-text-field>
+        <mdui-select label="素材类型" id="selectMenu">
+            <mdui-menu-item value="VIDEO">视频</mdui-menu-item>
+            <mdui-menu-item value="PIC">图片</mdui-menu-item>
+        </mdui-select>
         <mdui-button slot="action" variant="text" id="changeCancelBtn">取消</mdui-button>
         <mdui-button slot="action" variant="tonal" id="changeConfirmBtn">确定</mdui-button>
     </mdui-dialog>
