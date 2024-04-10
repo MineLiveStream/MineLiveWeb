@@ -6,6 +6,7 @@ window.onload = function(){
         .catch(error => {
             console.error('处理响应时出错:', error);
         });
+    checkAdmin();
 }
 
 function renderMaterialList(data) {

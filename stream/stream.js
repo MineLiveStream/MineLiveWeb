@@ -37,6 +37,7 @@ window.onload = function() {
         .catch(error => {
             console.error('检测到错误', error);
         });
+    checkAdmin();
 }
 let videoPrice = 0;
 let picPrice = 0;

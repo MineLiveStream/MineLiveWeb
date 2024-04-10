@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 if (data.code === 200) {
                     localStorage.setItem('userToken', data.token);
+                    localStorage.setItem('userAdmin', data.admin);
                     window.location.href = '../stream';
                 } else {
                     snackbar.textContent = data.msg;
