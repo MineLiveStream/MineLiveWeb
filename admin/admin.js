@@ -6,6 +6,17 @@ window.onload = function() {
     }
     refresh();
 }
+
+function refresh() {
+    fetchStreamLibrary(1, 30)
+        .then(data => {
+            renderStreamList(data);
+        })
+        .catch(error => {
+            console.error('处理响应时出错:', error);
+        });
+}
+
 const dialog = document.getElementById("deleteDialog");
 const snackbar = document.querySelector(".example-snackbar");
 const dialogCancelBtn = document.getElementById('dialogCancelBtn');
@@ -36,7 +47,7 @@ function renderStreamList(data) {
                     const tip = document.createElement('mdui-tooltip');
                     tip.content = "点击复制";
                     td.addEventListener('click', () => {
-                        navigator.clipboard.writeText(item[key]).then(r => {
+                        navigator.clipboard.writeText(item[key]).then(() => {
                             snackbar.textContent = "复制成功";
                             snackbar.open = true;
                         });
@@ -72,11 +83,7 @@ function renderStreamList(data) {
             const switchTd = document.createElement('td');
             const switchBtn = document.createElement('mdui-switch');
             switchBtn.className = 'div';
-            if (item.status === "OFF") {
-                switchBtn.checked = false;
-            } else {
-                switchBtn.checked = true;
-            }
+            switchBtn.checked = item.status !== "OFF";
             switchBtn.addEventListener('change', () => {
               const params = {
                   id: item.id
@@ -259,16 +266,6 @@ async function fetchStreamLibrary(page = 1, size = 30) {
         console.error('请求推流时出错:', error);
         return null;
     }
-}
-
-function refresh() {
-    fetchStreamLibrary(1, 30)
-        .then(data => {
-            renderStreamList(data);
-        })
-        .catch(error => {
-            console.error('处理响应时出错:', error);
-        });
 }
 
 document.addEventListener('DOMContentLoaded', function() {

@@ -92,15 +92,23 @@
             close-on-overlay-click
             headline="开通推流"
             class="example-action">
-        <p>订单价格</p>
-        <h3 id="priceText">0 元</h3>
-        <p>购买月数</p>
-        <mdui-slider value="1" min="1" max="12" id="monthSlider"></mdui-slider>
-        <p>素材类型</p>
-        <mdui-radio-group value="video" id="radio">
-            <mdui-radio value="video">视频</mdui-radio>
-            <mdui-radio value="pic">图片</mdui-radio>
-        </mdui-radio-group>
+        <div style="display: flex; align-items: center;">
+            <p>订单价格</p>
+            <div style="flex-grow: 1"></div>
+            <h3 id="priceText">0 元</h3>
+            <mdui-button variant="text" id="useCdkBtn">使用兑换码</mdui-button>
+        </div>
+        <div style="display: flex; align-items: center;">
+            <p style="margin-right: 1px">购买月数</p>
+            <mdui-slider style="width: 200px" value="1" min="1" max="12" id="monthSlider"></mdui-slider>
+        </div>
+        <div style="display: flex; align-items: center;">
+            <p style="margin-right: 1px">素材类型</p>
+            <mdui-radio-group value="video" id="radio">
+                <mdui-radio value="video">视频</mdui-radio>
+                <mdui-radio value="pic">图片</mdui-radio>
+            </mdui-radio-group>
+        </div>
         <mdui-button slot="action" variant="text" id="dialogAlipayBtn">支付宝</mdui-button>
         <mdui-button slot="action" variant="text" id="dialogWechatBtn">微信</mdui-button>
         <mdui-button slot="action" variant="text" id="cancelPaymentBtn">取消</mdui-button>
@@ -118,6 +126,17 @@
         </mdui-select>
         <mdui-button slot="action" variant="text" id="changeCancelBtn">取消</mdui-button>
         <mdui-button slot="action" variant="tonal" id="changeConfirmBtn">确定</mdui-button>
+    </mdui-dialog>
+
+    <mdui-dialog
+            id = "cdkDialog"
+            close-on-overlay-click
+            headline="使用兑换码"
+            description="加群留意活动即可获得！"
+            class="example-action">
+        <mdui-text-field label="兑换码" id="cdkInput" style="margin-bottom: 24px"></mdui-text-field>
+        <mdui-button slot="action" variant="text" id="cdkCancelBtn">取消</mdui-button>
+        <mdui-button slot="action" variant="tonal" id="cdkConfirmBtn">确认</mdui-button>
     </mdui-dialog>
 
     <mdui-dialog

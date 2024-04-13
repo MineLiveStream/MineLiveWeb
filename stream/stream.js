@@ -77,7 +77,7 @@ function renderStreamList(data) {
                     const tip = document.createElement('mdui-tooltip');
                     tip.content = "点击复制";
                     td.addEventListener('click', () => {
-                        navigator.clipboard.writeText(item[key]).then(r => {
+                        navigator.clipboard.writeText(item[key]).then(() => {
                             snackbar.textContent = "复制成功";
                             snackbar.open = true;
                         });
@@ -122,11 +122,7 @@ function renderStreamList(data) {
             const switchTd = document.createElement('td');
             const switchBtn = document.createElement('mdui-switch');
             switchBtn.className = 'div';
-            if (item.status === "OFF") {
-                switchBtn.checked = false;
-            } else {
-                switchBtn.checked = true;
-            }
+            switchBtn.checked = item.status !== "OFF";
             switchBtn.addEventListener('change', () => {
               const params = {
                   id: item.id
@@ -369,6 +365,51 @@ function buy(type = "ALIPAY", month = 1) {
         });
 }
 
+function cdk() {
+    const cdkInput = document.getElementById('cdkInput');
+    const params = {
+        id: buyId,
+        cdk: cdkInput.value ? cdkInput.value : undefined
+    };
+    fetch(api + '/cdk', {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token(),
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(params)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('错误响应码');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.code === 200) {
+                snackbar.textContent = "兑换成功";
+                paymentDialog.open = false;
+                fetchStreamLibrary(1, 30)
+                    .then(data => {
+                        renderStreamList(data);
+                    })
+                    .catch(error => {
+                        console.error('处理响应时出错:', error);
+                    });
+            } else {
+                snackbar.textContent = data.msg;
+            }
+            snackbar.open = true;
+        })
+        .catch(error => {
+            console.error('检测到错误', error);
+            snackbar.textContent = '处理兑换请求时出错，请重试！';
+            snackbar.open = true;
+        });
+    document.getElementById('cdkDialog').open = false;
+    document.getElementById('cdkConfirmBtn').loading = false;
+}
+
 async function pollOrderStatus(orderId, interval = 3000) {
     do {
         const data = await checkOrder(orderId);
@@ -433,8 +474,7 @@ async function fetchStreamLibrary(page = 1, size = 30) {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const result = await response.json();
-        return result;
+        return await response.json();
     } catch (error) {
         console.error('请求推流时出错:', error);
         return null;
@@ -510,6 +550,21 @@ document.addEventListener('DOMContentLoaded', function() {
     updateWechatBtn.addEventListener('click', function() {
         buy("WECHAT", 0);
         updateDialog.open = false;
+    });
+    const cdkDialog = document.getElementById('cdkDialog');
+    const useCdkBtn = document.getElementById('useCdkBtn');
+    useCdkBtn.addEventListener('click', function() {
+        cdkDialog.open = true;
+    });
+
+    const cdkCancelBtn = document.getElementById('cdkCancelBtn');
+    cdkCancelBtn.addEventListener('click', function() {
+        cdkDialog.open = false;
+    });
+    const cdkConfirmBtn = document.getElementById('cdkConfirmBtn');
+    cdkConfirmBtn.addEventListener('click', function() {
+        cdkConfirmBtn.loading = true;
+        cdk();
     });
 
     const createStreamBtn = document.getElementById('createStreamBtn');
