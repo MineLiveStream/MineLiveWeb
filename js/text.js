@@ -1,4 +1,9 @@
 window.onload = function() {
+    if (window.location.hash === "#login") {
+        const loginDialog = document.getElementById('loginDialog');
+        loginDialog.open = true;
+    }
+
     replaceTextAndAddClass();
 }
 
