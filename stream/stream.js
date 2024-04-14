@@ -448,9 +448,6 @@ async function checkOrder(order) {
         });
 
         // 检查响应状态码
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
         return await response.json();
     } catch (error) {
         // 处理请求错误
@@ -471,9 +468,6 @@ async function fetchStreamLibrary(page = 1, size = 30) {
                 Authorization: `Bearer ${token()}`
             }
         });
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
         return await response.json();
     } catch (error) {
         console.error('请求推流时出错:', error);
@@ -701,9 +695,6 @@ async function fetchMaterialLibrary(page = 1, size = 30) {
                 Authorization: `Bearer ${token()}`
             }
         });
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
         return await response.json();
     } catch (error) {
         // 处理请求错误
