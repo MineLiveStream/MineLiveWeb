@@ -189,16 +189,21 @@ document.addEventListener('DOMContentLoaded', function() {
             snackbar.open = true;
         }
     });
-    document.getElementById('refreshBtn')
-        .addEventListener('click', function() {
+    const refreshBtn = document.getElementById('refreshBtn');
+    refreshBtn.addEventListener('click', function() {
+        refreshBtn.loading = true;
         fetchMaterialLibrary(1, 30)
             .then(data => {
                 renderMaterialList(data);
+                snackbar.textContent = "刷新成功";
+                snackbar.open = true;
+                refreshBtn.loading = false;
             })
             .catch(error => {
                 console.error('处理响应时出错:', error);
+                snackbar.textContent = "刷新失败";
+                snackbar.open = true;
+                refreshBtn.loading = false;
             });
-        snackbar.textContent = "刷新成功";
-        snackbar.open = true;
     });
 });
