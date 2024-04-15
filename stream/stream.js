@@ -674,10 +674,12 @@ document.addEventListener('DOMContentLoaded', function() {
         refreshBtn.loading = true;
         fetchStreamLibrary(1, 30)
             .then(data => {
-                renderStreamList(data);
-                snackbar.textContent = "刷新成功";
-                snackbar.open = true;
-                refreshBtn.loading = false;
+                if (data.code === 200) {
+                    renderStreamList(data);
+                    snackbar.textContent = "刷新成功";
+                    snackbar.open = true;
+                    refreshBtn.loading = false;
+                }
             })
             .catch(error => {
                 console.error('处理响应时出错:', error);

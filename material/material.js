@@ -194,10 +194,12 @@ document.addEventListener('DOMContentLoaded', function() {
         refreshBtn.loading = true;
         fetchMaterialLibrary(1, 30)
             .then(data => {
-                renderMaterialList(data);
-                snackbar.textContent = "刷新成功";
-                snackbar.open = true;
-                refreshBtn.loading = false;
+                if (data.code === 200) {
+                    renderMaterialList(data);
+                    snackbar.textContent = "刷新成功";
+                    snackbar.open = true;
+                    refreshBtn.loading = false;
+                }
             })
             .catch(error => {
                 console.error('处理响应时出错:', error);
