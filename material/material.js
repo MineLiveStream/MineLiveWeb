@@ -10,7 +10,7 @@ window.onload = function(){
 }
 
 let page = 1;
-const size = 6;
+const size = 8;
 let maxPage = 1;
 function renderMaterialList(data) {
     const dialog = document.getElementById("deleteDialog");
