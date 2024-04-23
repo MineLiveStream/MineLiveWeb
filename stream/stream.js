@@ -41,7 +41,7 @@ window.onload = function() {
 }
 
 let page = 1;
-const size = 8;
+const size = 6;
 let maxPage = 1;
 let videoPrice = 0;
 let picPrice = 0;

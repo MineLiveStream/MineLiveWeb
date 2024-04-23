@@ -18,7 +18,7 @@ function refresh() {
 }
 
 let page = 1;
-const size = 8;
+const size = 6;
 let maxPage = 1;
 const dialog = document.getElementById("deleteDialog");
 const snackbar = document.querySelector(".example-snackbar");
