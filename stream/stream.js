@@ -1,5 +1,5 @@
 window.onload = function() {
-    fetchStreamLibrary(1, 30)
+    fetchStreamLibrary()
         .then(data => {
             renderStreamList(data);
         })
@@ -39,6 +39,10 @@ window.onload = function() {
         });
     checkAdmin();
 }
+
+let page = 1;
+const size = 8;
+let maxPage = 1;
 let videoPrice = 0;
 let picPrice = 0;
 const dialog = document.getElementById("deleteDialog");
@@ -62,8 +66,11 @@ function renderStreamList(data) {
     materialListTbody.innerHTML = ''; // 清空表格内容
     
     if (data && data.list) {
+        maxPage = data.total / size;
+        maxPage = Math.ceil(data.total / size);
+        document.getElementById("pageText").textContent = "第" + page + "页，共" + maxPage + "页";
         if (data.list.length === 0) {
-            materialListTbody.innerHTML = '<tr><td colspan="6" class="mdui-text-center">目前没有推流，请先创建</td></tr>';
+            materialListTbody.innerHTML = '<tr><td colspan="6" class="mdui-text-center">此页没有推流，请先创建</td></tr>';
             return;
         }
         data.list.forEach(item => {
@@ -147,7 +154,7 @@ function renderStreamList(data) {
                         switchBtn.checked = on;
                         snackbar.textContent = '推流已' + (on ? "开启" : "关闭");
                         setTimeout(() => {
-                            fetchStreamLibrary(1, 30)
+                            fetchStreamLibrary()
                                 .then(data => {
                                     renderStreamList(data);
                                 })
@@ -389,7 +396,7 @@ function cdk() {
             if (data.code === 200) {
                 snackbar.textContent = "兑换成功";
                 paymentDialog.open = false;
-                fetchStreamLibrary(1, 30)
+                fetchStreamLibrary()
                     .then(data => {
                         renderStreamList(data);
                     })
@@ -417,7 +424,7 @@ async function pollOrderStatus(orderId, interval = 3000) {
             qrcodeDialog.open = false;
             snackbar.textContent = "支付成功"
             snackbar.open = true;
-            fetchStreamLibrary(1, 30)
+            fetchStreamLibrary()
                 .then(data => {
                     renderStreamList(data);
                 })
@@ -456,7 +463,7 @@ async function checkOrder(order) {
     }
 }
 
-async function fetchStreamLibrary(page = 1, size = 30) {
+async function fetchStreamLibrary() {
     try {
         const params = new URLSearchParams({
             page: page.toString(),
@@ -493,10 +500,43 @@ function updatePriceText() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('lastPageBtn')
+        .addEventListener('click', function() {
+            if (page > 1) {
+                page --;
+                fetchStreamLibrary()
+                    .then(data => {
+                        renderStreamList(data);
+                    })
+                    .catch(error => {
+                        console.error('处理响应时出错:', error);
+                    });
+            } else {
+                snackbar.textContent = "已经到尽头啦>.<";
+                snackbar.open = true;
+            }
+        });
+    document.getElementById('nextPageBtn')
+        .addEventListener('click', function() {
+            if (maxPage > page) {
+                page ++;
+                fetchStreamLibrary()
+                    .then(data => {
+                        renderStreamList(data);
+                    })
+                    .catch(error => {
+                        console.error('处理响应时出错:', error);
+                    });
+            } else {
+                snackbar.textContent = "已经到尽头啦>.<";
+                snackbar.open = true;
+            }
+        });
     // 登出
     const logoutBtn = document.getElementById('logoutBtn');
     logoutBtn.addEventListener('click', function() {
         localStorage.removeItem('userToken');
+        localStorage.removeItem('userAdmin');
         window.location.href = '../';
     });
     // 取消订单
@@ -596,7 +636,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     changeDialog.open = false;
                     if (data.code === 200) {
                         snackbar.textContent = '创建成功';
-                        fetchStreamLibrary(1, 30)
+                        fetchStreamLibrary()
                             .then(data => {
                                 renderStreamList(data);
                             })
@@ -645,7 +685,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     changeDialog.open = false;
                     if (data.code === 200) {
                         snackbar.textContent = '更新成功';
-                        fetchStreamLibrary(1, 30)
+                        fetchStreamLibrary()
                             .then(data => {
                                 renderStreamList(data);
                             })
@@ -672,7 +712,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const refreshBtn = document.getElementById('refreshBtn');
     refreshBtn.addEventListener('click', function() {
         refreshBtn.loading = true;
-        fetchStreamLibrary(1, 30)
+        fetchStreamLibrary()
             .then(data => {
                 if (data.code === 200) {
                     renderStreamList(data);

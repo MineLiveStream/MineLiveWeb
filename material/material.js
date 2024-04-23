@@ -1,5 +1,5 @@
 window.onload = function(){
-    fetchMaterialLibrary(1, 30)
+    fetchMaterialLibrary()
         .then(data => {
             renderMaterialList(data);
         })
@@ -9,6 +9,9 @@ window.onload = function(){
     checkAdmin();
 }
 
+let page = 1;
+const size = 8;
+let maxPage = 1;
 function renderMaterialList(data) {
     const dialog = document.getElementById("deleteDialog");
     const snackbar = document.querySelector(".example-snackbar");
@@ -18,8 +21,11 @@ function renderMaterialList(data) {
     materialListTbody.innerHTML = ''; // 清空表格内容
 
     if (data && data.list) {
+        maxPage = data.total / size;
+        maxPage = Math.ceil(data.total / size);
+        document.getElementById("pageText").textContent = "第" + page + "页，共" + maxPage + "页";
         if (data.list.length === 0) {
-            materialListTbody.innerHTML = '<tr><td colspan="6" class="mdui-text-center">目前没有素材，请先上传</td></tr>';
+            materialListTbody.innerHTML = '<tr><td colspan="6" class="mdui-text-center">此页没有素材，请先上传</td></tr>';
             return;
         }
         data.list.forEach(item => {
@@ -103,7 +109,7 @@ function renderMaterialList(data) {
     }
 }
 
-async function fetchMaterialLibrary(page = 1, size = 30) {
+async function fetchMaterialLibrary() {
     try {
         const params = new URLSearchParams({
             page: page.toString(),
@@ -125,9 +131,30 @@ async function fetchMaterialLibrary(page = 1, size = 30) {
 
 document.addEventListener('DOMContentLoaded', function() {
     const snackbar = document.querySelector(".example-snackbar");
+    document.getElementById('lastPageBtn')
+        .addEventListener('click', function() {
+            if (page > 1) {
+                page --;
+                refresh();
+            } else {
+                snackbar.textContent = "已经到尽头啦>.<";
+                snackbar.open = true;
+            }
+        });
+    document.getElementById('nextPageBtn')
+        .addEventListener('click', function() {
+            if (maxPage > page) {
+                page ++;
+                refresh();
+            } else {
+                snackbar.textContent = "已经到尽头啦>.<";
+                snackbar.open = true;
+            }
+        });
     document.getElementById('logoutBtn')
         .addEventListener('click', function() {
         localStorage.removeItem('userToken');
+        localStorage.removeItem('userAdmin');
         window.location.href = '../';
     });
     const uploadBtn = document.getElementById('uploadBtn');
@@ -170,7 +197,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         if (data.code === 200) {
                             snackbar.textContent = "上传成功";
                             snackbar.open = true;
-                            fetchMaterialLibrary(1, 30)
+                            fetchMaterialLibrary()
                                 .then(data => {
                                     renderMaterialList(data);
                                 })
@@ -192,20 +219,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const refreshBtn = document.getElementById('refreshBtn');
     refreshBtn.addEventListener('click', function() {
         refreshBtn.loading = true;
-        fetchMaterialLibrary(1, 30)
-            .then(data => {
-                if (data.code === 200) {
-                    renderMaterialList(data);
-                    snackbar.textContent = "刷新成功";
-                    snackbar.open = true;
-                    refreshBtn.loading = false;
-                }
-            })
-            .catch(error => {
-                console.error('处理响应时出错:', error);
-                snackbar.textContent = "刷新失败";
-                snackbar.open = true;
-                refreshBtn.loading = false;
-            });
+        refresh();
+        refreshBtn.loading = false;
+        snackbar.textContent = "刷新成功";
+        snackbar.open = true;
     });
 });
+
+function refresh() {
+    fetchMaterialLibrary()
+        .then(data => {
+            if (data.code === 200) renderMaterialList(data);
+        });
+}

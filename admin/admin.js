@@ -8,7 +8,7 @@ window.onload = function() {
 }
 
 function refresh() {
-    fetchStreamLibrary(1, 30)
+    fetchStreamLibrary()
         .then(data => {
             renderStreamList(data);
         })
@@ -17,6 +17,9 @@ function refresh() {
         });
 }
 
+let page = 1;
+const size = 6;
+let maxPage = 1;
 const dialog = document.getElementById("deleteDialog");
 const snackbar = document.querySelector(".example-snackbar");
 const dialogCancelBtn = document.getElementById('dialogCancelBtn');
@@ -32,11 +35,16 @@ function truncateString(str) {
 
 function renderStreamList(data) {
     const materialListTbody = document.getElementById('material-list-tbody');
-    materialListTbody.innerHTML = ''; // 清空表格内容
+    materialListTbody.innerHTML = '';
     
     if (data && data.list) {
+        maxPage = Math.ceil(data.total / size);
+        document.getElementById("titleText").textContent = "管理推流 (" + data.total + "个直播中)";
+
+        document.getElementById("pageText").textContent = "第" + page + "页，共" + maxPage + "页";
         if (data.list.length === 0) {
             materialListTbody.innerHTML = '<tr><td colspan="6" class="mdui-text-center">没有推流可展示</td></tr>';
+            return;
         }
         data.list.forEach(item => {
             const tr = document.createElement('tr');
@@ -108,7 +116,7 @@ function renderStreamList(data) {
                         switchBtn.checked = on;
                         snackbar.textContent = '推流已' + (on ? "开启" : "关闭");
                         setTimeout(() => {
-                            fetchStreamLibrary(1, 30)
+                            fetchStreamLibrary()
                                 .then(data => {
                                     renderStreamList(data);
                                 })
@@ -244,7 +252,7 @@ function renderStreamList(data) {
     }
 }
 
-async function fetchStreamLibrary(page = 1, size = 30) {
+async function fetchStreamLibrary() {
     try {
         const search = document.getElementById('search');
         const params = new URLSearchParams({
@@ -275,6 +283,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('logoutBtn')
         .addEventListener('click', function() {
         localStorage.removeItem('userToken');
+        localStorage.removeItem('userAdmin');
         window.location.href = '../';
     });
     document.getElementById('changeConfirmBtn')
@@ -311,7 +320,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 changeDialog.open = false;
                 if (data.code === 200) {
                     snackbar.textContent = '更新成功';
-                    fetchStreamLibrary(1, 30)
+                    fetchStreamLibrary()
                         .then(data => {
                             renderStreamList(data);
                         })
@@ -340,4 +349,24 @@ document.addEventListener('DOMContentLoaded', function() {
         snackbar.textContent = "刷新成功";
         snackbar.open = true;
     });
+    document.getElementById('lastPageBtn')
+        .addEventListener('click', function() {
+            if (page > 1) {
+                page --;
+                refresh();
+            } else {
+                snackbar.textContent = "已经到尽头啦>.<";
+                snackbar.open = true;
+            }
+        });
+    document.getElementById('nextPageBtn')
+        .addEventListener('click', function() {
+            if (maxPage > page) {
+                page ++;
+                refresh();
+            } else {
+                snackbar.textContent = "已经到尽头啦>.<";
+                snackbar.open = true;
+            }
+        });
 });
