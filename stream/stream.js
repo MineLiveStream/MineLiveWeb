@@ -1,6 +1,10 @@
 window.onload = function() {
     fetchStreamLibrary()
         .then(data => {
+            if (data && data.code === 401) {
+                window.location.href = '../#login';
+                return;
+            }
             renderStreamList(data);
         })
         .catch(error => {
@@ -27,6 +31,7 @@ window.onload = function() {
             if (data.code === 200) {
                 picPrice = data.picPrice;
                 videoPrice = data.videoPrice;
+                hdVideoPrice = data.hdVideoPrice;
             } else {
                 switchBtn.checked = false;
                 snackbar.textContent = data.msg;
@@ -43,6 +48,7 @@ window.onload = function() {
 let page = 1;
 const size = 8;
 let maxPage = 1;
+let hdVideoPrice = 0;
 let videoPrice = 0;
 let picPrice = 0;
 const dialog = document.getElementById("deleteDialog");
@@ -98,13 +104,28 @@ function renderStreamList(data) {
                 if (key === 'materialName') {
                     const tooltip = document.createElement('mdui-tooltip');
                     const icon = document.createElement('mdui-icon');
-                    icon.name = "ondemand_video";
-                    if (item.materialType === "VIDEO") {
-                        tooltip.content = "该推流允许使用视频或图片素材"
+                    if (item.materialType === "HD_VIDEO") {
+                        tooltip.content = "该推流允许使用高清视频或图片素材"
                         icon.style = "color: orange";
+                        icon.name = "hd";
+                    } else if (item.materialType === "VIDEO") {
+                        tooltip.content = "该推流允许使用视频或图片素材" + (expired ? "" : "，点击升级");
+                        icon.style = "color: orange";
+                        icon.name = "ondemand_video";
+                        if (!expired) {
+                            icon.addEventListener('click', () => {
+                                const priceDay = (hdVideoPrice - videoPrice) / 30;
+                                const day = (expiredDate.getTime() - new Date().getTime()) / (24 * 60 * 60 * 1000);
+                                document.getElementById('lastDayText').textContent = day.toFixed() + " 天";
+                                document.getElementById('updatePriceText').textContent = (priceDay * day).toFixed(2) + " 元";
+                                document.getElementById('updateDialog').open = true;
+                                buyId = item.id;
+                            });
+                        }
                     } else {
-                        tooltip.content = "该推流仅能使用图片素材" + (expired ? "" : "，点击升级")
+                        tooltip.content = "该推流仅能使用图片素材" + (expired ? "" : "，点击升级");
                         icon.style = "color: gray";
+                        icon.name = "photo";
                         if (!expired) {
                             icon.addEventListener('click', () => {
                                 const priceDay = (videoPrice - picPrice) / 30;
@@ -196,9 +217,12 @@ function renderStreamList(data) {
                 } else {
                     paymentDialog.headline = '续费推流';
                     radio.disabled = true;
-                    radio.value = item.materialType === "VIDEO" ? "video" : "pic";
+                    if (item.materialType === "VIDEO") radio.value = "video";
+                    if (item.materialType === "PIC") radio.value = "pic";
+                    if (item.materialType === "HD_VIDEO") radio.value = "hdVideo";
                 }
                 paymentDialog.open = true;
+                updatePriceText();
                 buyId = item.id;
             });
             btnTd.appendChild(payButton);
@@ -321,8 +345,10 @@ function buy(type = "ALIPAY", month = 1) {
     const radio = document.getElementById('radio');
     if (radio.value === "pic") {
         materialType = "PIC";
-    } else {
+    } else if (radio.value === "video") {
         materialType = "VIDEO";
+    } else {
+        materialType = "HD_VIDEO";
     }
     const params = {
         id: buyId,
@@ -354,6 +380,9 @@ function buy(type = "ALIPAY", month = 1) {
                 const qrCodeDataUrl = qr.toDataURL();
                 const qrCodeImage = new Image();
                 qrCodeImage.src = qrCodeDataUrl;
+                while (qrCodeElement.firstChild) {
+                    qrCodeElement.removeChild(qrCodeElement.firstChild);
+                }
                 qrCodeImage.onload = function() {
                     qrCodeElement.appendChild(qrCodeImage);
                 };
@@ -493,8 +522,10 @@ function updatePriceText() {
     let price;
     if (radio.value === "pic") {
         price = picPrice;
-    } else {
+    } else if (radio.value === "video") {
         price = videoPrice;
+    } else if (radio.value === "hdVideo") {
+        price = hdVideoPrice;
     }
     priceText.textContent = (monthSlider.value * price) + " 元";
 }

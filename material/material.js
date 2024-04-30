@@ -1,6 +1,10 @@
 window.onload = function(){
     fetchMaterialLibrary()
         .then(data => {
+            if (data && data.code === 401) {
+                window.location.href = '../#login';
+                return;
+            }
             renderMaterialList(data);
         })
         .catch(error => {

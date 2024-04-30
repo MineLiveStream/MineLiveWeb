@@ -85,19 +85,19 @@
             <p>订单价格</p>
             <div style="flex-grow: 1"></div>
             <h3 id="priceText">0 元</h3>
+            <div style="flex-grow: 1"></div>
             <mdui-button variant="text" id="useCdkBtn">使用兑换码</mdui-button>
         </div>
         <div style="display: flex; align-items: center;">
             <p style="margin-right: 1px">购买月数</p>
             <mdui-slider style="width: 200px" value="1" min="1" max="12" id="monthSlider"></mdui-slider>
         </div>
-        <div style="display: flex; align-items: center;">
-            <p style="margin-right: 1px">素材类型</p>
-            <mdui-radio-group value="video" id="radio">
-                <mdui-radio value="video">视频</mdui-radio>
-                <mdui-radio value="pic">图片</mdui-radio>
-            </mdui-radio-group>
-        </div>
+        <p style="margin-right: 1px">素材类型</p>
+        <mdui-radio-group value="hdVideo" id="radio">
+            <mdui-radio value="hdVideo">高清视频</mdui-radio>
+            <mdui-radio value="video">视频</mdui-radio>
+            <mdui-radio value="pic">图片</mdui-radio>
+        </mdui-radio-group>
         <mdui-button slot="action" variant="text" id="dialogAlipayBtn">支付宝</mdui-button>
         <mdui-button slot="action" variant="text" id="dialogWechatBtn">微信</mdui-button>
         <mdui-button slot="action" variant="text" id="cancelPaymentBtn">取消</mdui-button>

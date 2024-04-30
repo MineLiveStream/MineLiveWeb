@@ -10,6 +10,10 @@ window.onload = function() {
 function refresh() {
     fetchStreamLibrary()
         .then(data => {
+            if (data && data.code === 401) {
+                window.location.href = '../#login';
+                return;
+            }
             renderStreamList(data);
         })
         .catch(error => {
@@ -69,13 +73,18 @@ function renderStreamList(data) {
                 if (key === 'materialName') {
                     const tooltip = document.createElement('mdui-tooltip');
                     const icon = document.createElement('mdui-icon');
-                    icon.name = "ondemand_video";
-                    if (item.materialType === "VIDEO") {
+                    if (item.materialType === "HD_VIDEO") {
+                        tooltip.content = "该推流允许使用高清视频或图片素材"
+                        icon.style = "color: orange";
+                        icon.name = "hd";
+                    } else if (item.materialType === "VIDEO") {
                         tooltip.content = "该推流允许使用视频或图片素材"
                         icon.style = "color: orange";
+                        icon.name = "ondemand_video";
                     } else {
-                        tooltip.content = "该推流仅能使用图片素材"
+                        tooltip.content = "该推流仅能使用图片素材";
                         icon.style = "color: gray";
+                        icon.name = "photo";
                     }
                     tooltip.appendChild(icon);
                     td.appendChild(tooltip);
