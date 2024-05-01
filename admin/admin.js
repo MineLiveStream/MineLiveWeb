@@ -43,7 +43,7 @@ function renderStreamList(data) {
     
     if (data && data.list) {
         maxPage = Math.ceil(data.total / size);
-        document.getElementById("titleText").textContent = "管理推流 (" + data.total + "个直播中)";
+        document.getElementById("titleText").textContent = "管理推流 (" + data.streaming + "/" + data.total + "直播中)";
 
         document.getElementById("pageText").textContent = "第" + page + "页，共" + maxPage + "页";
         if (data.list.length === 0) {
