@@ -286,7 +286,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // 搜索
     document.getElementById('search')
         .addEventListener('change', function() {
-        refresh();
+            page = 1;
+            refresh();
     });
     // 登出
     document.getElementById('logoutBtn')
