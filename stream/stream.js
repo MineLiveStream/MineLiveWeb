@@ -208,6 +208,7 @@ function renderStreamList(data) {
             } else {
                 payButton.innerHTML = '续费';
             }
+            payButton.style = "margin-right: 1px";
             payButton.addEventListener('click', () => {
                 updatePriceText();
                 const radio = document.getElementById('radio');
@@ -229,6 +230,7 @@ function renderStreamList(data) {
 
             const changeButton = document.createElement('mdui-chip');
             changeButton.innerHTML = '更改';
+            changeButton.style = "margin-right: 1px";
             changeButton.addEventListener('click', () => {
                 const changeDialog = document.getElementById("changeDialog");
                 changeDialog.headline = "更新推流";
@@ -240,6 +242,7 @@ function renderStreamList(data) {
 
             const logButton = document.createElement('mdui-chip');
             logButton.innerHTML = '日志';
+            logButton.style = "margin-right: 1px";
             logButton.addEventListener('click', () => {
                 const logDialog = document.getElementById("logDialog");
                 const logDiv = document.getElementById("logDiv");

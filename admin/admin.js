@@ -152,6 +152,7 @@ function renderStreamList(data) {
             const btnTd = document.createElement('td');
 
             const changeButton = document.createElement('mdui-chip');
+            changeButton.style = "margin-right: 1px";
             changeButton.innerHTML = '更改';
             changeButton.addEventListener('click', () => {
                 changeDialog.headline = "更新推流";
@@ -163,6 +164,7 @@ function renderStreamList(data) {
 
             const logButton = document.createElement('mdui-chip');
             logButton.innerHTML = '日志';
+            logButton.style = "margin-right: 1px";
             logButton.addEventListener('click', () => {
                 const logDialog = document.getElementById("logDialog");
                 const logDiv = document.getElementById("logDiv");
