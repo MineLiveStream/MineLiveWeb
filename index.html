@@ -25,26 +25,58 @@ https://github.com/ranminecraft/MineLiveFonted
     </head>
 
     <body>
-        <mdui-top-app-bar>
+        <mdui-top-app-bar padding-top>
             <div style="flex-grow: 1"></div>
             <img src="https://s21.ax1x.com/2024/04/07/pFq2AoR.png" alt="alternative" style="width: 2.5rem; height: 2.5rem;">
             <div style="flex-grow: 1"></div>
             <mdui-top-app-bar-title>MineLive</mdui-top-app-bar-title>
             <div style="flex-grow: 1"></div>
         </mdui-top-app-bar>
-
-        <mdui-card clickable class="mdui-prose" variant="filled" style="margin-bottom: 8px;">
-            <br>
-            <h2 id="text">我的世界，宣传新服</h2>
-            <h3>24 x 7 全自动推流直播</h3>
-            <p>测试期间，注册免费赠送三天时长</p>
-            <div style="display: flex; justify-content: space-between; margin-bottom: 16px">
-                <mdui-button id="startBtn" style="margin-right: 16px">开始使用</mdui-button>
-                <mdui-button variant="tonal" href="https://qm.qq.com/q/hpYH0xIsuY" target="_blank">加入群聊</mdui-button>
+        <div style="display: flex; justify-content: center">
+            <div style="flex-grow: 1"></div>
+            <img class="img-fluid" src="https://s21.ax1x.com/2024/05/04/pkAJ4r6.png" alt="alternative" width=30% height=30%>
+            <div style="flex-grow: 1"></div>
+            <div class="mdui-prose" style="margin-bottom: 8px">
+                <br>
+                <h2 id="typewriter" style="font-weight: bold">我的世界，宣传新服</h2>
+                <h3>24 x 7 全自动推流直播</h3>
+                <p>测试期间，注册免费赠送三天时长</p>
+                <br>
+                <div style="display: flex; justify-content: space-between">
+                    <mdui-button id="startBtn" style="margin-right: 26px">开始使用</mdui-button>
+                    <mdui-button variant="tonal" href="https://qm.qq.com/q/hpYH0xIsuY" target="_blank">加入群聊</mdui-button>
+                </div>
+                <br>
+                <a href="https://www.yuque.com/seeds-ejjgd/py7vim" target="_blank">使用教程</a>
+                <br>
             </div>
-            <a href="https://www.yuque.com/seeds-ejjgd/py7vim" target="_blank">使用教程</a>
-            <br><br>
-        </mdui-card>
+            <div style="flex-grow: 1"></div>
+        </div>
+        <mdui-divider></mdui-divider>
+
+        <div class="mdui-prose" style="margin: 8px;">
+            <h3 style="margin-top: 16px;">为什么选择 MineLive ？</h3>
+            <div style="display: flex; justify-content: space-between; margin: 16px">
+                <mdui-card clickable class="mdui-card">
+                    <mdui-icon class="mdui-icon" name="account_balance_wallet"></mdui-icon>
+                    <h4>价格实惠</h4>
+                </mdui-card>
+                <mdui-card clickable class="mdui-card">
+                    <mdui-icon class="mdui-icon" name="video_library"></mdui-icon>
+                    <h4>稳定直播</h4>
+                </mdui-card>
+                <mdui-card clickable class="mdui-card">
+                    <mdui-icon class="mdui-icon" name="settings_applications"></mdui-icon>
+                    <h4>配置简单</h4>
+                </mdui-card>
+            </div>
+        </div>
+        <mdui-divider></mdui-divider>
+        <div class="mdui-prose" style="margin: 8px;">
+            <mdui-snackbar></mdui-snackbar>
+            <p>友情外链&nbsp;<a target="_blank" href="https://minecraft.net/">Minecraft</a>&nbsp;&nbsp;<a target="_blank" href="https://minepay.top/">MinePay</a></p>
+            <p>MIT License Copyright &copy; 2024 <a target="_blank" href="https://github.com/ranminecraft/MineLiveFonted">MineLive</a></p>
+        </div>
 
         <mdui-dialog
                 close-on-overlay-click
@@ -74,19 +106,11 @@ https://github.com/ranminecraft/MineLiveFonted
             <a id="loginText">已有账号</a>
         </mdui-dialog>
 
-        <mdui-snackbar class="example-snackbar"></mdui-snackbar>
-
-        <mdui-card clickable class="mdui-prose" variant="elevated">
-            <br>
-            <p>友情外链&nbsp;<a target="_blank" href="https://minecraft.net/">Minecraft</a>&nbsp;&nbsp;<a target="_blank" href="https://minepay.top/">MinePay</a></p>
-            <p>MIT License Copyright &copy; 2024 <a target="_blank" href="https://github.com/ranminecraft/MineLiveFonted">MineLive</a></p>
-            <br>
-        </mdui-card>
-
         <script src="js/api.js"></script>
         <script src="js/login.js"></script>
-        <script src="js/text.js"></script>
+        <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
         <script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
+        <script src="js/type.js"></script>
     </body>
 </html>
 
