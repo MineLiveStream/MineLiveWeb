@@ -1,3 +1,8 @@
+if (window.location.hash === "#login") {
+    const loginDialog = document.getElementById('loginDialog');
+    loginDialog.open = true;
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const startBtn = document.getElementById('startBtn');
     const loginText = document.getElementById('loginText');
