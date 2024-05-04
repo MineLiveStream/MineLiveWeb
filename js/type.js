@@ -1,6 +1,5 @@
-const typewriter = new Typewriter('#typewriter', {
-    loop: true
-}).typeString('我的世界，')
+new Typewriter('#typewriter', {loop: true})
+    .typeString('我的世界，')
     .typeString('宣传新服')
     .pauseFor(1000)
     .deleteChars(4)
