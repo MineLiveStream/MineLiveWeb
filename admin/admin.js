@@ -132,7 +132,7 @@ function renderStreamList(data) {
                                 .catch(error => {
                                     console.error('处理响应时出错:', error);
                                 });
-                        }, 2000);
+                        }, 5000);
                     } else {
                         switchBtn.checked = false;
                         snackbar.textContent = data.msg;
