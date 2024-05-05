@@ -405,7 +405,14 @@ function buy(type = "ALIPAY", month = 1) {
 }
 
 function cdk() {
+    const cdkConfirmBtn = document.getElementById('cdkConfirmBtn');
     const cdkInput = document.getElementById('cdkInput');
+    if (!cdkInput.value) {
+        cdkConfirmBtn.loading = false;
+        snackbar.textContent = "兑换码不可为空";
+        snackbar.open = true;
+        return;
+    }
     const params = {
         id: buyId,
         cdk: cdkInput.value ? cdkInput.value : undefined
@@ -439,11 +446,13 @@ function cdk() {
                 snackbar.textContent = data.msg;
             }
             snackbar.open = true;
+            cdkConfirmBtn.loading = false;
         })
         .catch(error => {
             console.error('检测到错误', error);
             snackbar.textContent = '处理兑换请求时出错，请重试！';
             snackbar.open = true;
+            cdkConfirmBtn.loading = false;
         });
     document.getElementById('cdkDialog').open = false;
     document.getElementById('cdkConfirmBtn').loading = false;
