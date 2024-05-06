@@ -162,8 +162,18 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = '../';
     });
     const uploadBtn = document.getElementById('uploadBtn');
-    uploadBtn.addEventListener('click', function() {
+    const uploadDialog = document.getElementById('uploadDialog');
+    const uploadDialogCancelBtn = document.getElementById('uploadDialogCancelBtn');
+    const uploadDialogConfirmBtn = document.getElementById('uploadDialogConfirmBtn');
+    uploadDialogConfirmBtn.addEventListener('click', function() {
         fileInput.click();
+        uploadDialog.open = false;
+    });
+    uploadDialogCancelBtn.addEventListener('click', function() {
+        uploadDialog.open = false;
+    });
+    uploadBtn.addEventListener('click', function() {
+        uploadDialog.open = true;
     });
     const fileInput = document.getElementById('fileInput');
     fileInput.addEventListener('change', function() {
