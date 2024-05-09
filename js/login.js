@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const backLoginText = document.getElementById('backLoginText');
     const forgetDialog = document.getElementById('forgetDialog');
     const snackbar = document.querySelector(".example-snackbar");
+    if (isMobile()) snackbar.placement = "top";
     const forgetBtn = document.getElementById('forgetBtn');
     const sendForgetBtn = document.getElementById('sendForgetBtn');
     const forgetEmailInput = document.getElementById('forgetEmail');
@@ -134,6 +135,12 @@ document.addEventListener('DOMContentLoaded', function() {
             loginBtn.loading = false;
             return;
         }
+        if (loginPwdInput.value.length < 6) {
+            snackbar.textContent = "密码长度必须大于6位";
+            snackbar.open = true;
+            loginBtn.loading = false;
+            return;
+        }
         const pwd = sha1(loginPwdInput.value);
         const data = {
             email: email,
@@ -178,6 +185,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const email = forgetEmailInput.value;
         if (!forgetPwdInput.value) {
             snackbar.textContent = "密码不可为空";
+            snackbar.open = true;
+            sendForgetBtn.loading = false;
+            forgetLoading = false;
+            return;
+        }
+        if (forgetPwdInput.value.length < 6) {
+            snackbar.textContent = "密码长度必须大于6位";
             snackbar.open = true;
             sendForgetBtn.loading = false;
             forgetLoading = false;
@@ -271,6 +285,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const email = regEmailInput.value;
         if (!regPwdInput.value) {
             snackbar.textContent = "密码不可为空";
+            snackbar.open = true;
+            sendRegBtn.loading = false;
+            return;
+        }
+        if (regPwdInput.value.length < 6) {
+            snackbar.textContent = "密码长度必须大于6位";
             snackbar.open = true;
             sendRegBtn.loading = false;
             return;
