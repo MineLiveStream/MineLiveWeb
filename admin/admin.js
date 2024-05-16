@@ -92,10 +92,18 @@ function renderStreamList(data) {
                 tr.appendChild(td);
             });
 
-            const uploadTime = new Date(item.expired).toLocaleString();
-            const tdUploadTime = document.createElement('td');
-            tdUploadTime.textContent = uploadTime;
-            tr.appendChild(tdUploadTime);
+            const expired = item.expired <= 0;
+            const tdExpiredTime = document.createElement('td');
+            if (item.expired <= 0) {
+                tdExpiredTime.textContent = "已到期";
+            } else if (item.expired < 1000 * 60) {
+                tdExpiredTime.textContent = "即将到期";
+            } else if (item.expired < 1000 * 60 * 60) {
+                tdExpiredTime.textContent = (item.expired / (1000 * 60)).toFixed(0) + "分钟";
+            } else {
+                tdExpiredTime.textContent = (item.expired / (1000 * 60 * 60)).toFixed(1) + "小时";
+            }
+            tr.appendChild(tdExpiredTime);
 
             const switchTd = document.createElement('td');
             const switchBtn = document.createElement('mdui-switch');
@@ -122,8 +130,8 @@ function renderStreamList(data) {
               .then(data => {
                     if (data.code === 200) {
                         const on = data.status === "ON";
-                        switchBtn.checked = on;
-                        snackbar.textContent = '推流已' + (on ? "开启" : "关闭");
+                        switchBtn.disabled = true;
+                        snackbar.textContent = '推流' + (on ? "开启" : "关闭") + "中，请稍等";
                         setTimeout(() => {
                             fetchStreamLibrary()
                                 .then(data => {
@@ -134,7 +142,7 @@ function renderStreamList(data) {
                                 });
                         }, 5000);
                     } else {
-                        switchBtn.checked = false;
+                        switchBtn.disabled = true;
                         snackbar.textContent = data.msg;
                     }
                   snackbar.open = true;
@@ -305,12 +313,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const streamKey = document.getElementById('streamKey').value;
         const expiredTime = document.getElementById('expiredTime').value;
         const materialType = document.getElementById('selectMenu').value;
+        let expiredValue = undefined;
+        if (expiredTime) {
+            expiredValue = new Date(expiredTime).getTime() - new Date().getTime();
+            if (expiredValue < 0) expiredValue = 0;
+        }
         const params = {
             id: changeId,
             name: streamName ? streamName : undefined,
             url: streamUrl ? streamUrl : undefined,
             key: streamKey ? streamKey : undefined,
-            expired: expiredTime ? new Date(expiredTime) : undefined,
+            expired: expiredValue,
             materialType: materialType ? materialType : undefined
         };
 

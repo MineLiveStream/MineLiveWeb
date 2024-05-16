@@ -80,8 +80,7 @@ function renderStreamList(data) {
             return;
         }
         data.list.forEach(item => {
-            const expiredDate = new Date(item.expired);
-            const expired = expiredDate.getTime() < new Date().getTime();
+            const expired = item.expired <= 0;
             const tr = document.createElement('tr');
             ['name', 'streamUrl', 'streamKey', "materialName"].forEach(key => {
                 const td = document.createElement('td');
@@ -115,7 +114,7 @@ function renderStreamList(data) {
                         if (!expired) {
                             icon.addEventListener('click', () => {
                                 const priceDay = (hdVideoPrice - videoPrice) / 30;
-                                const day = (expiredDate.getTime() - new Date().getTime()) / (24 * 60 * 60 * 1000);
+                                const day = item.expired / (24 * 60 * 60 * 1000);
                                 document.getElementById('lastDayText').textContent = day.toFixed() + " 天";
                                 document.getElementById('updatePriceText').textContent = (priceDay * day).toFixed(2) + " 元";
                                 document.getElementById('updateDialog').open = true;
@@ -129,7 +128,7 @@ function renderStreamList(data) {
                         if (!expired) {
                             icon.addEventListener('click', () => {
                                 const priceDay = (videoPrice - picPrice) / 30;
-                                const day = (expiredDate.getTime() - new Date().getTime()) / (24 * 60 * 60 * 1000);
+                                const day = item.expired / (24 * 60 * 60 * 1000);
                                 document.getElementById('lastDayText').textContent = day.toFixed() + " 天";
                                 document.getElementById('updatePriceText').textContent = (priceDay * day).toFixed(2) + " 元";
                                 document.getElementById('updateDialog').open = true;
@@ -142,9 +141,16 @@ function renderStreamList(data) {
                 }
                 tr.appendChild(td);
             });
-            const expiredTime = expiredDate.toLocaleString();
             const tdExpiredTime = document.createElement('td');
-            tdExpiredTime.textContent = expiredTime;
+            if (item.expired <= 0) {
+                tdExpiredTime.textContent = "已到期";
+            } else if (item.expired < 1000 * 60) {
+                tdExpiredTime.textContent = "即将到期";
+            } else if (item.expired < 1000 * 60 * 60) {
+                tdExpiredTime.textContent = (item.expired / (1000 * 60)).toFixed(0) + "分钟";
+            } else {
+                tdExpiredTime.textContent = (item.expired / (1000 * 60 * 60)).toFixed(1) + "小时";
+            }
             tr.appendChild(tdExpiredTime);
 
             const switchTd = document.createElement('td');
@@ -172,8 +178,8 @@ function renderStreamList(data) {
               .then(data => {
                     if (data.code === 200) {
                         const on = data.status === "ON";
-                        switchBtn.checked = on;
-                        snackbar.textContent = '推流已' + (on ? "开启" : "关闭");
+                        switchBtn.disabled = true;
+                        snackbar.textContent = '推流' + (on ? "开启" : "关闭") + "中，请稍等";
                         setTimeout(() => {
                             fetchStreamLibrary()
                                 .then(data => {
@@ -184,7 +190,7 @@ function renderStreamList(data) {
                                 });
                         }, 5000);
                     } else {
-                        switchBtn.checked = false;
+                        switchBtn.disabled = true;
                         snackbar.textContent = data.msg;
                     }
                   snackbar.open = true;
@@ -524,7 +530,7 @@ async function fetchStreamLibrary() {
 }
 
 function updatePriceText() {
-    if (picPrice === 0 || videoPrice === 0) {1
+    if (picPrice === 0 || videoPrice === 0) {
         snackbar.textContent = "获取价格出错，请刷新页面";
         snackbar.open = true;
         return;
