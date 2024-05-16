@@ -3,6 +3,12 @@ if (window.location.hash === "#login") {
     loginDialog.open = true;
 }
 
+function notice(context) {
+    if (isMobile()) {
+        alert(context);
+    } else mdui.snackbar({message: context});
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const startBtn = document.getElementById('startBtn');
     const loginText = document.getElementById('loginText');
@@ -21,8 +27,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginDialog = document.getElementById('loginDialog');
     const backLoginText = document.getElementById('backLoginText');
     const forgetDialog = document.getElementById('forgetDialog');
-    const snackbar = document.querySelector(".example-snackbar");
-    if (isMobile()) snackbar.placement = "top";
     const forgetBtn = document.getElementById('forgetBtn');
     const sendForgetBtn = document.getElementById('sendForgetBtn');
     const forgetEmailInput = document.getElementById('forgetEmail');
@@ -66,8 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     regBtn.addEventListener('click', function() {
         if (!regCodeInput.value) {
-            snackbar.textContent = "验证码不可为空";
-            snackbar.open = true;
+            notice("验证码不可为空");
             return;
         }
         regBtn.loading = true;
@@ -94,15 +97,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     localStorage.setItem('userToken', data.token);
                     window.location.href = '../stream';
                 } else {
-                    snackbar.textContent = data.msg;
-                    snackbar.open = true;
+                    notice(data.msg);
                 }
                 regBtn.loading = false;
             })
             .catch(error => {
                 console.error('检测到错误', error);
-                snackbar.textContent = '注册出错，请检查你的网络连接';
-                snackbar.open = true;
+                notice("注册出错，请检查你的网络连接");
                 regBtn.loading = false;
             });
     });
@@ -130,14 +131,12 @@ document.addEventListener('DOMContentLoaded', function() {
         loginBtn.loading = true;
         const email = loginEmailInput.value;
         if (!loginPwdInput.value) {
-            snackbar.textContent = "密码不可为空";
-            snackbar.open = true;
+            notice("密码不可为空");
             loginBtn.loading = false;
             return;
         }
         if (loginPwdInput.value.length < 6) {
-            snackbar.textContent = "密码长度必须大于6位";
-            snackbar.open = true;
+            notice("密码长度必须大于6位");
             loginBtn.loading = false;
             return;
         }
@@ -166,15 +165,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     localStorage.setItem('userAdmin', data.admin);
                     window.location.href = '../stream';
                 } else {
-                    snackbar.textContent = data.msg;
-                    snackbar.open = true;
+                    notice(data.msg);
                     loginBtn.loading = false;
                 }
             })
             .catch(error => {
                 console.error('检测到错误', error);
-                snackbar.textContent = '登录出错，请检查你的网络连接';
-                snackbar.open = true;
+                notice("登录出错，请检查你的网络连接");
                 loginBtn.loading = false;
             });
     });
@@ -184,15 +181,13 @@ document.addEventListener('DOMContentLoaded', function() {
         forgetLoading = true;
         const email = forgetEmailInput.value;
         if (!forgetPwdInput.value) {
-            snackbar.textContent = "密码不可为空";
-            snackbar.open = true;
+            notice("密码不可为空");
             sendForgetBtn.loading = false;
             forgetLoading = false;
             return;
         }
         if (forgetPwdInput.value.length < 6) {
-            snackbar.textContent = "密码长度必须大于6位";
-            snackbar.open = true;
+            notice("密码长度必须大于6位");
             sendForgetBtn.loading = false;
             forgetLoading = false;
             return;
@@ -222,26 +217,22 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.code === 200) {
                 sendForgetBtn.disabled = true;
                 sendForgetBtn.textContent = "已发送";
-                snackbar.textContent = "请检查邮箱验证码";
-                snackbar.open = true;
+                notice("请检查邮箱验证码");
             } else {
-                snackbar.textContent = data.msg;
-                snackbar.open = true;
+                notice(data.msg);
             }
             sendForgetBtn.loading = false;
             forgetLoading = false;
         })
         .catch(error => {
             console.error('检测到错误', error);
-            snackbar.textContent = '登录出错，请检查你的网络连接';
-            snackbar.open = true;
+            notice("登录出错，请检查你的网络连接");
             forgetLoading = false;
         });
     });
     forgetBtn.addEventListener('click', function() {
         if (!forgetKeyInput.value) {
-            snackbar.textContent = "验证码不可为空";
-            snackbar.open = true;
+            notice("验证码不可为空");
             return;
         }
         forgetBtn.loading = true;
@@ -268,15 +259,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     localStorage.setItem('userToken', data.token);
                     window.location.href = '../stream';
                 } else {
-                    snackbar.textContent = data.msg;
-                    snackbar.open = true;
+                    notice(data.msg);
                 }
                 forgetBtn.loading = false;
             })
             .catch(error => {
                 console.error('检测到错误', error);
-                snackbar.textContent = '重置出错，请检查你的网络连接';
-                snackbar.open = true;
+                notice("重置出错，请检查你的网络连接");
                 forgetBtn.loading = false;
             });
     });
@@ -284,14 +273,12 @@ document.addEventListener('DOMContentLoaded', function() {
         sendRegBtn.loading = true;
         const email = regEmailInput.value;
         if (!regPwdInput.value) {
-            snackbar.textContent = "密码不可为空";
-            snackbar.open = true;
+            notice("密码不可为空");
             sendRegBtn.loading = false;
             return;
         }
         if (regPwdInput.value.length < 6) {
-            snackbar.textContent = "密码长度必须大于6位";
-            snackbar.open = true;
+            notice("密码长度必须大于6位");
             sendRegBtn.loading = false;
             return;
         }
@@ -323,18 +310,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 sendRegBtn.loading = false;
                 sendRegBtn.disabled = true;
                 sendRegBtn.textContent = "已发送";
-                snackbar.textContent = "请检查邮箱验证码";
-                snackbar.open = true;
+                notice("请检查邮箱验证码");
             } else {
-                snackbar.textContent = data.msg;
-                snackbar.open = true;
+                notice(data.msg);
                 sendRegBtn.loading = false;
             }
         })
         .catch(error => {
             console.error('检测到错误', error);
-            snackbar.textContent = '注册出错，请检查你的网络连接';
-            snackbar.open = true;
+            notice("注册出错，请检查你的网络连接");
             sendRegBtn.loading = false;
         });
     }); 
