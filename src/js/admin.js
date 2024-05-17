@@ -12,14 +12,11 @@ export default function checkAdmin(){
     }
 }
 
-window.onload = function() {
-    const admin = localStorage.getItem('userAdmin');
-    if (!admin) {
-        window.location.href = '../';
-        return;
-    }
-    refresh();
+const admin = localStorage.getItem('userAdmin');
+if (!admin) {
+    window.location.href = '../';
 }
+refresh();
 
 function refresh() {
     fetchStreamLibrary()
@@ -43,6 +40,7 @@ const dialogCancelBtn = document.getElementById('dialogCancelBtn');
 const dialogConfirmBtn = document.getElementById('dialogConfirmBtn');
 const changeDialog = document.getElementById("changeDialog");
 let changeId = 0;
+
 function truncateString(str) {
     if (str.length > 20) {
         return str.substring(0, 20)  + "...";
@@ -57,7 +55,7 @@ function renderStreamList(data) {
     if (data && data.list) {
         maxPage = Math.ceil(data.total / size);
         document.getElementById("titleText").textContent = "管理推流 (" + data.streaming + "/" + data.total + "直播中)";
-
+        if (maxPage === 0) maxPage = 1;
         document.getElementById("pageText").textContent = "第" + page + "页，共" + maxPage + "页";
         if (data.list.length === 0) {
             materialListTbody.innerHTML = '<tr><td colspan="6" class="mdui-text-center">没有推流可展示</td></tr>';
@@ -143,20 +141,19 @@ function renderStreamList(data) {
                             const on = data.status === "ON";
                             switchBtn.disabled = true;
                             snackbar({message: '推流' + (on ? "开启" : "关闭") + "中，请稍等"});
-                            setTimeout(() => {
-                                fetchStreamLibrary()
-                                    .then(data => {
-                                        renderStreamList(data);
-                                    })
-                                    .catch(error => {
-                                        console.error('处理响应时出错:', error);
-                                    });
-                            }, 5000);
                         } else {
                             switchBtn.disabled = true;
                             snackbar({message: data.msg});
                         }
-
+                        setTimeout(() => {
+                            fetchStreamLibrary()
+                                .then(data => {
+                                    renderStreamList(data);
+                                })
+                                .catch(error => {
+                                    console.error('处理响应时出错:', error);
+                                });
+                        }, 5000);
                     })
                     .catch(error => {
                         console.error('检测到错误', error);
@@ -358,9 +355,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                 console.error('处理响应时出错:', error);
                             });
                     } else {
-                        snackbar.textContent = data.msg;
+                        snackbar({message: data.msg});
                     }
-                    snackbar.open = true;
 
                 })
                 .catch(error => {

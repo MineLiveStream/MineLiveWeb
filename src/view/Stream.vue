@@ -1,3 +1,7 @@
+<script setup>
+import '../js/stream';
+</script>
+
 <template>
   <div>
     <mdui-navigation-rail padding-left id="rail" value="item-1">
@@ -146,10 +150,6 @@
     <div style="flex-grow: 1"></div>
   </mdui-top-app-bar>
 </template>
-
-<script setup>
-import '../js/stream';
-</script>
 
 <style>
 </style>

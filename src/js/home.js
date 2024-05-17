@@ -1,6 +1,7 @@
 import { api } from './api';
 import { snackbar } from 'mdui/functions/snackbar';
 import CryptoJS from 'crypto-js';
+import Typewriter from 'typewriter-effect/dist/core';
 
 function isMobile() {
     const mobileUserAgentFragments = [
@@ -15,11 +16,6 @@ function isMobile() {
     return false;
 }
 
-/*if (window.location.hash === "#login") {
-    const loginDialog = document.getElementById('loginDialog');
-    loginDialog.open = true;
-}*/
-
 function notice(context) {
     if (isMobile()) {
         alert(context);
@@ -27,6 +23,30 @@ function notice(context) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    if (window.location.hash === "#login") {
+        const loginDialog = document.getElementById('loginDialog');
+        loginDialog.open = true;
+    }
+
+    new Typewriter("#typewriter", {loop: true})
+        .typeString('我的世界，')
+        .typeString('宣传新服')
+        .pauseFor(1000)
+        .deleteChars(4)
+        .pauseFor(500)
+        .typeString('一键开播')
+        .pauseFor(1000)
+        .deleteChars(4)
+        .pauseFor(500)
+        .typeString('配置简单')
+        .pauseFor(1000)
+        .deleteChars(4)
+        .pauseFor(500)
+        .typeString('天天满人')
+        .pauseFor(1000)
+        .deleteChars(4)
+        .start();
+
     const startBtn = document.getElementById('startBtn');
     const loginText = document.getElementById('loginText');
     const regText = document.getElementById('regText');

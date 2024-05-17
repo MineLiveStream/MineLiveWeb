@@ -1,5 +1,5 @@
 <script setup>
-
+//import '../js/admin';
 </script>
 
 <template>

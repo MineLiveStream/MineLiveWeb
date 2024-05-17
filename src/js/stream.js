@@ -9,13 +9,281 @@ let maxPage = 1;
 let hdVideoPrice = 0;
 let videoPrice = 0;
 let picPrice = 0;
-const dialogCancelBtn = document.getElementById('dialogCancelBtn');
-const dialogConfirmBtn = document.getElementById('dialogConfirmBtn');
 let buyId = 0;
-const paymentDialog = document.getElementById('paymentDialog');
-const qrcodeDialog = document.getElementById('qrcodeDialog');
-const qrCodeElement = document.getElementById('qr-code');
 let changeId = 0;
+let materialId = 0;
+
+document.addEventListener('DOMContentLoaded', function() {
+    const paymentDialog = document.getElementById('paymentDialog');
+    const qrcodeDialog = document.getElementById('qrcodeDialog');
+    const qrCodeElement = document.getElementById('qr-code');
+
+    fetchStreamLibrary()
+        .then(data => {
+            if (data && data.code === 401) {
+                window.location.href = '../#login';
+                return;
+            }
+            renderStreamList(data);
+        })
+        .catch(error => {
+            console.error('处理响应时出错:', error);
+        });
+    fetchMaterialLibrary(1, 30)
+        .then(data => {
+            renderMaterialList(data);
+        })
+        .catch(error => {
+            console.error('处理响应时出错:', error);
+        });
+    fetch(api + '/price', {
+        headers: {
+            Authorization: `Bearer ${token()}`
+        }
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error('错误响应码');
+        }
+        return response.json();
+    })
+        .then(data => {
+            if (data.code === 200) {
+                picPrice = data.picPrice;
+                videoPrice = data.videoPrice;
+                hdVideoPrice = data.hdVideoPrice;
+            } else {
+                switchBtn.checked = false;
+                snackbar({message: data.msg});
+            }
+
+        })
+        .catch(error => {
+            console.error('检测到错误', error);
+        });
+    checkAdmin();
+
+    document.getElementById('lastPageBtn')
+        .addEventListener('click', function() {
+            if (page > 1) {
+                page --;
+                fetchStreamLibrary()
+                    .then(data => {
+                        renderStreamList(data);
+                    })
+                    .catch(error => {
+                        console.error('处理响应时出错:', error);
+                    });
+            } else {
+                snackbar({message: "已经到尽头啦>.<"});
+            }
+        });
+    document.getElementById('nextPageBtn')
+        .addEventListener('click', function() {
+            if (maxPage > page) {
+                page ++;
+                fetchStreamLibrary()
+                    .then(data => {
+                        renderStreamList(data);
+                    })
+                    .catch(error => {
+                        console.error('处理响应时出错:', error);
+                    });
+            } else {
+                snackbar({message: "已经到尽头啦>.<"});
+            }
+        });
+    // 登出
+    const logoutBtn = document.getElementById('logoutBtn');
+    logoutBtn.addEventListener('click', function() {
+        localStorage.removeItem('userToken');
+        localStorage.removeItem('userAdmin');
+        window.location.href = '../';
+    });
+    // 取消订单
+    const cancelOrderBtn = document.getElementById('cancelOrderBtn');
+    cancelOrderBtn.addEventListener('click', function() {
+        qrcodeDialog.open = false;
+        while (qrCodeElement.firstChild) {
+            qrCodeElement.removeChild(qrCodeElement.firstChild);
+        }
+    });
+    const radio = document.getElementById('radio');
+    radio.addEventListener('click', function() {
+        updatePriceText();
+    });
+    const monthSlider = document.getElementById('monthSlider');
+    monthSlider.addEventListener('input', function() {
+        updatePriceText();
+    });
+    const dialogAlipayBtn = document.getElementById('dialogAlipayBtn');
+    dialogAlipayBtn.addEventListener('click', function() {
+        buy("ALIPAY", monthSlider.value);
+        paymentDialog.open = false;
+    });
+    const cancelPaymentBtn = document.getElementById('cancelPaymentBtn');
+    cancelPaymentBtn.addEventListener('click', function() {
+        paymentDialog.open = false;
+    });
+    const dialogWechatBtn = document.getElementById('dialogWechatBtn');
+    dialogWechatBtn.addEventListener('click', function() {
+        buy("WECHAT", monthSlider.value);
+        paymentDialog.open = false;
+    });
+
+    const updateDialog = document.getElementById('updateDialog');
+    const cancelUpdateBtn = document.getElementById('cancelUpdateBtn');
+    cancelUpdateBtn.addEventListener('click', function() {
+        updateDialog.open = false;
+    });
+    const updateAlipayBtn = document.getElementById('updateAlipayBtn');
+    updateAlipayBtn.addEventListener('click', function() {
+        buy("ALIPAY", 0);
+        updateDialog.open = false;
+    });
+    const updateWechatBtn = document.getElementById('updateWechatBtn');
+    updateWechatBtn.addEventListener('click', function() {
+        buy("WECHAT", 0);
+        updateDialog.open = false;
+    });
+    const cdkDialog = document.getElementById('cdkDialog');
+    const useCdkBtn = document.getElementById('useCdkBtn');
+    useCdkBtn.addEventListener('click', function() {
+        cdkDialog.open = true;
+    });
+
+    const cdkCancelBtn = document.getElementById('cdkCancelBtn');
+    cdkCancelBtn.addEventListener('click', function() {
+        cdkDialog.open = false;
+    });
+    const cdkConfirmBtn = document.getElementById('cdkConfirmBtn');
+    cdkConfirmBtn.addEventListener('click', function() {
+        cdkConfirmBtn.loading = true;
+        cdk();
+    });
+
+    const createStreamBtn = document.getElementById('createStreamBtn');
+    createStreamBtn.addEventListener('click', function() {
+        const changeDialog = document.getElementById("changeDialog");
+        changeDialog.headline = "新增推流";
+        changeDialog.description = "";
+        changeDialog.open = true;
+        changeId = 0;
+    });
+    const changeConfirmBtn = document.getElementById('changeConfirmBtn');
+    changeConfirmBtn.addEventListener('click', function() {
+        if (changeId === 0) {
+            const params = {
+                name: document.getElementById('streamName').value,
+                url: document.getElementById('streamUrl').value,
+                key: document.getElementById('streamKey').value,
+                materialId: materialId
+            };
+            fetch(api + '/stream', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token(),
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(params)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('错误响应码');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    changeDialog.open = false;
+                    if (data.code === 200) {
+                        snackbar({message: '创建成功'});
+                        fetchStreamLibrary()
+                            .then(data => {
+                                renderStreamList(data);
+                            })
+                            .catch(error => {
+                                console.error('处理响应时出错:', error);
+                            });
+                    } else {
+                        snackbar({message: data.msg});
+                    }
+
+                })
+                .catch(error => {
+                    console.error('检测到错误', error);
+                    snackbar({message: '操作出错，请重试！'});
+                });
+        } else {
+            const streamName = document.getElementById('streamName').value;
+            const streamUrl = document.getElementById('streamUrl').value;
+            const streamKey = document.getElementById('streamKey').value;
+
+            const params = {
+                id: changeId,
+                name: streamName ? streamName : undefined,
+                url: streamUrl ? streamUrl : undefined,
+                key: streamKey ? streamKey : undefined,
+                materialId: materialId ? materialId : undefined
+            };
+
+            fetch(api + '/stream', {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + token(),
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(params)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('错误响应码');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    changeDialog.open = false;
+                    if (data.code === 200) {
+                        snackbar({message: '更新成功'});
+                        fetchStreamLibrary()
+                            .then(data => {
+                                renderStreamList(data);
+                            })
+                            .catch(error => {
+                                console.error('处理响应时出错:', error);
+                            });
+                    } else {
+                        snackbar({message: data.msg});
+                    }
+
+                })
+                .catch(error => {
+                    console.error('检测到错误', error);
+                    snackbar({message: '操作出错，请重试！'});
+                });
+        }
+    });
+    const changeCancelBtn = document.getElementById('changeCancelBtn');
+    changeCancelBtn.addEventListener('click', function() {
+        changeDialog.open = false;
+    });
+    const refreshBtn = document.getElementById('refreshBtn');
+    refreshBtn.addEventListener('click', function() {
+        refreshBtn.loading = true;
+        fetchStreamLibrary()
+            .then(data => {
+                if (data.code === 200) {
+                    renderStreamList(data);
+                    snackbar({message: "刷新成功"});
+                    refreshBtn.loading = false;
+                }
+            })
+            .catch(error => {
+                console.error('处理响应时出错:', error);
+                snackbar({message: "刷新失败"});
+                refreshBtn.loading = false;
+            });
+    });
+});
+
 function truncateString(str) {
     if (str.length > 20) {
         return str.substring(0, 20)  + "...";
@@ -32,6 +300,7 @@ function renderStreamList(data) {
     if (data && data.list) {
         maxPage = data.total / size;
         maxPage = Math.ceil(data.total / size);
+        if (maxPage === 0) maxPage = 1;
         document.getElementById("pageText").textContent = "第" + page + "页，共" + maxPage + "页";
         if (data.list.length === 0) {
             materialListTbody.innerHTML = '<tr><td colspan="6" class="mdui-text-center">此页没有推流，请先创建</td></tr>';
@@ -137,20 +406,19 @@ function renderStreamList(data) {
                             const on = data.status === "ON";
                             switchBtn.disabled = true;
                             snackbar({message: '推流' + (on ? "开启" : "关闭") + "中，请稍等"});
-                            setTimeout(() => {
-                                fetchStreamLibrary()
-                                    .then(data => {
-                                        renderStreamList(data);
-                                    })
-                                    .catch(error => {
-                                        console.error('处理响应时出错:', error);
-                                    });
-                            }, 5000);
                         } else {
                             switchBtn.disabled = true;
                             snackbar({message: data.msg});
                         }
-
+                        setTimeout(() => {
+                            fetchStreamLibrary()
+                                .then(data => {
+                                    renderStreamList(data);
+                                })
+                                .catch(error => {
+                                    console.error('处理响应时出错:', error);
+                                });
+                        }, 5000);
                     })
                     .catch(error => {
                         console.error('检测到错误', error);
@@ -253,6 +521,8 @@ function renderStreamList(data) {
             deleteButton.addEventListener('click', () => {
                 dialog.open = true;
                 dialog.description = item.name;
+                const dialogCancelBtn = document.getElementById('dialogCancelBtn');
+                const dialogConfirmBtn = document.getElementById('dialogConfirmBtn');
                 dialogCancelBtn.addEventListener('click', () => {
                     dialog.open = false;
                 });
@@ -490,231 +760,6 @@ function updatePriceText() {
     priceText.textContent = (monthSlider.value * price) + " 元";
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('lastPageBtn')
-        .addEventListener('click', function() {
-            if (page > 1) {
-                page --;
-                fetchStreamLibrary()
-                    .then(data => {
-                        renderStreamList(data);
-                    })
-                    .catch(error => {
-                        console.error('处理响应时出错:', error);
-                    });
-            } else {
-                snackbar({message: "已经到尽头啦>.<"});
-            }
-        });
-    document.getElementById('nextPageBtn')
-        .addEventListener('click', function() {
-            if (maxPage > page) {
-                page ++;
-                fetchStreamLibrary()
-                    .then(data => {
-                        renderStreamList(data);
-                    })
-                    .catch(error => {
-                        console.error('处理响应时出错:', error);
-                    });
-            } else {
-                snackbar({message: "已经到尽头啦>.<"});
-            }
-        });
-    // 登出
-    const logoutBtn = document.getElementById('logoutBtn');
-    logoutBtn.addEventListener('click', function() {
-        localStorage.removeItem('userToken');
-        localStorage.removeItem('userAdmin');
-        window.location.href = '../';
-    });
-    // 取消订单
-    const cancelOrderBtn = document.getElementById('cancelOrderBtn');
-    cancelOrderBtn.addEventListener('click', function() {
-        qrcodeDialog.open = false;
-        while (qrCodeElement.firstChild) {
-            qrCodeElement.removeChild(qrCodeElement.firstChild);
-        }
-    });
-    const radio = document.getElementById('radio');
-    radio.addEventListener('click', function() {
-        updatePriceText();
-    });
-    const monthSlider = document.getElementById('monthSlider');
-    monthSlider.addEventListener('input', function() {
-        updatePriceText();
-    });
-    const dialogAlipayBtn = document.getElementById('dialogAlipayBtn');
-    dialogAlipayBtn.addEventListener('click', function() {
-        buy("ALIPAY", monthSlider.value);
-        paymentDialog.open = false;
-    });
-    const cancelPaymentBtn = document.getElementById('cancelPaymentBtn');
-    cancelPaymentBtn.addEventListener('click', function() {
-        paymentDialog.open = false;
-    });
-    const dialogWechatBtn = document.getElementById('dialogWechatBtn');
-    dialogWechatBtn.addEventListener('click', function() {
-        buy("WECHAT", monthSlider.value);
-        paymentDialog.open = false;
-    });
-
-    const updateDialog = document.getElementById('updateDialog');
-    const cancelUpdateBtn = document.getElementById('cancelUpdateBtn');
-    cancelUpdateBtn.addEventListener('click', function() {
-        updateDialog.open = false;
-    });
-    const updateAlipayBtn = document.getElementById('updateAlipayBtn');
-    updateAlipayBtn.addEventListener('click', function() {
-        buy("ALIPAY", 0);
-        updateDialog.open = false;
-    });
-    const updateWechatBtn = document.getElementById('updateWechatBtn');
-    updateWechatBtn.addEventListener('click', function() {
-        buy("WECHAT", 0);
-        updateDialog.open = false;
-    });
-    const cdkDialog = document.getElementById('cdkDialog');
-    const useCdkBtn = document.getElementById('useCdkBtn');
-    useCdkBtn.addEventListener('click', function() {
-        cdkDialog.open = true;
-    });
-
-    const cdkCancelBtn = document.getElementById('cdkCancelBtn');
-    cdkCancelBtn.addEventListener('click', function() {
-        cdkDialog.open = false;
-    });
-    const cdkConfirmBtn = document.getElementById('cdkConfirmBtn');
-    cdkConfirmBtn.addEventListener('click', function() {
-        cdkConfirmBtn.loading = true;
-        cdk();
-    });
-
-    const createStreamBtn = document.getElementById('createStreamBtn');
-    createStreamBtn.addEventListener('click', function() {
-        const changeDialog = document.getElementById("changeDialog");
-        changeDialog.headline = "新增推流";
-        changeDialog.description = "";
-        changeDialog.open = true;
-        changeId = 0;
-    });
-    const changeConfirmBtn = document.getElementById('changeConfirmBtn');
-    changeConfirmBtn.addEventListener('click', function() {
-        if (changeId === 0) {
-            const params = {
-                name: document.getElementById('streamName').value,
-                url: document.getElementById('streamUrl').value,
-                key: document.getElementById('streamKey').value,
-                materialId: materialId
-            };
-            fetch(api + '/stream', {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Bearer ' + token(),
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(params)
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('错误响应码');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    changeDialog.open = false;
-                    if (data.code === 200) {
-                        snackbar({message: '创建成功'});
-                        fetchStreamLibrary()
-                            .then(data => {
-                                renderStreamList(data);
-                            })
-                            .catch(error => {
-                                console.error('处理响应时出错:', error);
-                            });
-                    } else {
-                        snackbar.textContent = data.msg;
-                    }
-                    snackbar.open = true;
-
-                })
-                .catch(error => {
-                    console.error('检测到错误', error);
-                    snackbar({message: '操作出错，请重试！'});
-                });
-        } else {
-            const streamName = document.getElementById('streamName').value;
-            const streamUrl = document.getElementById('streamUrl').value;
-            const streamKey = document.getElementById('streamKey').value;
-
-            const params = {
-                id: changeId,
-                name: streamName ? streamName : undefined,
-                url: streamUrl ? streamUrl : undefined,
-                key: streamKey ? streamKey : undefined,
-                materialId: materialId ? materialId : undefined
-            };
-
-            fetch(api + '/stream', {
-                method: 'PUT',
-                headers: {
-                    'Authorization': 'Bearer ' + token(),
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(params)
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('错误响应码');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    changeDialog.open = false;
-                    if (data.code === 200) {
-                        snackbar({message: '更新成功'});
-                        fetchStreamLibrary()
-                            .then(data => {
-                                renderStreamList(data);
-                            })
-                            .catch(error => {
-                                console.error('处理响应时出错:', error);
-                            });
-                    } else {
-                        snackbar({message: context});
-                        snackbar.textContent = data.msg;
-                    }
-
-                })
-                .catch(error => {
-                    console.error('检测到错误', error);
-                    snackbar({message: '操作出错，请重试！'});
-                });
-        }
-    });
-    const changeCancelBtn = document.getElementById('changeCancelBtn');
-    changeCancelBtn.addEventListener('click', function() {
-        changeDialog.open = false;
-    });
-    const refreshBtn = document.getElementById('refreshBtn');
-    refreshBtn.addEventListener('click', function() {
-        refreshBtn.loading = true;
-        fetchStreamLibrary()
-            .then(data => {
-                if (data.code === 200) {
-                    renderStreamList(data);
-                    snackbar({message: "刷新成功"});
-                    refreshBtn.loading = false;
-                }
-            })
-            .catch(error => {
-                console.error('处理响应时出错:', error);
-                snackbar({message: "刷新失败"});
-                refreshBtn.loading = false;
-            });
-    });
-});
-
 async function fetchMaterialLibrary(page = 1, size = 30) {
     try {
         const params = new URLSearchParams({
@@ -734,8 +779,6 @@ async function fetchMaterialLibrary(page = 1, size = 30) {
         return null;
     }
 }
-
-let materialId = 0;
 
 function renderMaterialList(data) {
     const selectMenu = document.getElementById('selectMenu');
@@ -758,50 +801,4 @@ function renderMaterialList(data) {
         selectMenu.label = "获取素材失败";
         selectMenu.disabled = true;
     }
-}
-
-window.onload = function() {
-    fetchStreamLibrary()
-        .then(data => {
-            if (data && data.code === 401) {
-                window.location.href = '../#login';
-                return;
-            }
-            renderStreamList(data);
-        })
-        .catch(error => {
-            console.error('处理响应时出错:', error);
-        });
-    fetchMaterialLibrary(1, 30)
-        .then(data => {
-            renderMaterialList(data);
-        })
-        .catch(error => {
-            console.error('处理响应时出错:', error);
-        });
-    fetch(api + '/price', {
-        headers: {
-            Authorization: `Bearer ${token()}`
-        }
-    }).then(response => {
-        if (!response.ok) {
-            throw new Error('错误响应码');
-        }
-        return response.json();
-    })
-        .then(data => {
-            if (data.code === 200) {
-                picPrice = data.picPrice;
-                videoPrice = data.videoPrice;
-                hdVideoPrice = data.hdVideoPrice;
-            } else {
-                switchBtn.checked = false;
-                snackbar({message: data.msg});
-            }
-
-        })
-        .catch(error => {
-            console.error('检测到错误', error);
-        });
-    checkAdmin();
 }

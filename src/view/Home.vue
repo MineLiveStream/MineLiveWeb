@@ -1,5 +1,9 @@
+<script setup>
+import '../js/home';
+</script>
+
 <template>
-  <mdui-top-app-bar padding-top class="mdui-bar">
+  <mdui-top-app-bar padding-top style="background-color: rgba(var(--mdui-color-primary-container, 0.8))">
     <div style="flex-grow: 1"></div>
     <img src="https://s21.ax1x.com/2024/04/07/pFq2AoR.png" alt="alternative" style="width: 2.5rem; height: 2.5rem;">
     <div style="flex-grow: 1"></div>
@@ -109,14 +113,7 @@
   </mdui-dialog>
 </template>
 
-<script setup>
-  import '../js/login';
-</script>
-
 <style>
-.mdui-bar {
-  background-color: rgba(var(--mdui-color-primary-container, 0.8));
-}
 .mdui-prose {
   display: flex;
   justify-content: center;

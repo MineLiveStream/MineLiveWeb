@@ -3,21 +3,6 @@ import token from './api';
 import checkAdmin from './admin';
 import {snackbar} from "mdui/functions/snackbar";
 
-window.onload = function(){
-    fetchMaterialLibrary()
-        .then(data => {
-            if (data && data.code === 401) {
-                window.location.href = '../#login';
-                return;
-            }
-            renderMaterialList(data);
-        })
-        .catch(error => {
-            console.error('处理响应时出错:', error);
-        });
-    checkAdmin();
-}
-
 let page = 1;
 const size = 8;
 let maxPage = 1;
@@ -31,6 +16,7 @@ function renderMaterialList(data) {
     if (data && data.list) {
         maxPage = data.total / size;
         maxPage = Math.ceil(data.total / size);
+        if (maxPage === 0) maxPage = 1;
         document.getElementById("pageText").textContent = "第" + page + "页，共" + maxPage + "页";
         if (data.list.length === 0) {
             materialListTbody.innerHTML = '<tr><td colspan="6" class="mdui-text-center">此页没有素材，请先上传</td></tr>';
@@ -137,6 +123,19 @@ async function fetchMaterialLibrary() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    fetchMaterialLibrary()
+        .then(data => {
+            if (data && data.code === 401) {
+                window.location.href = '../#login';
+                return;
+            }
+            renderMaterialList(data);
+        })
+        .catch(error => {
+            console.error('处理响应时出错:', error);
+        });
+    checkAdmin();
+
     document.getElementById('lastPageBtn')
         .addEventListener('click', function() {
             if (page > 1) {

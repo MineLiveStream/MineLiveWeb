@@ -78,7 +78,7 @@
 </template>
 
 <script setup>
-import '../js/material';
+//import '../js/material';
 </script>
 
 <style>
