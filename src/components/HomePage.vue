@@ -111,7 +111,7 @@
 
 <script>
 //import CryptoJS from 'crypto-js';
-import Typewriter from 'typewriter-effect/dist/core';
+/*import Typewriter from 'typewriter-effect/dist/core';
 let typeText = document.getElementById('typewriter');
 new Typewriter(typeText, {loop: true})
     .typeString('我的世界，')
@@ -130,7 +130,23 @@ new Typewriter(typeText, {loop: true})
     .typeString('天天满人')
     .pauseFor(1000)
     .deleteChars(4)
-    .start();
+    .start();*/
+
+/*function isMobile() {
+  const mobileUserAgentFragments = [
+    'Android', 'webOS', 'iPhone', 'iPad', 'iPod', 'BlackBerry', 'IEMobile', 'Opera Mini'
+  ];
+  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+  for (let i = 0; i < mobileUserAgentFragments.length; i++) {
+    if (userAgent.indexOf(mobileUserAgentFragments[i]) > -1) {
+      return true;
+    }
+  }
+  return false;
+}*/
+
+  import { setColorScheme } from 'mdui/functions/setColorScheme';
+  setColorScheme('#ff0000');
 </script>
 
 <style>
