@@ -1,4 +1,7 @@
-new Typewriter('#typewriter', {loop: true})
+import Typewriter from 'typewriter-effect/dist/core';
+
+let typeText = document.getElementById('typewriter');
+new Typewriter(typeText, {loop: true})
     .typeString('我的世界，')
     .typeString('宣传新服')
     .pauseFor(1000)

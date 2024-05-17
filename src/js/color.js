@@ -1,1 +1,2 @@
-mdui.setColorScheme('#2196f3');
+import { setColorScheme } from 'mdui/functions/setColorScheme';
+setColorScheme('#2196f3');

@@ -1,12 +1,29 @@
-if (window.location.hash === "#login") {
+import { api } from './api';
+import { snackbar } from 'mdui/functions/snackbar';
+import CryptoJS from 'crypto-js';
+
+function isMobile() {
+    const mobileUserAgentFragments = [
+        'Android', 'webOS', 'iPhone', 'iPad', 'iPod', 'BlackBerry', 'IEMobile', 'Opera Mini'
+    ];
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    for (let i = 0; i < mobileUserAgentFragments.length; i++) {
+        if (userAgent.indexOf(mobileUserAgentFragments[i]) > -1) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/*if (window.location.hash === "#login") {
     const loginDialog = document.getElementById('loginDialog');
     loginDialog.open = true;
-}
+}*/
 
 function notice(context) {
     if (isMobile()) {
         alert(context);
-    } else mdui.snackbar({message: context});
+    } else snackbar({message: context});
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -321,7 +338,7 @@ document.addEventListener('DOMContentLoaded', function() {
             notice("注册出错，请检查你的网络连接");
             sendRegBtn.loading = false;
         });
-    }); 
+    });
     function sha1(input) {
         return CryptoJS.SHA1(input).toString();
     }

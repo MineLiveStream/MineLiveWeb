@@ -1,6 +1,9 @@
 import 'mdui/mdui.css';
 import 'mdui';
+import './js/color';
+import router from './router';
+
 import { createApp } from 'vue'
 import App from './App.vue'
 
-createApp(App).mount('#app')
+createApp(App).use(router).mount('#app')
