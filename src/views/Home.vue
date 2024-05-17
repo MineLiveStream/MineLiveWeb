@@ -1,7 +1,3 @@
-<script setup>
-import '../js/home';
-</script>
-
 <template>
   <mdui-top-app-bar padding-top style="background-color: rgba(var(--mdui-color-primary-container, 0.8))">
     <div style="flex-grow: 1"></div>
@@ -112,6 +108,15 @@ import '../js/home';
     </div>
   </mdui-dialog>
 </template>
+
+<script>
+import init from '../js/home';
+export default {
+  mounted() {
+    init();
+  }
+}
+</script>
 
 <style>
 .mdui-prose {

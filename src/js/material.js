@@ -1,6 +1,6 @@
 import { api } from './api';
 import token from './api';
-import checkAdmin from './admin';
+import checkAdmin from './permission';
 import {snackbar} from "mdui/functions/snackbar";
 
 let page = 1;
@@ -122,7 +122,7 @@ async function fetchMaterialLibrary() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+export default function init() {
     fetchMaterialLibrary()
         .then(data => {
             if (data && data.code === 401) {
@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', function() {
         refreshBtn.loading = false;
         snackbar({message: "刷新成功"});
     });
-});
+}
 
 function refresh() {
     fetchMaterialLibrary()

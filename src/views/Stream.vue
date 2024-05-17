@@ -1,7 +1,3 @@
-<script setup>
-import '../js/stream';
-</script>
-
 <template>
   <div>
     <mdui-navigation-rail padding-left id="rail" value="item-1">
@@ -125,7 +121,7 @@ import '../js/stream';
       id = "qrcodeDialog"
       headline="扫码支付"
       class="example-action">
-    <div id="qr-code"></div>
+    <div id="qrcode"></div>
     <mdui-button slot="action" variant="text" id="cancelOrderBtn">取消</mdui-button>
   </mdui-dialog>
 
@@ -150,6 +146,15 @@ import '../js/stream';
     <div style="flex-grow: 1"></div>
   </mdui-top-app-bar>
 </template>
+
+<script>
+import init from '../js/stream';
+export default {
+  mounted() {
+    init();
+  }
+}
+</script>
 
 <style>
 </style>

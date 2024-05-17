@@ -1,6 +1,7 @@
 import { api } from './api';
 import token from './api';
-import checkAdmin from './admin';
+import checkAdmin from './permission';
+import QRious from 'qrious';
 import {snackbar} from "mdui/functions/snackbar";
 
 let page = 1;
@@ -13,10 +14,9 @@ let buyId = 0;
 let changeId = 0;
 let materialId = 0;
 
-document.addEventListener('DOMContentLoaded', function() {
+export default function init() {
     const paymentDialog = document.getElementById('paymentDialog');
     const qrcodeDialog = document.getElementById('qrcodeDialog');
-    const qrCodeElement = document.getElementById('qr-code');
 
     fetchStreamLibrary()
         .then(data => {
@@ -103,6 +103,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const cancelOrderBtn = document.getElementById('cancelOrderBtn');
     cancelOrderBtn.addEventListener('click', function() {
         qrcodeDialog.open = false;
+        const qrCodeElement = document.getElementById('qrcode');
         while (qrCodeElement.firstChild) {
             qrCodeElement.removeChild(qrCodeElement.firstChild);
         }
@@ -282,7 +283,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 refreshBtn.loading = false;
             });
     });
-});
+}
 
 function truncateString(str) {
     if (str.length > 20) {

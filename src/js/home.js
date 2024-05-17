@@ -22,7 +22,7 @@ function notice(context) {
     } else snackbar({message: context});
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+export default function init() {
     if (window.location.hash === "#login") {
         const loginDialog = document.getElementById('loginDialog');
         loginDialog.open = true;
@@ -362,4 +362,4 @@ document.addEventListener('DOMContentLoaded', function() {
     function sha1(input) {
         return CryptoJS.SHA1(input).toString();
     }
-});
+}
