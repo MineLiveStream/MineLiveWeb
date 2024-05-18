@@ -2,32 +2,17 @@ import { api } from './api';
 import token from './api';
 import {snackbar} from "mdui/functions/snackbar";
 
-const admin = localStorage.getItem('userAdmin');
-if (!admin) {
-    window.location.href = '../';
-}
-refresh();
-
-function refresh() {
-    fetchStreamLibrary()
-        .then(data => {
-            if (data && data.code === 401) {
-                window.location.href = '../#login';
-                return;
-            }
-            renderStreamList(data);
-        })
-        .catch(error => {
-            console.error('处理响应时出错:', error);
-        });
-}
-
 let page = 1;
 const size = 8;
 let maxPage = 1;
 let changeId = 0;
 
 export default function init() {
+    const admin = localStorage.getItem('userAdmin');
+    if (!admin) {
+        window.location.href = '../';
+    }
+    refresh();
     const changeDialog = document.getElementById("changeDialog");
     // 搜索
     document.getElementById('search')
@@ -382,4 +367,18 @@ async function fetchStreamLibrary() {
         console.error('请求推流时出错:', error);
         return null;
     }
+}
+
+function refresh() {
+    fetchStreamLibrary()
+        .then(data => {
+            if (data && data.code === 401) {
+                window.location.href = '../#login';
+                return;
+            }
+            renderStreamList(data);
+        })
+        .catch(error => {
+            console.error('处理响应时出错:', error);
+        });
 }
