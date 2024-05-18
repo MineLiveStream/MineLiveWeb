@@ -617,6 +617,7 @@ function buy(type = "ALIPAY", month = 1) {
                 const qrCodeDataUrl = qr.toDataURL();
                 const qrCodeImage = new Image();
                 qrCodeImage.src = qrCodeDataUrl;
+                const qrCodeElement = document.getElementById('qrcode');
                 while (qrCodeElement.firstChild) {
                     qrCodeElement.removeChild(qrCodeElement.firstChild);
                 }
