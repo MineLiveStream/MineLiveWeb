@@ -79,7 +79,7 @@
     </div>
     <div style="display: flex; align-items: center;">
       <p style="margin-right: 1px">购买月数</p>
-      <mdui-slider style="width: 200px" value="1" min="1" max="12" id="monthSlider"></mdui-slider>
+      <mdui-slider style="width: 200px" id="monthSlider"></mdui-slider>
     </div>
     <p style="margin-right: 1px">素材类型</p>
     <mdui-radio-group value="hdVideo" id="radio">

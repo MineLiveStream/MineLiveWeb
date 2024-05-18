@@ -113,6 +113,9 @@ export default function init() {
         updatePriceText();
     });
     const monthSlider = document.getElementById('monthSlider');
+    monthSlider.value = 1;
+    monthSlider.min = 1;
+    monthSlider.max = 12;
     monthSlider.addEventListener('input', function() {
         updatePriceText();
     });
@@ -344,7 +347,9 @@ function renderStreamList(data) {
                                 const day = item.expired / (24 * 60 * 60 * 1000);
                                 document.getElementById('lastDayText').textContent = day.toFixed() + " 天";
                                 document.getElementById('updatePriceText').textContent = (priceDay * day).toFixed(2) + " 元";
-                                document.getElementById('updateDialog').open = true;
+                                const updateDialog = document.getElementById('updateDialog');
+                                updateDialog.description = "可使用高清视频及图片素材";
+                                updateDialog.open = true;
                                 buyId = item.id;
                             });
                         }
@@ -358,7 +363,9 @@ function renderStreamList(data) {
                                 const day = item.expired / (24 * 60 * 60 * 1000);
                                 document.getElementById('lastDayText').textContent = day.toFixed() + " 天";
                                 document.getElementById('updatePriceText').textContent = (priceDay * day).toFixed(2) + " 元";
-                                document.getElementById('updateDialog').open = true;
+                                const updateDialog = document.getElementById('updateDialog');
+                                updateDialog.description = "可使用视频及图片素材";
+                                updateDialog.open = true;
                                 buyId = item.id;
                             });
                         }
