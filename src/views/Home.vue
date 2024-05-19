@@ -52,7 +52,7 @@
   <div class="mdui-prose">
     <br>
     <p>友情外链&nbsp;<a target="_blank" href="https://minecraft.net/">Minecraft</a>&nbsp;&nbsp;<a target="_blank" href="https://minepay.top/">MinePay</a></p>
-    <p>MIT License Copyright &copy; 2024 <a target="_blank" href="https://github.com/MineLiveStream/MineLiveFonted">MineLive</a></p>
+    <p>MIT License Copyright &copy; 2024 <a target="_blank" href="https://github.com/MineLiveStream/MineLiveWeb">MineLive</a></p>
   </div>
 
   <mdui-dialog
