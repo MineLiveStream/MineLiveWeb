@@ -1,7 +1,20 @@
 <template>
   <div>
-    <mdui-navigation-rail padding-left id="rail" value="material">
-      <div style="margin-top: 100px"></div>
+    <mdui-top-app-bar scroll-behavior="elevate" style="background-color: rgba(var(--mdui-color-primary-container, 0.8))">
+      <div style="margin-left: 80px"></div>
+      <img src="https://s21.ax1x.com/2024/04/07/pFq2AoR.png" alt="alternative" style="width: 2.5rem; height: 2.5rem;">
+      <mdui-top-app-bar-title>素材列表</mdui-top-app-bar-title>
+      <mdui-tooltip content="上传素材">
+        <mdui-button-icon variant="filled" icon="arrow_upward" id="uploadBtn" title="上传素材"></mdui-button-icon>
+      </mdui-tooltip>
+      <input type="file" id="fileInput" style="display: none;">
+      <div style="margin-left: 1px"></div>
+      <mdui-tooltip content="刷新列表">
+        <mdui-button-icon variant="filled" icon="refresh" id="refreshBtn"></mdui-button-icon>
+      </mdui-tooltip>
+    </mdui-top-app-bar>
+
+    <mdui-navigation-rail divider padding-left id="rail" value="material">
       <mdui-navigation-rail-item icon="videocam" id="streamBtn" value="stream">推流</mdui-navigation-rail-item>
       <mdui-navigation-rail-item icon="topic" id="materialBtn" value="material">素材</mdui-navigation-rail-item>
       <mdui-navigation-rail-item icon="help_center" href="https://www.yuque.com/seeds-ejjgd/py7vim" target="_blank" id="groupBtn" value="help">教程</mdui-navigation-rail-item>
@@ -59,23 +72,6 @@
     <mdui-button slot="action" variant="text" id="uploadDialogHelpBtn" target="_blank" href="https://www.yuque.com/seeds-ejjgd/py7vim/qvvp0a5q4xfqhdld">教程</mdui-button>
     <mdui-button slot="action" variant="text" id="uploadDialogCancelBtn">取消</mdui-button>
   </mdui-dialog>
-
-  <mdui-top-app-bar padding-top style="background-color: rgba(var(--mdui-color-primary-container, 0.8))">
-    <div style="flex-grow: 1"></div>
-    <img src="https://s21.ax1x.com/2024/04/07/pFq2AoR.png" alt="alternative" style="width: 2.5rem; height: 2.5rem;">
-    <div style="flex-grow: 1"></div>
-    <mdui-top-app-bar-title>素材列表</mdui-top-app-bar-title>
-    <div style="flex-grow: 1"></div>
-    <mdui-tooltip content="上传素材">
-      <mdui-button-icon variant="filled" icon="file_upload" id="uploadBtn" title="上传素材"></mdui-button-icon>
-    </mdui-tooltip>
-    <input type="file" id="fileInput" style="display: none;">
-    <div style="flex-grow: 1"></div>
-    <mdui-tooltip content="刷新列表">
-      <mdui-button-icon variant="filled" icon="refresh" id="refreshBtn"></mdui-button-icon>
-    </mdui-tooltip>
-    <div style="flex-grow: 1"></div>
-  </mdui-top-app-bar>
 </template>
 
 <script>

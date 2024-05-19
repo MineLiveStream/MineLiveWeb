@@ -6,7 +6,8 @@
     <mdui-top-app-bar-title>MineLive</mdui-top-app-bar-title>
     <div style="flex-grow: 1"></div>
   </mdui-top-app-bar>
-  <div style="display: flex;">
+
+  <div style="display: flex;margin-top: 8px;margin-bottom: 8px">
     <div style="flex-grow: 1"></div>
     <img class="img-fluid" src="https://s21.ax1x.com/2024/05/04/pkAJ4r6.png" alt="alternative" width=400px>
     <div style="flex-grow: 1"></div>
