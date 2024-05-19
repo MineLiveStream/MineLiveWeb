@@ -1,1 +1,0 @@
-mdui.setColorScheme('#2196f3');

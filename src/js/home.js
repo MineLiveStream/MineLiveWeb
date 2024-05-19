@@ -1,15 +1,53 @@
-if (window.location.hash === "#login") {
-    const loginDialog = document.getElementById('loginDialog');
-    loginDialog.open = true;
+import { api } from './api';
+import { snackbar } from 'mdui/functions/snackbar';
+import CryptoJS from 'crypto-js';
+import Typewriter from 'typewriter-effect/dist/core';
+import router from "@/router";
+
+function isMobile() {
+    const mobileUserAgentFragments = [
+        'Android', 'webOS', 'iPhone', 'iPad', 'iPod', 'BlackBerry', 'IEMobile', 'Opera Mini'
+    ];
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    for (let i = 0; i < mobileUserAgentFragments.length; i++) {
+        if (userAgent.indexOf(mobileUserAgentFragments[i]) > -1) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function notice(context) {
     if (isMobile()) {
         alert(context);
-    } else mdui.snackbar({message: context});
+    } else snackbar({message: context});
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+export default function init() {
+    if (window.location.hash.includes("login=1")) {
+        const loginDialog = document.getElementById('loginDialog');
+        loginDialog.open = true;
+    }
+
+    new Typewriter("#typewriter", {loop: true})
+        .typeString('我的世界，')
+        .typeString('宣传新服')
+        .pauseFor(1000)
+        .deleteChars(4)
+        .pauseFor(500)
+        .typeString('一键开播')
+        .pauseFor(1000)
+        .deleteChars(4)
+        .pauseFor(500)
+        .typeString('配置简单')
+        .pauseFor(1000)
+        .deleteChars(4)
+        .pauseFor(500)
+        .typeString('天天满人')
+        .pauseFor(1000)
+        .deleteChars(4)
+        .start();
+
     const startBtn = document.getElementById('startBtn');
     const loginText = document.getElementById('loginText');
     const regText = document.getElementById('regText');
@@ -95,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 if (data.code === 200) {
                     localStorage.setItem('userToken', data.token);
-                    window.location.href = '../stream';
+                    router.push('/stream');
                 } else {
                     notice(data.msg);
                 }
@@ -163,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.code === 200) {
                     localStorage.setItem('userToken', data.token);
                     localStorage.setItem('userAdmin', data.admin);
-                    window.location.href = '../stream';
+                    router.push('/stream');
                 } else {
                     notice(data.msg);
                     loginBtn.loading = false;
@@ -257,7 +295,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 if (data.code === 200) {
                     localStorage.setItem('userToken', data.token);
-                    window.location.href = '../stream';
+                    router.push('/stream');
                 } else {
                     notice(data.msg);
                 }
@@ -321,8 +359,8 @@ document.addEventListener('DOMContentLoaded', function() {
             notice("注册出错，请检查你的网络连接");
             sendRegBtn.loading = false;
         });
-    }); 
+    });
     function sha1(input) {
         return CryptoJS.SHA1(input).toString();
     }
-});
+}

@@ -1,24 +1,17 @@
-window.onload = function(){
-    fetchMaterialLibrary()
-        .then(data => {
-            if (data && data.code === 401) {
-                window.location.href = '../#login';
-                return;
-            }
-            renderMaterialList(data);
-        })
-        .catch(error => {
-            console.error('处理响应时出错:', error);
-        });
-    checkAdmin();
-}
+import { api } from './api';
+import token from './api';
+import checkAdmin from './permission';
+import {snackbar} from "mdui/functions/snackbar";
+import router from "@/router";
 
 let page = 1;
 const size = 8;
 let maxPage = 1;
 function renderMaterialList(data) {
+    document.getElementById('streamBtn').addEventListener('click', function() {
+        router.push("/stream");
+    });
     const dialog = document.getElementById("deleteDialog");
-    const snackbar = document.querySelector(".example-snackbar");
     const dialogCancelBtn = document.getElementById('dialogCancelBtn');
     const dialogConfirmBtn = document.getElementById('dialogConfirmBtn');
     const materialListTbody = document.getElementById('material-list-tbody');
@@ -27,6 +20,7 @@ function renderMaterialList(data) {
     if (data && data.list) {
         maxPage = data.total / size;
         maxPage = Math.ceil(data.total / size);
+        if (maxPage === 0) maxPage = 1;
         document.getElementById("pageText").textContent = "第" + page + "页，共" + maxPage + "页";
         if (data.list.length === 0) {
             materialListTbody.innerHTML = '<tr><td colspan="6" class="mdui-text-center">此页没有素材，请先上传</td></tr>';
@@ -93,12 +87,11 @@ function renderMaterialList(data) {
                         })
                         .then(data => {
                             if (data.code === 200) {
-                                snackbar.textContent = "删除成功";
+                                snackbar({message: "删除成功"});
                                 tr.parentNode.removeChild(tr);
                             } else {
-                                snackbar.textContent = data.msg;
+                                snackbar({message: data.msg});
                             }
-                            snackbar.open = true;
                         })
                         .catch(error => {
                             console.error('There has been a problem with your fetch operation:', error);
@@ -133,16 +126,27 @@ async function fetchMaterialLibrary() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    const snackbar = document.querySelector(".example-snackbar");
+export default function init() {
+    fetchMaterialLibrary()
+        .then(data => {
+            if (data && data.code === 401) {
+                router.push('/?login=1');
+                return;
+            }
+            renderMaterialList(data);
+        })
+        .catch(error => {
+            console.error('处理响应时出错:', error);
+        });
+    checkAdmin();
+
     document.getElementById('lastPageBtn')
         .addEventListener('click', function() {
             if (page > 1) {
                 page --;
                 refresh();
             } else {
-                snackbar.textContent = "已经到尽头啦>.<";
-                snackbar.open = true;
+                snackbar({message: "已经到尽头啦>.<"});
             }
         });
     document.getElementById('nextPageBtn')
@@ -151,16 +155,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 page ++;
                 refresh();
             } else {
-                snackbar.textContent = "已经到尽头啦>.<";
-                snackbar.open = true;
+                snackbar({message: "已经到尽头啦>.<"});
             }
         });
     document.getElementById('logoutBtn')
         .addEventListener('click', function() {
-        localStorage.removeItem('userToken');
-        localStorage.removeItem('userAdmin');
-        window.location.href = '../';
-    });
+            localStorage.removeItem('userToken');
+            localStorage.removeItem('userAdmin');
+            router.push('/');
+        });
     const uploadBtn = document.getElementById('uploadBtn');
     const uploadDialog = document.getElementById('uploadDialog');
     const uploadDialogCancelBtn = document.getElementById('uploadDialogCancelBtn');
@@ -182,11 +185,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (file) {
             const maxFileSizeInBytes = 100 * 1024 * 1024;
             if (file.size > maxFileSizeInBytes) {
-                snackbar.textContent = '文件大小不得超过100MB';
-                snackbar.open = true;
+                snackbar({message: '文件大小不得超过100MB'});
             } else {
-                snackbar.textContent = "正在上传，请耐心等待";
-                snackbar.open = true;
+                snackbar({message: '正在上传，请耐心等待'});
                 uploadBtn.loading = true;
                 const formData = new FormData();
                 formData.append('file', file);
@@ -209,8 +210,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     })
                     .then(data => {
                         if (data.code === 200) {
-                            snackbar.textContent = "上传成功";
-                            snackbar.open = true;
+                            snackbar({message: '上传成功'});
                             fetchMaterialLibrary()
                                 .then(data => {
                                     renderMaterialList(data);
@@ -219,15 +219,13 @@ document.addEventListener('DOMContentLoaded', function() {
                                     console.error('处理响应时出错:', error);
                                 });
                         } else {
-                            snackbar.textContent = data.msg;
-                            snackbar.open = true;
+                            snackbar({message: data.msg});
                         }
                         uploadBtn.loading = false;
                     });
             }
         } else {
-            snackbar.textContent = "请选择要上传的文件";
-            snackbar.open = true;
+            snackbar({message: "请选择要上传的文件"});
         }
     });
     const refreshBtn = document.getElementById('refreshBtn');
@@ -235,10 +233,9 @@ document.addEventListener('DOMContentLoaded', function() {
         refreshBtn.loading = true;
         refresh();
         refreshBtn.loading = false;
-        snackbar.textContent = "刷新成功";
-        snackbar.open = true;
+        snackbar({message: "刷新成功"});
     });
-});
+}
 
 function refresh() {
     fetchMaterialLibrary()
