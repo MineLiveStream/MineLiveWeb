@@ -1,8 +1,9 @@
 <template>
   <div>
     <mdui-navigation-rail padding-left id="rail" value="item-1">
-      <mdui-navigation-rail-item icon="videocam" href="../stream" style="margin-top: 100px">推流</mdui-navigation-rail-item>
-      <mdui-navigation-rail-item icon="topic" href="../material">素材</mdui-navigation-rail-item>
+      <div style="margin-top: 100px"></div>
+      <mdui-navigation-rail-item icon="videocam" id="streamBtn">推流</mdui-navigation-rail-item>
+      <mdui-navigation-rail-item icon="topic" id="materialBtn">素材</mdui-navigation-rail-item>
       <mdui-navigation-rail-item icon="help_center" href="https://www.yuque.com/seeds-ejjgd/py7vim" target="_blank" id="groupBtn">教程</mdui-navigation-rail-item>
       <mdui-navigation-rail-item icon="group" href="https://qm.qq.com/q/hpYH0xIsuY" target="_blank" id="groupBtn">加群</mdui-navigation-rail-item>
       <mdui-navigation-rail-item variant="tonal" icon="local_fire_department" href="https://www.anxidc.com" target="_blank">失忆云</mdui-navigation-rail-item>
@@ -76,7 +77,7 @@
     <mdui-button id="logDialogCloseBtn">关闭</mdui-button>
   </mdui-dialog>
 
-  <mdui-top-app-bar padding-top style="background-color: rgba(var(--mdui-color-primary-container, 0.8))">
+  <mdui-top-app-bar padding-top style="background-color: rgba(var(--mdui-color-primary-container, 0.8));">
     <div style="flex-grow: 1"></div>
     <img src="https://s21.ax1x.com/2024/04/07/pFq2AoR.png" alt="alternative" style="width: 2.5rem; height: 2.5rem;">
     <div style="flex-grow: 1"></div>

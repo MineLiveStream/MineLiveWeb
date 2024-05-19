@@ -1,6 +1,7 @@
 import { api } from './api';
 import token from './api';
 import {snackbar} from "mdui/functions/snackbar";
+import router from "@/router";
 
 let page = 1;
 const size = 8;
@@ -10,9 +11,15 @@ let changeId = 0;
 export default function init() {
     const admin = localStorage.getItem('userAdmin');
     if (!admin) {
-        window.location.href = '../';
+        router.push('/');
     }
     refresh();
+    document.getElementById('materialBtn').addEventListener('click', function() {
+        router.push("/material");
+    });
+    document.getElementById('streamBtn').addEventListener('click', function() {
+        router.push("/stream");
+    });
     const changeDialog = document.getElementById("changeDialog");
     // 搜索
     document.getElementById('search')
@@ -25,7 +32,7 @@ export default function init() {
         .addEventListener('click', function() {
             localStorage.removeItem('userToken');
             localStorage.removeItem('userAdmin');
-            window.location.href = '../';
+            router.push('/');
         });
     document.getElementById('changeConfirmBtn')
         .addEventListener('click', function() {
@@ -373,7 +380,7 @@ function refresh() {
     fetchStreamLibrary()
         .then(data => {
             if (data && data.code === 401) {
-                window.location.href = '../#login';
+                router.push('/?login=1');
                 return;
             }
             renderStreamList(data);

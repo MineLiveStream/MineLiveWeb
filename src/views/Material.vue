@@ -1,7 +1,8 @@
 <template>
   <div>
     <mdui-navigation-rail padding-left id="rail" value="item-1">
-      <mdui-navigation-rail-item icon="videocam" href="../stream" style="margin-top: 100px">推流</mdui-navigation-rail-item>
+      <div style="margin-top: 100px"></div>
+      <mdui-navigation-rail-item icon="videocam" id="streamBtn">推流</mdui-navigation-rail-item>
       <mdui-navigation-rail-item icon="topic" value="item-1">素材</mdui-navigation-rail-item>
       <mdui-navigation-rail-item icon="help_center" href="https://www.yuque.com/seeds-ejjgd/py7vim" target="_blank" id="groupBtn">教程</mdui-navigation-rail-item>
       <mdui-navigation-rail-item icon="group" href="https://qm.qq.com/q/hpYH0xIsuY" target="_blank" id="groupBtn">加群</mdui-navigation-rail-item>

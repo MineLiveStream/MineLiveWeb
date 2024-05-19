@@ -3,6 +3,7 @@ import token from './api';
 import checkAdmin from './permission';
 import QRious from 'qrious';
 import {snackbar} from "mdui/functions/snackbar";
+import router from "@/router";
 
 let page = 1;
 const size = 8;
@@ -17,11 +18,13 @@ let materialId = 0;
 export default function init() {
     const paymentDialog = document.getElementById('paymentDialog');
     const qrcodeDialog = document.getElementById('qrcodeDialog');
-
+    document.getElementById('materialBtn').addEventListener('click', function() {
+        router.push("/material");
+    });
     fetchStreamLibrary()
         .then(data => {
             if (data && data.code === 401) {
-                window.location.href = '../#login';
+                router.push('/?login=1');
                 return;
             }
             renderStreamList(data);
@@ -97,7 +100,7 @@ export default function init() {
     logoutBtn.addEventListener('click', function() {
         localStorage.removeItem('userToken');
         localStorage.removeItem('userAdmin');
-        window.location.href = '../';
+        router.push('/');
     });
     // 取消订单
     const cancelOrderBtn = document.getElementById('cancelOrderBtn');

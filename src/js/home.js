@@ -2,6 +2,7 @@ import { api } from './api';
 import { snackbar } from 'mdui/functions/snackbar';
 import CryptoJS from 'crypto-js';
 import Typewriter from 'typewriter-effect/dist/core';
+import router from "@/router";
 
 function isMobile() {
     const mobileUserAgentFragments = [
@@ -23,7 +24,7 @@ function notice(context) {
 }
 
 export default function init() {
-    if (window.location.hash === "#login") {
+    if (window.location.hash.includes("login=1")) {
         const loginDialog = document.getElementById('loginDialog');
         loginDialog.open = true;
     }
@@ -132,7 +133,7 @@ export default function init() {
             .then(data => {
                 if (data.code === 200) {
                     localStorage.setItem('userToken', data.token);
-                    window.location.href = '../stream';
+                    router.push('/stream');
                 } else {
                     notice(data.msg);
                 }
@@ -200,7 +201,7 @@ export default function init() {
                 if (data.code === 200) {
                     localStorage.setItem('userToken', data.token);
                     localStorage.setItem('userAdmin', data.admin);
-                    window.location.href = '../stream';
+                    router.push('/stream');
                 } else {
                     notice(data.msg);
                     loginBtn.loading = false;
@@ -294,7 +295,7 @@ export default function init() {
             .then(data => {
                 if (data.code === 200) {
                     localStorage.setItem('userToken', data.token);
-                    window.location.href = '../stream';
+                    router.push('/stream');
                 } else {
                     notice(data.msg);
                 }

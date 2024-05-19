@@ -1,8 +1,7 @@
+import router from './router';
 import 'mdui/mdui.css';
 import 'mdui';
 import './js/color';
-import router from './router';
-
 import { createApp } from 'vue';
 import App from './App.vue';
 

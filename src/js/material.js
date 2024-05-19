@@ -2,11 +2,15 @@ import { api } from './api';
 import token from './api';
 import checkAdmin from './permission';
 import {snackbar} from "mdui/functions/snackbar";
+import router from "@/router";
 
 let page = 1;
 const size = 8;
 let maxPage = 1;
 function renderMaterialList(data) {
+    document.getElementById('streamBtn').addEventListener('click', function() {
+        router.push("/stream");
+    });
     const dialog = document.getElementById("deleteDialog");
     const dialogCancelBtn = document.getElementById('dialogCancelBtn');
     const dialogConfirmBtn = document.getElementById('dialogConfirmBtn');
@@ -126,7 +130,7 @@ export default function init() {
     fetchMaterialLibrary()
         .then(data => {
             if (data && data.code === 401) {
-                window.location.href = '../#login';
+                router.push('/?login=1');
                 return;
             }
             renderMaterialList(data);
@@ -158,7 +162,7 @@ export default function init() {
         .addEventListener('click', function() {
             localStorage.removeItem('userToken');
             localStorage.removeItem('userAdmin');
-            window.location.href = '../';
+            router.push('/');
         });
     const uploadBtn = document.getElementById('uploadBtn');
     const uploadDialog = document.getElementById('uploadDialog');
