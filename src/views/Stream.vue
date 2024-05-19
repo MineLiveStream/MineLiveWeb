@@ -1,13 +1,13 @@
 <template>
   <div>
-    <mdui-navigation-rail padding-left id="rail" value="item-1">
+    <mdui-navigation-rail padding-left id="rail" value="stream">
       <div style="margin-top: 100px"></div>
-      <mdui-navigation-rail-item icon="videocam" value="item-1">推流</mdui-navigation-rail-item>
-      <mdui-navigation-rail-item icon="topic" id="materialBtn">素材</mdui-navigation-rail-item>
-      <mdui-navigation-rail-item icon="help_center" href="https://www.yuque.com/seeds-ejjgd/py7vim" target="_blank" id="groupBtn">教程</mdui-navigation-rail-item>
-      <mdui-navigation-rail-item icon="group" href="https://qm.qq.com/q/hpYH0xIsuY" target="_blank" id="groupBtn">加群</mdui-navigation-rail-item>
-      <mdui-navigation-rail-item variant="tonal" icon="local_fire_department" href="https://www.anxidc.com" target="_blank">失忆云</mdui-navigation-rail-item>
-      <mdui-navigation-rail-item slot="bottom" icon="logout" id="logoutBtn">登出</mdui-navigation-rail-item>
+      <mdui-navigation-rail-item icon="videocam" id="streamBtn" value="stream">推流</mdui-navigation-rail-item>
+      <mdui-navigation-rail-item icon="topic" id="materialBtn" value="material">素材</mdui-navigation-rail-item>
+      <mdui-navigation-rail-item icon="help_center" href="https://www.yuque.com/seeds-ejjgd/py7vim" target="_blank" id="groupBtn" value="help">教程</mdui-navigation-rail-item>
+      <mdui-navigation-rail-item icon="group" href="https://qm.qq.com/q/hpYH0xIsuY" target="_blank" id="groupBtn" value="group">加群</mdui-navigation-rail-item>
+      <mdui-navigation-rail-item variant="tonal" icon="local_fire_department" href="https://www.anxidc.com" target="_blank" value="ad">失忆云</mdui-navigation-rail-item>
+      <mdui-navigation-rail-item slot="bottom" icon="logout" id="logoutBtn" value="logout">登出</mdui-navigation-rail-item>
     </mdui-navigation-rail>
 
     <mdui-container class="mdui-m-t-2">
