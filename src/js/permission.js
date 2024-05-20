@@ -2,7 +2,7 @@ import router from "@/router";
 
 export default function checkAdmin(){
     const userAdmin = localStorage.getItem('userAdmin');
-    if (userAdmin && userAdmin === true) {
+    if (userAdmin && userAdmin === "true") {
         const adminBtn = document.createElement("mdui-navigation-rail-item");
         adminBtn.icon = "manage_accounts";
         adminBtn.addEventListener('click', function() {

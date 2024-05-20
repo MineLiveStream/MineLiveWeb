@@ -10,7 +10,7 @@ let changeId = 0;
 
 export default function init() {
     const admin = localStorage.getItem('userAdmin');
-    if (!(admin && admin === true)) {
+    if (!(admin && admin === "true")) {
         router.push('/stream');
     }
     refresh();
