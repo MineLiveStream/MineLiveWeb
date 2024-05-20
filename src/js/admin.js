@@ -10,8 +10,8 @@ let changeId = 0;
 
 export default function init() {
     const admin = localStorage.getItem('userAdmin');
-    if (!admin) {
-        router.push('/');
+    if (!(admin && admin === true)) {
+        router.push('/stream');
     }
     refresh();
     document.getElementById('materialBtn').addEventListener('click', function() {
