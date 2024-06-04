@@ -33,7 +33,7 @@
 
   <div class="mdui-prose" style="margin: 8px;">
     <h3 style="margin-top: 16px;">为什么选择 MineLive ？</h3>
-    <div style="display: flex; justify-content: space-between; margin: 16px">
+    <div style="display: flex; justify-content: space-between; margin: 16px" id="cardBtn">
       <mdui-card variant="outlined" clickable class="mdui-card">
         <mdui-icon class="mdui-icon" name="access_time_filled"></mdui-icon>
         <h4>分钟计费，随时暂停</h4>
