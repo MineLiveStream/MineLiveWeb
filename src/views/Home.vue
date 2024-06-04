@@ -9,7 +9,7 @@
 
   <div style="display: flex;margin-top: 8px;margin-bottom: 8px">
     <div style="flex-grow: 1"></div>
-    <img class="img-fluid" src="https://s21.ax1x.com/2024/05/04/pkAJ4r6.png" alt="alternative" width=400px>
+    <img class="img-fluid" src="https://s21.ax1x.com/2024/06/04/pkJywCR.png" alt="alternative" width=400px>
     <div style="flex-grow: 1"></div>
     <div class="mdui-prose" style="margin-bottom: 8px">
       <br>
