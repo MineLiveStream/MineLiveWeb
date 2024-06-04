@@ -15,7 +15,7 @@
       <br>
       <h2 id="typewriter" style="font-weight: bold;width: 290px">我的世界，宣传新服</h2>
       <h3>24 x 7 全自动推流直播</h3>
-      <p>测试期间，注册免费赠送三天时长</p>
+      <p>新注册用户，免费赠送 24 小时</p>
       <br>
       <div style="display: flex; justify-content: space-between">
         <mdui-button id="startBtn" style="margin-right: 26px">开始使用</mdui-button>
@@ -35,16 +35,16 @@
     <h3 style="margin-top: 16px;">为什么选择 MineLive ？</h3>
     <div style="display: flex; justify-content: space-between; margin: 16px">
       <mdui-card variant="outlined" clickable class="mdui-card">
-        <mdui-icon class="mdui-icon" name="account_balance_wallet"></mdui-icon>
-        <h4>价格实惠</h4>
+        <mdui-icon class="mdui-icon" name="access_time_filled"></mdui-icon>
+        <h4>分钟计费，随时暂停</h4>
       </mdui-card>
       <mdui-card variant="outlined" clickable class="mdui-card">
         <mdui-icon class="mdui-icon" name="video_library"></mdui-icon>
-        <h4>稳定直播</h4>
+        <h4>稳定直播，高清画质</h4>
       </mdui-card>
       <mdui-card variant="outlined" clickable class="mdui-card">
-        <mdui-icon class="mdui-icon" name="settings_applications"></mdui-icon>
-        <h4>配置简单</h4>
+        <mdui-icon class="mdui-icon" name="account_balance_wallet"></mdui-icon>
+        <h4>价格实惠，配置方便</h4>
       </mdui-card>
     </div>
   </div>
