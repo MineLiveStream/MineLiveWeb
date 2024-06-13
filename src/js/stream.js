@@ -341,37 +341,13 @@ function renderStreamList(data) {
                         icon.style = "color: orange";
                         icon.name = "hd";
                     } else if (item.materialType === "VIDEO") {
-                        tooltip.content = "该推流允许使用视频或图片素材" + (expired ? "" : "，点击升级");
+                        tooltip.content = "该推流允许使用视频或图片素材";
                         icon.style = "color: orange";
                         icon.name = "ondemand_video";
-                        if (!expired) {
-                            icon.addEventListener('click', () => {
-                                const priceDay = (hdVideoPrice - videoPrice) / 30;
-                                const day = item.expired / (24 * 60 * 60 * 1000);
-                                document.getElementById('lastDayText').textContent = day.toFixed() + " 天";
-                                document.getElementById('updatePriceText').textContent = (priceDay * day).toFixed(2) + " 元";
-                                const updateDialog = document.getElementById('updateDialog');
-                                updateDialog.description = "可使用高清视频及图片素材";
-                                updateDialog.open = true;
-                                buyId = item.id;
-                            });
-                        }
                     } else {
-                        tooltip.content = "该推流仅能使用图片素材" + (expired ? "" : "，点击升级");
+                        tooltip.content = "该推流仅能使用图片素材";
                         icon.style = "color: gray";
                         icon.name = "photo";
-                        if (!expired) {
-                            icon.addEventListener('click', () => {
-                                const priceDay = (videoPrice - picPrice) / 30;
-                                const day = item.expired / (24 * 60 * 60 * 1000);
-                                document.getElementById('lastDayText').textContent = day.toFixed() + " 天";
-                                document.getElementById('updatePriceText').textContent = (priceDay * day).toFixed(2) + " 元";
-                                const updateDialog = document.getElementById('updateDialog');
-                                updateDialog.description = "可使用视频及图片素材";
-                                updateDialog.open = true;
-                                buyId = item.id;
-                            });
-                        }
                     }
                     tooltip.appendChild(icon);
                     td.appendChild(tooltip);
@@ -452,15 +428,45 @@ function renderStreamList(data) {
             payButton.addEventListener('click', () => {
                 updatePriceText();
                 const radio = document.getElementById('radio');
+                let updatable = false;
+                const materialTypeText = document.getElementById("paymentUpdateBtn");
                 if (expired) {
                     paymentDialog.headline = '开通推流';
                     radio.disabled = false;
+                    materialTypeText.style.display = "none";
                 } else {
                     paymentDialog.headline = '续费推流';
                     radio.disabled = true;
-                    if (item.materialType === "VIDEO") radio.value = "video";
-                    if (item.materialType === "PIC") radio.value = "pic";
+                    let des;
+                    let priceDay;
+                    if (item.materialType === "VIDEO") {
+                        updatable = true;
+                        radio.value = "video";
+                        des = "可使用高清视频及图片素材";
+                        priceDay = (hdVideoPrice - videoPrice) / 30;
+                    }
+                    if (item.materialType === "PIC") {
+                        updatable = true;
+                        radio.value = "pic";
+                        des = "可使用视频及图片素材";
+                        priceDay = (videoPrice - picPrice) / 30;
+                    }
                     if (item.materialType === "HD_VIDEO") radio.value = "hdVideo";
+
+                    if (updatable) {
+                        materialTypeText.style.display = "";
+                        materialTypeText.addEventListener('click', () => {
+                            const day = item.expired / (24 * 60 * 60 * 1000);
+                            document.getElementById('lastDayText').textContent = day.toFixed() + " 天";
+                            document.getElementById('updatePriceText').textContent = (priceDay * day).toFixed(2) + " 元";
+                            const updateDialog = document.getElementById('updateDialog');
+                            updateDialog.description = des;
+                            updateDialog.open = true;
+                            buyId = item.id;
+                        });
+                    } else {
+                        materialTypeText.style.display = "none";
+                    }
                 }
                 paymentDialog.open = true;
                 updatePriceText();

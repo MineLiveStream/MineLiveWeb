@@ -57,21 +57,6 @@
   </mdui-dialog>
 
   <mdui-dialog
-      id = "updateDialog"
-      stacked-actions
-      close-on-overlay-click
-      headline="升级推流"
-      class="example-action">
-    <p>距离到期</p>
-    <h3 id="lastDayText">0 元</h3>
-    <p>预估价格</p>
-    <h3 id="updatePriceText">0 元</h3>
-    <mdui-button slot="action" variant="text" id="updateAlipayBtn">支付宝</mdui-button>
-    <mdui-button slot="action" variant="text" id="updateWechatBtn">微信</mdui-button>
-    <mdui-button slot="action" variant="text" id="cancelUpdateBtn">取消</mdui-button>
-  </mdui-dialog>
-
-  <mdui-dialog
       id = "paymentDialog"
       stacked-actions
       close-on-overlay-click
@@ -88,7 +73,11 @@
       <p style="margin-right: 1px">购买月数</p>
       <mdui-slider style="width: 200px" id="monthSlider"></mdui-slider>
     </div>
-    <p style="margin-right: 1px">素材类型</p>
+    <div style="display: flex; align-items: center">
+      <p style="margin-right: 1px">素材类型</p>
+      <div style="flex-grow: 1"></div>
+      <mdui-button variant="text" id="paymentUpdateBtn">升级类型</mdui-button>
+    </div>
     <mdui-radio-group value="hdVideo" id="radio">
       <mdui-radio value="hdVideo">高清视频</mdui-radio>
       <mdui-radio value="video">视频</mdui-radio>
@@ -111,6 +100,21 @@
     </mdui-select>
     <mdui-button slot="action" variant="text" id="changeCancelBtn">取消</mdui-button>
     <mdui-button slot="action" variant="tonal" id="changeConfirmBtn">确定</mdui-button>
+  </mdui-dialog>
+
+  <mdui-dialog
+      id = "updateDialog"
+      stacked-actions
+      close-on-overlay-click
+      headline="升级推流"
+      class="example-action">
+    <p>距离到期</p>
+    <h3 id="lastDayText">0 元</h3>
+    <p>预估价格</p>
+    <h3 id="updatePriceText">0 元</h3>
+    <mdui-button slot="action" variant="text" id="updateAlipayBtn">支付宝</mdui-button>
+    <mdui-button slot="action" variant="text" id="updateWechatBtn">微信</mdui-button>
+    <mdui-button slot="action" variant="text" id="cancelUpdateBtn">取消</mdui-button>
   </mdui-dialog>
 
   <mdui-dialog
