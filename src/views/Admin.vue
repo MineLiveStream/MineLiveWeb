@@ -18,7 +18,9 @@
     <mdui-navigation-rail-item icon="manage_accounts" value="admin" id="adminBtn">管理</mdui-navigation-rail-item>
   </mdui-navigation-rail>
 
-  <mdui-text-field clearable label="搜索" type="search" icon="search" id="search" full-width></mdui-text-field>
+  <form>
+    <mdui-text-field clearable label="搜索" type="search" icon="search" id="search" full-width></mdui-text-field>
+  </form>
 
   <mdui-container class="mdui-m-t-2">
     <mdui-table-fluid>
