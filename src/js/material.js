@@ -183,9 +183,9 @@ export default function init() {
         const file = fileInput.files[0];
 
         if (file) {
-            const maxFileSizeInBytes = 100 * 1024 * 1024;
+            const maxFileSizeInBytes = 120 * 1024 * 1024;
             if (file.size > maxFileSizeInBytes) {
-                snackbar({message: '文件大小不得超过100MB'});
+                snackbar({message: '文件大小不得超过120MB'});
             } else {
                 snackbar({message: '正在上传，请耐心等待'});
                 uploadBtn.loading = true;

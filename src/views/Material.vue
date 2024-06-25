@@ -61,7 +61,7 @@
       stacked-actions
       headline="素材规范"
       class="example-action">
-    <p>文件大小 < 100M<br>支持格式 .mp4 .png .jpg<br>推荐720p及以上视频分辨率</p>
+    <p>文件大小 < 120M<br>支持格式 .mp4 .png .jpg<br>1080p及以上视频分辨率</p>
     <mdui-button slot="action" variant="tonal" id="uploadDialogConfirmBtn">选择文件</mdui-button>
     <mdui-button slot="action" variant="text" id="uploadDialogHelpBtn" target="_blank" href="https://www.yuque.com/seeds-ejjgd/py7vim/qvvp0a5q4xfqhdld">教程</mdui-button>
     <mdui-button slot="action" variant="text" id="uploadDialogCancelBtn">取消</mdui-button>
