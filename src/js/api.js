@@ -1,6 +1,6 @@
 import router from "@/router";
 
-export const api = "https://minelive.top:18080";
+export const api = "https://api.minelive.top";
 //"http://127.0.0.1:8080";
 //"https://api.minelive.top:28080";
 
