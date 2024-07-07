@@ -117,6 +117,101 @@ export default function init() {
                 snackbar({message: '已经到尽头啦>.<'});
             }
         });
+    const clientDialog = document.getElementById("clientDialog");
+    document.getElementById('clientDialogCloseBtn')
+        .addEventListener('click', function() {
+            clientDialog.open = false;
+        });
+    const clientBtn = document.getElementById('clientBtn');
+    clientBtn.addEventListener('click', function() {
+        clientBtn.loading = true;
+        fetch(api + '/admin/client', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token(),
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('错误响应码');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.code === 200) {
+                    const clientDiv = document.getElementById('clientDiv');
+                    while (clientDiv.firstChild) {
+                        clientDiv.removeChild(clientDiv.firstChild);
+                    }
+                    let takeCount = 0;
+                    let num = 0;
+                    Object.keys(data.data).forEach(key => {
+                        const values = data.data[key];
+                        takeCount += data.data[key].length;
+                        num++;
+                        const tip = document.createElement('mdui-tooltip');
+                        tip.content = "点击给予更多接管";
+                        const clientBtn = document.createElement('mdui-chip');
+                        clientBtn.innerHTML = '机器' + num + " 接管数量" + values.length;
+                        clientBtn.style = "margin-bottom: 1px";
+                        clientBtn.addEventListener('click', () => {
+                            clientDialog.open = false;
+                            const params = {
+                                id: key
+                            };
+                            fetch(api + '/admin/client', {
+                                method: 'POST',
+                                headers: {
+                                    'Authorization': 'Bearer ' + token(),
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(params)
+                            })
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('错误响应码');
+                                    }
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    if (data.code === 200) {
+                                        snackbar({message: '已向该子端发出推流，请稍后'});
+                                    } else {
+                                        snackbar({message: data.msg});
+                                    }
+                                    setTimeout(() => {
+                                        fetchStreamLibrary()
+                                            .then(data => {
+                                                renderStreamList(data);
+                                            })
+                                            .catch(error => {
+                                                console.error('处理响应时出错:', error);
+                                            });
+                                    }, 5000);
+                                })
+                                .catch(error => {
+                                    console.error('检测到错误', error);
+                                    snackbar({message: '操作出错，请重试！'});
+                                });
+                        });
+                        tip.appendChild(clientBtn);
+                        clientDiv.appendChild(tip)
+                        clientDiv.appendChild(document.createElement('br'));
+                    });
+                    clientDialog.headline = "接管列表(" + takeCount + ")";
+                    clientDialog.open = true;
+                    clientBtn.loading = false;
+                } else {
+                    snackbar({message: data.msg});
+                }
+
+            })
+            .catch(error => {
+                console.error('检测到错误', error);
+                snackbar({message: '操作出错，请重试！'});
+            });
+        });
 }
 
 function truncateString(str) {

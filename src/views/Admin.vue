@@ -3,6 +3,10 @@
     <div style="margin-left: 80px"></div>
     <img src="https://s21.ax1x.com/2024/04/07/pFq2AoR.png" alt="alternative" style="width: 2.5rem; height: 2.5rem;">
     <mdui-top-app-bar-title id="titleText">管理推流</mdui-top-app-bar-title>
+    <mdui-tooltip content="接管列表">
+      <mdui-button-icon variant="filled" icon="computer" id="clientBtn"></mdui-button-icon>
+    </mdui-tooltip>
+    <div style="margin-left: 1px"></div>
     <mdui-tooltip content="刷新列表">
       <mdui-button-icon variant="filled" icon="refresh" id="refreshBtn"></mdui-button-icon>
     </mdui-tooltip>
@@ -56,6 +60,15 @@
       class="example-action">
     <mdui-button slot="action" variant="text" id="dialogCancelBtn">取消</mdui-button>
     <mdui-button slot="action" variant="tonal" id="dialogConfirmBtn">删除</mdui-button>
+  </mdui-dialog>
+
+  <mdui-dialog
+      id = "clientDialog"
+      close-on-overlay-click
+      headline="接管列表"
+      class="example-action">
+    <div id="clientDiv"></div>
+    <mdui-button slot="action" variant="tonal" id="clientDialogCloseBtn">关闭</mdui-button>
   </mdui-dialog>
 
   <mdui-dialog
