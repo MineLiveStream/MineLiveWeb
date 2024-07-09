@@ -12,7 +12,7 @@
     <img class="img-fluid" src="https://s21.ax1x.com/2024/06/04/pkJywCR.png" alt="alternative" width=400px>
     <div style="flex-grow: 1"></div>
     <div class="mdui-prose" style="margin-bottom: 8px">
-      <br>
+      <br><br>
       <h2 id="typewriter" style="font-weight: bold;width: 290px">我的世界，宣传新服</h2>
       <h3>24 x 7 全自动推流直播</h3>
       <p>新注册用户，免费赠送 24 小时</p>
@@ -52,6 +52,10 @@
   <div class="mdui-prose">
     <br>
     <p>友情外链&nbsp;<a target="_blank" href="https://minecraft.net/">Minecraft</a>&nbsp;&nbsp;<a target="_blank" href="https://minepay.top/">MinePay</a></p>
+    <div style="height: 8px">
+      <a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2024277949号</a>
+    </div>
+    <br>
     <p>MIT License Copyright &copy; 2024 <a target="_blank" href="https://github.com/MineLiveStream/MineLiveWeb">MineLive</a></p>
   </div>
 
