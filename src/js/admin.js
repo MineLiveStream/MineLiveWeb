@@ -317,7 +317,7 @@ function renderStreamList(data) {
                         if (data.code === 200) {
                             const on = data.status === "ON";
                             switchBtn.disabled = true;
-                            snackbar({message: '推流' + (on ? "开启" : "关闭") + "中，请稍等"});
+                            snackbar({message: '推流' + (on ? "开启" : "关闭") + "中，请稍等..."});
                         } else {
                             switchBtn.disabled = true;
                             snackbar({message: data.msg});

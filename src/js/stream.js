@@ -12,6 +12,8 @@ let hdVideoPrice = 0;
 let videoPrice = 0;
 let picPrice = 0;
 let buyId = 0;
+let buyStatus = false;
+let buyStatusBtn;
 let changeId = 0;
 let materialId = 0;
 
@@ -298,6 +300,49 @@ function truncateString(str) {
     return str;
 }
 
+function switchStream(streamId) {
+    const params = {
+        id: streamId
+    };
+    fetch(api + '/switch-stream', {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token(),
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(params)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('错误响应码');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.code === 200) {
+                const on = data.status === "ON";
+                buyStatusBtn.disabled = true;
+                snackbar({message: '推流' + (on ? "开启" : "关闭") + "中，请稍等..."});
+            } else {
+                buyStatusBtn.disabled = true;
+                snackbar({message: data.msg});
+            }
+            setTimeout(() => {
+                fetchStreamLibrary()
+                    .then(data => {
+                        renderStreamList(data);
+                    })
+                    .catch(error => {
+                        console.error('处理响应时出错:', error);
+                    });
+            }, 5000);
+        })
+        .catch(error => {
+            console.error('检测到错误', error);
+            snackbar({message: '操作出错，请重试！'});
+        });
+}
+
 function renderStreamList(data) {
     const dialog = document.getElementById("deleteDialog");
     const paymentDialog = document.getElementById('paymentDialog');
@@ -371,46 +416,8 @@ function renderStreamList(data) {
             switchBtn.className = 'div';
             switchBtn.checked = item.status !== "OFF";
             switchBtn.addEventListener('change', () => {
-                const params = {
-                    id: item.id
-                };
-                fetch(api + '/switch-stream', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': 'Bearer ' + token(),
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(params)
-                })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('错误响应码');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.code === 200) {
-                            const on = data.status === "ON";
-                            switchBtn.disabled = true;
-                            snackbar({message: '推流' + (on ? "开启" : "关闭") + "中，请稍等"});
-                        } else {
-                            switchBtn.disabled = true;
-                            snackbar({message: data.msg});
-                        }
-                        setTimeout(() => {
-                            fetchStreamLibrary()
-                                .then(data => {
-                                    renderStreamList(data);
-                                })
-                                .catch(error => {
-                                    console.error('处理响应时出错:', error);
-                                });
-                        }, 5000);
-                    })
-                    .catch(error => {
-                        console.error('检测到错误', error);
-                        snackbar({message: '操作出错，请重试！'});
-                    });
+                buyStatusBtn = switchBtn;
+                switchStream(item.id);
             });
             switchTd.appendChild(switchBtn);
             tr.appendChild(switchTd);
@@ -471,6 +478,8 @@ function renderStreamList(data) {
                 paymentDialog.open = true;
                 updatePriceText();
                 buyId = item.id;
+                buyStatusBtn = switchBtn;
+                buyStatus = item.status !== "OFF";
             });
             btnTd.appendChild(payButton);
 
@@ -586,6 +595,7 @@ function renderStreamList(data) {
 }
 
 function buy(type = "ALIPAY", month = 1) {
+    if (buyStatus) switchStream(buyId);
     snackbar({message: '正在创建订单，请稍后...'});
     let materialType;
     const radio = document.getElementById('radio');
