@@ -628,7 +628,7 @@ function buy(type = "ALIPAY", month = 1) {
         })
         .then(data => {
             if (data.code === 200) {
-                var qr = new QRious();
+                const qr = new QRious();
                 qr.backgroundAlpha = 0.5;
                 qr.foregroundAlpha = 0.9;
                 qr.size = 250;
