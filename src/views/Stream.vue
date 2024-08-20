@@ -92,7 +92,7 @@
       close-on-overlay-click
       headline="新增推流"
       class="example-action">
-    <mdui-text-field style="margin-bottom: 16px" label="名称" id="streamName"></mdui-text-field>
+    <mdui-text-field style="margin-bottom: 16px" label="备注名称" id="streamName"></mdui-text-field>
     <mdui-text-field style="margin-bottom: 16px" label="推流地址" id="streamUrl"></mdui-text-field>
     <mdui-text-field style="margin-bottom: 16px" label="推流密钥" id="streamKey"></mdui-text-field>
     <mdui-select id="selectMenu" label="素材">
