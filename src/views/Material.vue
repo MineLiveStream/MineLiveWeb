@@ -18,6 +18,7 @@
     <mdui-navigation-rail-item icon="topic" id="materialBtn" value="material">素材</mdui-navigation-rail-item>
     <mdui-navigation-rail-item icon="help_center" href="https://www.yuque.com/seeds-ejjgd/py7vim" target="_blank" id="groupBtn" value="help">教程</mdui-navigation-rail-item>
     <mdui-navigation-rail-item icon="group" href="https://qm.qq.com/q/hpYH0xIsuY" target="_blank" id="groupBtn" value="group">加群</mdui-navigation-rail-item>
+    <mdui-navigation-rail-item icon="local_fire_department" href="https://www.beishaoidc.cn/aff/TKYYFUGE" target="_blank" id="adv" value="adv">北少云</mdui-navigation-rail-item>
     <mdui-navigation-rail-item slot="bottom" icon="logout" id="logoutBtn" value="logout">登出</mdui-navigation-rail-item>
   </mdui-navigation-rail>
 
