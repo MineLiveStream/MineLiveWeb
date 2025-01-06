@@ -13,7 +13,7 @@
     <div style="flex-grow: 1"></div>
     <div class="mdui-prose" style="margin-bottom: 8px">
       <br><br>
-      <h2 id="typewriter" style="font-weight: bold;width: 290px">我的世界，宣传新服</h2>
+      <h2 id="typewriter" style="font-weight: bold;width: 290px">我的世界1，宣传新服</h2>
       <h3>24 x 7 全自动推流直播</h3>
       <p>新注册用户，免费赠送 24 小时</p>
       <br>
