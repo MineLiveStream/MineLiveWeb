@@ -19,6 +19,9 @@ jobs:
       cancel-in-progress: false
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -30,9 +33,6 @@ jobs:
 
       - name: Build
         run: npm run build
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
