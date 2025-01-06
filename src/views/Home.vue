@@ -51,7 +51,11 @@
   <mdui-divider></mdui-divider>
   <div class="mdui-prose">
     <br>
-    <p>友情外链&nbsp;<a target="_blank" href="https://minecraft.net/">Minecraft</a>&nbsp;&nbsp;<a target="_blank" href="https://minepay.top/">MinePay</a></p>
+    <p>友情外链
+      &nbsp;<a target="_blank" href="https://minecraft.net/">Minecraft</a>
+      &nbsp;&nbsp;<a target="_blank" href="https://minepay.top/">MinePay</a>
+      &nbsp;&nbsp;<a target="_blank" href="https://mcnav.fun/">McNav</a>
+    </p>
     <div style="height: 8px">
       <a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2024277949号</a>
     </div>
