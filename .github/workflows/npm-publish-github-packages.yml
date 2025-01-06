@@ -10,9 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write
-      packages: write
+      contents: read
       pages: write
+      id-token: write
+
+    concurrency:
+      group: "pages"
+      cancel-in-progress: false
 
     steps:
       - name: Checkout repository
