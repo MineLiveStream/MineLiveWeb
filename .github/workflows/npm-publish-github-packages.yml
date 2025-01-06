@@ -29,6 +29,18 @@ jobs:
         run: |
           zip -r dist.zip dist
 
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-artifact
+          path: dist.zip
+
+      - name: Upload to release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 #  publish-gpr:
 #    needs: build
 #    runs-on: ubuntu-latest
