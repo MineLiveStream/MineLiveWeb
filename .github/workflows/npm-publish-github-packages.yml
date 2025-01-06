@@ -5,24 +5,28 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+
+  publish-gpr:
+    needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pages: write
+      packages: write
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Install dependencies
-        run: npm ci
-      - name: Build project
-        run: npm run build
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          registry-url: https://npm.pkg.github.com/
+      - run: npm ci
+      - run: npm run build
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
