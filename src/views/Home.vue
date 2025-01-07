@@ -1,7 +1,7 @@
 <template>
   <mdui-top-app-bar padding-top style="background-color: rgba(var(--mdui-color-primary-container, 0.8))">
     <div style="flex-grow: 1"></div>
-    <img src="https://s21.ax1x.com/2024/04/07/pFq2AoR.png" alt="alternative" style="width: 2.5rem; height: 2.5rem;">
+    <img src="/src/img/logo.png" alt="alternative" style="width: 2.5rem; height: 2.5rem;">
     <div style="flex-grow: 1"></div>
     <mdui-top-app-bar-title>MineLive</mdui-top-app-bar-title>
     <div style="flex-grow: 1"></div>
@@ -9,7 +9,7 @@
 
   <div style="display: flex;margin-top: 8px;margin-bottom: 8px">
     <div style="flex-grow: 1"></div>
-    <img class="img-fluid" src="https://s21.ax1x.com/2024/06/04/pkJywCR.png" alt="alternative" width=400px>
+    <img class="img-fluid" src="/src/img/stream.png" alt="alternative" width=400px>
     <div style="flex-grow: 1"></div>
     <div class="mdui-prose" style="margin-bottom: 8px">
       <br><br>

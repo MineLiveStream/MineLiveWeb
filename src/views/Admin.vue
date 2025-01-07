@@ -1,7 +1,7 @@
 <template>
   <mdui-top-app-bar scroll-behavior="elevate" style="background-color: rgba(var(--mdui-color-primary-container, 0.8));">
     <div style="margin-left: 80px"></div>
-    <img src="https://s21.ax1x.com/2024/04/07/pFq2AoR.png" alt="alternative" style="width: 2.5rem; height: 2.5rem;">
+    <img src="/src/img/logo.png" alt="alternative" style="width: 2.5rem; height: 2.5rem;">
     <mdui-top-app-bar-title id="titleText">管理推流</mdui-top-app-bar-title>
     <mdui-tooltip content="接管列表">
       <mdui-button-icon variant="filled" icon="computer" id="clientBtn"></mdui-button-icon>
