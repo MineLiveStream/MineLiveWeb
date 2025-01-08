@@ -164,6 +164,7 @@ export default function init() {
             localStorage.removeItem('userAdmin');
             router.push('/');
         });
+    const uploadProgressDialog = document.getElementById('uploadProgressDialog');
     const uploadBtn = document.getElementById('uploadBtn');
     const uploadDialog = document.getElementById('uploadDialog');
     const uploadDialogCancelBtn = document.getElementById('uploadDialogCancelBtn');
@@ -185,32 +186,30 @@ export default function init() {
         if (file) {
             const maxFileSizeInBytes = 120 * 1024 * 1024;
             if (file.size > maxFileSizeInBytes) {
-                snackbar({message: '文件大小不得超过120MB'});
+                snackbar({ message: '文件大小不得超过120MB' });
             } else {
-                snackbar({message: '正在上传，请耐心等待'});
                 uploadBtn.loading = true;
+                uploadProgressDialog.open = true;
                 const formData = new FormData();
                 formData.append('file', file);
                 formData.append('name', file.name.replace(/\s/g, "_"));
-                const headers = {
-                    'Authorization': `Bearer ${token() || 'undefined'}`
+
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', api + '/material', true);
+                xhr.setRequestHeader('Authorization', `Bearer ${token() || 'undefined'}`);
+
+                xhr.upload.onprogress = function(event) {
+                    if (event.lengthComputable) {
+                        const percentComplete = Math.round((event.loaded / event.total) * 100);
+                        document.getElementById('uploadProgress').value = percentComplete;
+                    }
                 };
 
-                // 发送POST请求
-                fetch(api + '/material', {
-                    method: 'POST',
-                    headers: headers,
-                    body: formData
-                })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok.');
-                        }
-                        return response.json(); // 或者根据API响应类型处理
-                    })
-                    .then(data => {
-                        if (data.code === 200) {
-                            snackbar({message: '上传成功'});
+                xhr.onload = function() {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.code === 200) {
+                            snackbar({ message: '上传成功' });
                             fetchMaterialLibrary()
                                 .then(data => {
                                     renderMaterialList(data);
@@ -219,15 +218,30 @@ export default function init() {
                                     console.error('处理响应时出错:', error);
                                 });
                         } else {
-                            snackbar({message: data.msg});
+                            snackbar({ message: response.msg });
                         }
-                        uploadBtn.loading = false;
-                    });
+                    } else {
+                        snackbar({ message: '上传失败，请重试' });
+                    }
+                    uploadBtn.loading = false;
+                    uploadProgressDialog.open = false;
+                    document.getElementById('uploadProgress').value = 0;
+                };
+
+                xhr.onerror = function() {
+                    snackbar({ message: '网络错误，请检查网络连接' });
+                    uploadBtn.loading = false;
+                    uploadProgressDialog.open = false;
+                    document.getElementById('uploadProgress').value = 0;
+                };
+
+                xhr.send(formData);
             }
         } else {
-            snackbar({message: "请选择要上传的文件"});
+            snackbar({ message: "请选择要上传的文件" });
         }
     });
+
     const refreshBtn = document.getElementById('refreshBtn');
     refreshBtn.addEventListener('click', function() {
         refreshBtn.loading = true;

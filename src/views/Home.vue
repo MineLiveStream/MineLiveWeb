@@ -63,6 +63,8 @@
     <p>MIT License Copyright &copy; 2024 <a target="_blank" href="https://github.com/MineLiveStream/MineLiveWeb">MineLive</a></p>
   </div>
 
+  <mdui-snackbar class="snackbar" id="textSnackbar"></mdui-snackbar>
+
   <mdui-dialog
       close-on-overlay-click
       id = "loginDialog"

@@ -71,17 +71,17 @@ export default function init() {
     const forgetEmailInput = document.getElementById('forgetEmail');
     const forgetPwdInput = document.getElementById('forgetPwd');
     const forgetKeyInput = document.getElementById('forgetCode');
-
+    const textSnackbar = document.getElementById("textSnackbar");
     let click = 0;
     document.getElementById('cardBtn')
         .addEventListener('click', function() {
             click++;
             if (click === 1) {
-                snackbar({message: '点了一下，再点一下 <(￣︶￣)>'});
+                textSnackbar.textContent = '点了一下，再点一下 <(￣︶￣)>';
             } else if (click === 2) {
-                snackbar({message: '有种再点一下 o(｀ω´ )o'});
+                textSnackbar.textContent = '有种再点一下 o(｀ω´ )o';
             } else if (click === 100) {
-                snackbar({message: '成就达成！太闲了(≧▽≦)'});
+                textSnackbar.textContent = '成就达成！太闲了(≧▽≦)';
                 floating({
                     content: "😇",
                     number: 2,
@@ -128,17 +128,19 @@ export default function init() {
                     duration: 7
                 });
                 floating({});
+
             } else if (click < 60) {
-                snackbar({message: '୧(๑•̀⌄•́๑)૭✧加油！(' + click + "/100)" });
+                textSnackbar.textContent = '୧(๑•̀⌄•́๑)૭✧加油！(' + click + "/100)";
             } else if (click < 80) {
-                snackbar({message: '୧(๑•̀⌄•́๑)૭✧快了！(' + click + "/100)" });
+                textSnackbar.textContent = '୧(๑•̀⌄•́๑)૭✧快了！(' + click + "/100)";
             } else if (click < 100) {
-                snackbar({message: '୧(๑•̀⌄•́๑)૭✧就差一点！(' + click + "/100)" });
+                textSnackbar.textContent = '୧(๑•̀⌄•́๑)૭✧就差一点！(' + click + "/100)";
             } else if (click < 1000) {
-                snackbar({message: '别点我惹，点上方开始使用按钮吧 (* ~︿~) '});
+                textSnackbar.textContent = '别点我惹，点上方开始使用按钮吧 (* ~︿~) ';
             } else {
-                snackbar({message: '够了！一滴也没有啦(⁄ ⁄•⁄ω⁄•⁄ ⁄) '});
+                textSnackbar.textContent = '够了！一滴也没有啦(⁄ ⁄•⁄ω⁄•⁄ ⁄) ';
             }
+            textSnackbar.open = true;
         })
 
     forgetPwdInput.addEventListener('keydown', function(event) {

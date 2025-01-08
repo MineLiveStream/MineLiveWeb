@@ -47,6 +47,13 @@
   </mdui-segmented-button-group>
 
   <mdui-dialog
+        id = "uploadProgressDialog"
+        headline="正在上传，请稍后..."
+        class="example-action">
+      <mdui-linear-progress value="0" max="100" id="uploadProgress"></mdui-linear-progress>
+    </mdui-dialog>
+
+  <mdui-dialog
       id = "deleteDialog"
       close-on-overlay-click
       headline="确认删除素材?"
