@@ -57,7 +57,6 @@ export default function init() {
 
             fetch(api + '/stream', {
                 method: 'PUT',
-                mode: 'no-cors',
                 headers: {
                     'Authorization': 'Bearer ' + token(),
                     'Content-Type': 'application/json'
@@ -128,7 +127,6 @@ export default function init() {
         clientBtn.loading = true;
         fetch(api + '/admin/client', {
             method: 'GET',
-            mode: 'no-cors',
             headers: {
                 'Authorization': 'Bearer ' + token(),
                 'Content-Type': 'application/json'
@@ -164,7 +162,6 @@ export default function init() {
                             };
                             fetch(api + '/admin/client', {
                                 method: 'POST',
-                                mode: 'no-cors',
                                 headers: {
                                     'Authorization': 'Bearer ' + token(),
                                     'Content-Type': 'application/json'
@@ -304,7 +301,6 @@ function renderStreamList(data) {
                 };
                 fetch(api + '/switch-stream', {
                     method: 'POST',
-                    mode: 'no-cors',
                     headers: {
                         'Authorization': 'Bearer ' + token(),
                         'Content-Type': 'application/json'
@@ -419,7 +415,6 @@ function renderStreamList(data) {
                     };
                     fetch(api + '/stream', {
                         method: 'DELETE',
-                        mode: 'no-cors',
                         headers: {
                             'Authorization': 'Bearer ' + token(),
                             'Content-Type': 'application/json'

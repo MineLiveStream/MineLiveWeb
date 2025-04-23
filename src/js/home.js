@@ -190,7 +190,6 @@ export default function init() {
 
         fetch(api + '/register', {
             method: 'POST',
-            mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -258,7 +257,6 @@ export default function init() {
         };
         fetch(api + '/login', {
             method: 'POST',
-            mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -313,7 +311,6 @@ export default function init() {
 
         fetch(api + '/pre-forget', {
             method: 'POST',
-            mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -355,7 +352,6 @@ export default function init() {
 
         fetch(api + '/forget', {
             method: 'POST',
-            mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -407,7 +403,6 @@ export default function init() {
 
         fetch(api + '/pre-register', {
             method: 'POST',
-            mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json'
             },
