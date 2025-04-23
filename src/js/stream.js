@@ -237,6 +237,7 @@ export default function init() {
 
             fetch(api + '/stream', {
                 method: 'PUT',
+                mode: 'no-cors',
                 headers: {
                     'Authorization': 'Bearer ' + token(),
                     'Content-Type': 'application/json'
@@ -561,6 +562,7 @@ function renderStreamList(data) {
                     };
                     fetch(api + '/stream', {
                         method: 'DELETE',
+                        mode: 'no-cors',
                         headers: {
                             'Authorization': 'Bearer ' + token(),
                             'Content-Type': 'application/json'

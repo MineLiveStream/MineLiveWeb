@@ -73,6 +73,7 @@ function renderMaterialList(data) {
                     };
                     fetch(api + '/material', {
                         method: 'DELETE',
+                        mode: 'no-cors',
                         headers: {
                             'Authorization': 'Bearer ' + token(),
                             'Content-Type': 'application/json'
