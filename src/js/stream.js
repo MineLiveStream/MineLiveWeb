@@ -189,6 +189,7 @@ export default function init() {
             };
             fetch(api + '/stream', {
                 method: 'POST',
+                mode: 'no-cors',
                 headers: {
                     'Authorization': 'Bearer ' + token(),
                     'Content-Type': 'application/json'
@@ -306,6 +307,7 @@ function switchStream(streamId) {
     };
     fetch(api + '/switch-stream', {
         method: 'POST',
+        mode: 'no-cors',
         headers: {
             'Authorization': 'Bearer ' + token(),
             'Content-Type': 'application/json'
@@ -614,6 +616,7 @@ function buy(type = "ALIPAY", month = 1) {
     };
     fetch(api + '/pay', {
         method: 'POST',
+        mode: 'no-cors',
         headers: {
             'Authorization': 'Bearer ' + token(),
             'Content-Type': 'application/json'
@@ -670,6 +673,7 @@ function cdk() {
     };
     fetch(api + '/cdk', {
         method: 'POST',
+        mode: 'no-cors',
         headers: {
             'Authorization': 'Bearer ' + token(),
             'Content-Type': 'application/json'

@@ -162,6 +162,7 @@ export default function init() {
                             };
                             fetch(api + '/admin/client', {
                                 method: 'POST',
+                                mode: 'no-cors',
                                 headers: {
                                     'Authorization': 'Bearer ' + token(),
                                     'Content-Type': 'application/json'
@@ -301,6 +302,7 @@ function renderStreamList(data) {
                 };
                 fetch(api + '/switch-stream', {
                     method: 'POST',
+                    mode: 'no-cors',
                     headers: {
                         'Authorization': 'Bearer ' + token(),
                         'Content-Type': 'application/json'
