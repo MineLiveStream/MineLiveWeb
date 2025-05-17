@@ -11,7 +11,7 @@
       <mdui-navigation-rail-item icon="local_fire_department" href="https://www.beishaoidc.cn/aff/TKYYFUGE" target="_blank" id="adv" value="adv">北少云</mdui-navigation-rail-item>
       <mdui-navigation-rail-item slot="bottom" icon="logout" id="logoutBtn" value="logout">登出</mdui-navigation-rail-item>
    </mdui-navigation-rail>
-   <mdui-card style="display: flex; align-items: center; padding: 12px; margin-right: 16px; margin-left: 16px; background-color: rgba(var(--mdui-color-on-secondary-light, 0.8))">
+   <mdui-card style="display: flex; flex-wrap: wrap; align-items: center; padding: 12px; margin-right: 16px; margin-left: 16px; background-color: rgba(var(--mdui-color-on-secondary-light, 0.8))">
       <p style="margin-left: 12px;margin-right: 16px;font-size: 18px;" id="countText"></p>
       <div style="flex-grow: 1"></div>
       <mdui-button variant="outlined" style="margin-right: 8px;" id="refreshStreamBtn">刷新列表</mdui-button>

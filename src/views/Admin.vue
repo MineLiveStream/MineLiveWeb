@@ -11,7 +11,7 @@
       <mdui-navigation-rail-item slot="bottom" icon="logout" id="logoutBtn" value="logout">登出</mdui-navigation-rail-item>
       <mdui-navigation-rail-item icon="manage_accounts" value="admin" id="adminBtn">管理</mdui-navigation-rail-item>
    </mdui-navigation-rail>
-   <mdui-card style="display: flex; align-items: center; padding: 12px; margin-right: 16px; margin-left: 16px; background-color: rgba(var(--mdui-color-on-secondary-light, 0.8))">
+   <mdui-card style="display: flex; flex-wrap: wrap; align-items: center; padding: 12px; margin-right: 16px; margin-left: 16px; background-color: rgba(var(--mdui-color-on-secondary-light, 0.8))">
       <p style="margin-left: 12px;margin-right: 16px;font-size: 18px;" id="countText"></p>
       <form style="flex-grow: 1; max-width: 300px; margin-right: auto; transform: scale(0.8);">
          <mdui-text-field
