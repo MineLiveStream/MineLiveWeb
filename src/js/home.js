@@ -1,5 +1,9 @@
-import { api } from './api';
-import { snackbar } from 'mdui/functions/snackbar';
+import {
+    api
+} from './api';
+import {
+    snackbar
+} from 'mdui/functions/snackbar';
 import CryptoJS from 'crypto-js';
 import Typewriter from 'typewriter-effect/dist/core';
 import router from "@/router";
@@ -21,7 +25,9 @@ function isMobile() {
 function notice(context) {
     if (isMobile()) {
         alert(context);
-    } else snackbar({message: context});
+    } else snackbar({
+        message: context
+    });
 }
 
 export default function init() {
@@ -30,7 +36,9 @@ export default function init() {
         loginDialog.open = true;
     }
 
-    new Typewriter("#typewriter", {loop: true})
+    new Typewriter("#typewriter", {
+            loop: true
+        })
         .typeString('我的世界，')
         .typeString('宣传新服')
         .pauseFor(1000)
@@ -165,11 +173,11 @@ export default function init() {
     });
 
     regPwdInput.addEventListener('keydown', function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                sendRegBtn.click();
-            }
-        });
+        if (event.key === "Enter") {
+            event.preventDefault();
+            sendRegBtn.click();
+        }
+    });
 
     regCodeInput.addEventListener('keydown', function(event) {
         if (event.key === "Enter") {
@@ -189,12 +197,12 @@ export default function init() {
         };
 
         fetch(api + '/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
             .then(response => {
                 if (!response.ok) {
                     regBtn.loading = false;
@@ -256,12 +264,12 @@ export default function init() {
             pwd: pwd
         };
         fetch(api + '/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
             .then(response => {
                 if (!response.ok) {
                     loginBtn.loading = false;
@@ -306,39 +314,39 @@ export default function init() {
 
         const data = {
             email: email,
-	        pwd: pwd
+            pwd: pwd
         };
 
         fetch(api + '/pre-forget', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => {
-            if (!response.ok) {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    forgetLoading = false;
+                    throw new Error('错误响应码');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.code === 200) {
+                    sendForgetBtn.disabled = true;
+                    sendForgetBtn.textContent = "已发送";
+                    notice("请检查邮箱验证码");
+                } else {
+                    notice(data.msg);
+                }
+                sendForgetBtn.loading = false;
                 forgetLoading = false;
-                throw new Error('错误响应码');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.code === 200) {
-                sendForgetBtn.disabled = true;
-                sendForgetBtn.textContent = "已发送";
-                notice("请检查邮箱验证码");
-            } else {
-                notice(data.msg);
-            }
-            sendForgetBtn.loading = false;
-            forgetLoading = false;
-        })
-        .catch(error => {
-            console.error('检测到错误', error);
-            notice("登录出错，请检查你的网络连接");
-            forgetLoading = false;
-        });
+            })
+            .catch(error => {
+                console.error('检测到错误', error);
+                notice("登录出错，请检查你的网络连接");
+                forgetLoading = false;
+            });
     });
     forgetBtn.addEventListener('click', function() {
         if (!forgetKeyInput.value) {
@@ -351,12 +359,12 @@ export default function init() {
         };
 
         fetch(api + '/forget', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
             .then(response => {
                 if (!response.ok) {
                     forgetBtn.loading = false;
@@ -402,36 +410,37 @@ export default function init() {
         };
 
         fetch(api + '/pre-register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => {
-            if (!response.ok) {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    sendRegBtn.loading = false;
+                    throw new Error('错误响应码');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.code === 200) {
+                    sendRegBtn.loading = false;
+                    sendRegBtn.disabled = true;
+                    sendRegBtn.textContent = "已发送";
+                    notice("请检查邮箱验证码");
+                } else {
+                    notice(data.msg);
+                    sendRegBtn.loading = false;
+                }
+            })
+            .catch(error => {
+                console.error('检测到错误', error);
+                notice("注册出错，请检查你的网络连接");
                 sendRegBtn.loading = false;
-                throw new Error('错误响应码');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.code === 200) {
-                sendRegBtn.loading = false;
-                sendRegBtn.disabled = true;
-                sendRegBtn.textContent = "已发送";
-                notice("请检查邮箱验证码");
-            } else {
-                notice(data.msg);
-                sendRegBtn.loading = false;
-            }
-        })
-        .catch(error => {
-            console.error('检测到错误', error);
-            notice("注册出错，请检查你的网络连接");
-            sendRegBtn.loading = false;
-        });
+            });
     });
+
     function sha1(input) {
         return CryptoJS.SHA1(input).toString();
     }

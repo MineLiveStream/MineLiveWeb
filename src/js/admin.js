@@ -1,6 +1,10 @@
-import { api } from './api';
+import {
+    api
+} from './api';
 import token from './api';
-import {snackbar} from "mdui/functions/snackbar";
+import {
+    snackbar
+} from "mdui/functions/snackbar";
 import router from "@/router";
 
 let page = 1;
@@ -56,13 +60,13 @@ export default function init() {
             };
 
             fetch(api + '/stream', {
-                method: 'PUT',
-                headers: {
-                    'Authorization': 'Bearer ' + token(),
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(params)
-            })
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': 'Bearer ' + token(),
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(params)
+                })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('错误响应码');
@@ -72,7 +76,9 @@ export default function init() {
                 .then(data => {
                     changeDialog.open = false;
                     if (data.code === 200) {
-                        snackbar({message: '更新成功'});
+                        snackbar({
+                            message: '更新成功'
+                        });
                         fetchStreamLibrary()
                             .then(data => {
                                 renderStreamList(data);
@@ -81,40 +87,50 @@ export default function init() {
                                 console.error('处理响应时出错:', error);
                             });
                     } else {
-                        snackbar({message: data.msg});
+                        snackbar({
+                            message: data.msg
+                        });
                     }
 
                 })
                 .catch(error => {
                     console.error('检测到错误', error);
-                    snackbar({message: '操作出错，请重试！'});
+                    snackbar({
+                        message: '操作出错，请重试！'
+                    });
                 });
         });
     document.getElementById('changeCancelBtn')
         .addEventListener('click', function() {
             changeDialog.open = false;
         });
-    document.getElementById('refreshBtn')
+    document.getElementById('refreshAdminBtn')
         .addEventListener('click', function() {
             refresh();
-            snackbar({message: '刷新成功'});
+            snackbar({
+                message: '刷新成功'
+            });
         });
     document.getElementById('lastPageBtn')
         .addEventListener('click', function() {
             if (page > 1) {
-                page --;
+                page--;
                 refresh();
             } else {
-                snackbar({message: '已经到尽头啦>.<'});
+                snackbar({
+                    message: '已经到尽头啦>.<'
+                });
             }
         });
     document.getElementById('nextPageBtn')
         .addEventListener('click', function() {
             if (maxPage > page) {
-                page ++;
+                page++;
                 refresh();
             } else {
-                snackbar({message: '已经到尽头啦>.<'});
+                snackbar({
+                    message: '已经到尽头啦>.<'
+                });
             }
         });
     const clientDialog = document.getElementById("clientDialog");
@@ -126,12 +142,12 @@ export default function init() {
     clientBtn.addEventListener('click', function() {
         clientBtn.loading = true;
         fetch(api + '/admin/client', {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + token(),
-                'Content-Type': 'application/json'
-            }
-        })
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + token(),
+                    'Content-Type': 'application/json'
+                }
+            })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('错误响应码');
@@ -161,13 +177,13 @@ export default function init() {
                                 id: key
                             };
                             fetch(api + '/admin/client', {
-                                method: 'POST',
-                                headers: {
-                                    'Authorization': 'Bearer ' + token(),
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify(params)
-                            })
+                                    method: 'POST',
+                                    headers: {
+                                        'Authorization': 'Bearer ' + token(),
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify(params)
+                                })
                                 .then(response => {
                                     if (!response.ok) {
                                         throw new Error('错误响应码');
@@ -176,9 +192,13 @@ export default function init() {
                                 })
                                 .then(data => {
                                     if (data.code === 200) {
-                                        snackbar({message: '已向该子端发出推流，请稍后'});
+                                        snackbar({
+                                            message: '已向该子端发出推流，请稍后'
+                                        });
                                     } else {
-                                        snackbar({message: data.msg});
+                                        snackbar({
+                                            message: data.msg
+                                        });
                                     }
                                     setTimeout(() => {
                                         fetchStreamLibrary()
@@ -192,7 +212,9 @@ export default function init() {
                                 })
                                 .catch(error => {
                                     console.error('检测到错误', error);
-                                    snackbar({message: '操作出错，请重试！'});
+                                    snackbar({
+                                        message: '操作出错，请重试！'
+                                    });
                                 });
                         });
                         tip.appendChild(clientBtn);
@@ -203,20 +225,24 @@ export default function init() {
                     clientDialog.open = true;
                     clientBtn.loading = false;
                 } else {
-                    snackbar({message: data.msg});
+                    snackbar({
+                        message: data.msg
+                    });
                 }
 
             })
             .catch(error => {
                 console.error('检测到错误', error);
-                snackbar({message: '操作出错，请重试！'});
+                snackbar({
+                    message: '操作出错，请重试！'
+                });
             });
-        });
+    });
 }
 
 function truncateString(str) {
     if (str.length > 20) {
-        return str.substring(0, 20)  + "...";
+        return str.substring(0, 20) + "...";
     }
     return str;
 }
@@ -231,7 +257,7 @@ function renderStreamList(data) {
 
     if (data && data.list) {
         maxPage = Math.ceil(data.total / size);
-        document.getElementById("titleText").textContent = "管理推流 (" + data.streaming + "/" + data.total + "直播中)";
+        document.getElementById("countText").textContent = "共 " + data.streaming + " 个推流中";
         if (maxPage === 0) maxPage = 1;
         document.getElementById("pageText").textContent = "第" + page + "页，共" + maxPage + "页";
         if (data.list.length === 0) {
@@ -248,7 +274,9 @@ function renderStreamList(data) {
                     tip.content = "点击复制";
                     td.addEventListener('click', () => {
                         navigator.clipboard.writeText(item[key]).then(() => {
-                            snackbar({message: "复制成功"});
+                            snackbar({
+                                message: "复制成功"
+                            });
                         });
                     });
                     a.innerHTML = truncateString(item[key]);
@@ -300,13 +328,13 @@ function renderStreamList(data) {
                     id: item.id
                 };
                 fetch(api + '/switch-stream', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': 'Bearer ' + token(),
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(params)
-                })
+                        method: 'POST',
+                        headers: {
+                            'Authorization': 'Bearer ' + token(),
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(params)
+                    })
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('错误响应码');
@@ -317,10 +345,14 @@ function renderStreamList(data) {
                         if (data.code === 200) {
                             const on = data.status === "ON";
                             switchBtn.disabled = true;
-                            snackbar({message: '推流' + (on ? "开启" : "关闭") + "中，请稍等..."});
+                            snackbar({
+                                message: '推流' + (on ? "开启" : "关闭") + "中，请稍等..."
+                            });
                         } else {
                             switchBtn.disabled = true;
-                            snackbar({message: data.msg});
+                            snackbar({
+                                message: data.msg
+                            });
                         }
                         setTimeout(() => {
                             fetchStreamLibrary()
@@ -334,7 +366,9 @@ function renderStreamList(data) {
                     })
                     .catch(error => {
                         console.error('检测到错误', error);
-                        snackbar({message: '操作出错，请重试！'});
+                        snackbar({
+                            message: '操作出错，请重试！'
+                        });
                     });
             });
             switchTd.appendChild(switchBtn);
@@ -365,13 +399,15 @@ function renderStreamList(data) {
                 });
                 const url = api + `/stream-log?${params.toString()}`;
                 fetch(url, {
-                    headers: {
-                        Authorization: `Bearer ${token()}`
-                    }
-                })
+                        headers: {
+                            Authorization: `Bearer ${token()}`
+                        }
+                    })
                     .then(response => {
                         if (!response.ok) {
-                            snackbar({message: "获取日志出错"});
+                            snackbar({
+                                message: "获取日志出错"
+                            });
                             throw new Error('错误响应码');
                         }
                         return response.json();
@@ -379,7 +415,9 @@ function renderStreamList(data) {
                     .then(data => {
                         if (data.code === 200) {
                             if (data.log.length === 0) {
-                                snackbar({message: "该推流暂无日志，请先启动"});
+                                snackbar({
+                                    message: "该推流暂无日志，请先启动"
+                                });
                             } else {
                                 data.log.forEach(line => {
                                     const p = document.createElement('p');
@@ -389,7 +427,9 @@ function renderStreamList(data) {
                                 logDialog.open = true;
                             }
                         } else {
-                            snackbar({message: "获取日志失败" + resJson.msg});
+                            snackbar({
+                                message: "获取日志失败" + resJson.msg
+                            });
                         }
                     })
                     .catch(error => {
@@ -414,13 +454,13 @@ function renderStreamList(data) {
                         id: item.id
                     };
                     fetch(api + '/stream', {
-                        method: 'DELETE',
-                        headers: {
-                            'Authorization': 'Bearer ' + token(),
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(params)
-                    })
+                            method: 'DELETE',
+                            headers: {
+                                'Authorization': 'Bearer ' + token(),
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(params)
+                        })
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error('错误响应码');
@@ -429,10 +469,14 @@ function renderStreamList(data) {
                         })
                         .then(data => {
                             if (data.code === 200) {
-                                snackbar({message: "删除成功"});
+                                snackbar({
+                                    message: "删除成功"
+                                });
                                 tr.parentNode.removeChild(tr);
                             } else {
-                                snackbar({message: data.msg});
+                                snackbar({
+                                    message: data.msg
+                                });
                             }
                         })
                         .catch(error => {

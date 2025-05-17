@@ -1,8 +1,12 @@
-import { api } from './api';
+import {
+    api
+} from './api';
 import token from './api';
 import checkAdmin from './permission';
 import QRious from 'qrious';
-import {snackbar} from "mdui/functions/snackbar";
+import {
+    snackbar
+} from "mdui/functions/snackbar";
 import router from "@/router";
 
 let page = 1;
@@ -42,15 +46,15 @@ export default function init() {
             console.error('处理响应时出错:', error);
         });
     fetch(api + '/price', {
-        headers: {
-            Authorization: `Bearer ${token()}`
-        }
-    }).then(response => {
-        if (!response.ok) {
-            throw new Error('错误响应码');
-        }
-        return response.json();
-    })
+            headers: {
+                Authorization: `Bearer ${token()}`
+            }
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error('错误响应码');
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.code === 200) {
                 picPrice = data.picPrice;
@@ -58,7 +62,9 @@ export default function init() {
                 hdVideoPrice = data.hdVideoPrice;
             } else {
                 switchBtn.checked = false;
-                snackbar({message: data.msg});
+                snackbar({
+                    message: data.msg
+                });
             }
 
         })
@@ -70,7 +76,7 @@ export default function init() {
     document.getElementById('lastPageBtn')
         .addEventListener('click', function() {
             if (page > 1) {
-                page --;
+                page--;
                 fetchStreamLibrary()
                     .then(data => {
                         renderStreamList(data);
@@ -79,13 +85,15 @@ export default function init() {
                         console.error('处理响应时出错:', error);
                     });
             } else {
-                snackbar({message: "已经到尽头啦>.<"});
+                snackbar({
+                    message: "已经到尽头啦>.<"
+                });
             }
         });
     document.getElementById('nextPageBtn')
         .addEventListener('click', function() {
             if (maxPage > page) {
-                page ++;
+                page++;
                 fetchStreamLibrary()
                     .then(data => {
                         renderStreamList(data);
@@ -94,7 +102,9 @@ export default function init() {
                         console.error('处理响应时出错:', error);
                     });
             } else {
-                snackbar({message: "已经到尽头啦>.<"});
+                snackbar({
+                    message: "已经到尽头啦>.<"
+                });
             }
         });
     // 登出
@@ -188,13 +198,13 @@ export default function init() {
                 materialId: materialId
             };
             fetch(api + '/stream', {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Bearer ' + token(),
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(params)
-            })
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token(),
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(params)
+                })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('错误响应码');
@@ -204,7 +214,9 @@ export default function init() {
                 .then(data => {
                     changeDialog.open = false;
                     if (data.code === 200) {
-                        snackbar({message: '创建成功'});
+                        snackbar({
+                            message: '创建成功'
+                        });
                         fetchStreamLibrary()
                             .then(data => {
                                 renderStreamList(data);
@@ -213,13 +225,17 @@ export default function init() {
                                 console.error('处理响应时出错:', error);
                             });
                     } else {
-                        snackbar({message: data.msg});
+                        snackbar({
+                            message: data.msg
+                        });
                     }
 
                 })
                 .catch(error => {
                     console.error('检测到错误', error);
-                    snackbar({message: '操作出错，请重试！'});
+                    snackbar({
+                        message: '操作出错，请重试！'
+                    });
                 });
         } else {
             const streamName = document.getElementById('streamName').value;
@@ -235,13 +251,13 @@ export default function init() {
             };
 
             fetch(api + '/stream', {
-                method: 'PUT',
-                headers: {
-                    'Authorization': 'Bearer ' + token(),
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(params)
-            })
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': 'Bearer ' + token(),
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(params)
+                })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('错误响应码');
@@ -251,7 +267,9 @@ export default function init() {
                 .then(data => {
                     changeDialog.open = false;
                     if (data.code === 200) {
-                        snackbar({message: '更新成功'});
+                        snackbar({
+                            message: '更新成功'
+                        });
                         fetchStreamLibrary()
                             .then(data => {
                                 renderStreamList(data);
@@ -260,13 +278,17 @@ export default function init() {
                                 console.error('处理响应时出错:', error);
                             });
                     } else {
-                        snackbar({message: data.msg});
+                        snackbar({
+                            message: data.msg
+                        });
                     }
 
                 })
                 .catch(error => {
                     console.error('检测到错误', error);
-                    snackbar({message: '操作出错，请重试！'});
+                    snackbar({
+                        message: '操作出错，请重试！'
+                    });
                 });
         }
     });
@@ -274,28 +296,32 @@ export default function init() {
     changeCancelBtn.addEventListener('click', function() {
         changeDialog.open = false;
     });
-    const refreshBtn = document.getElementById('refreshBtn');
-    refreshBtn.addEventListener('click', function() {
-        refreshBtn.loading = true;
+    const refreshStreamBtn = document.getElementById('refreshStreamBtn');
+    refreshStreamBtn.addEventListener('click', function() {
+        refreshStreamBtn.loading = true;
         fetchStreamLibrary()
             .then(data => {
                 if (data.code === 200) {
                     renderStreamList(data);
-                    snackbar({message: "刷新成功"});
-                    refreshBtn.loading = false;
+                    snackbar({
+                        message: "刷新成功"
+                    });
+                    refreshStreamBtn.loading = false;
                 }
             })
             .catch(error => {
                 console.error('处理响应时出错:', error);
-                snackbar({message: "刷新失败"});
-                refreshBtn.loading = false;
+                snackbar({
+                    message: "刷新失败"
+                });
+                refreshStreamBtn.loading = false;
             });
     });
 }
 
 function truncateString(str) {
     if (str.length > 20) {
-        return str.substring(0, 20)  + "...";
+        return str.substring(0, 20) + "...";
     }
     return str;
 }
@@ -305,13 +331,13 @@ function switchStream(streamId) {
         id: streamId
     };
     fetch(api + '/switch-stream', {
-        method: 'POST',
-        headers: {
-            'Authorization': 'Bearer ' + token(),
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(params)
-    })
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + token(),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(params)
+        })
         .then(response => {
             if (!response.ok) {
                 throw new Error('错误响应码');
@@ -322,10 +348,14 @@ function switchStream(streamId) {
             if (data.code === 200) {
                 const on = data.status === "ON";
                 buyStatusBtn.disabled = true;
-                snackbar({message: '推流' + (on ? "开启" : "关闭") + "中，请稍等..."});
+                snackbar({
+                    message: '推流' + (on ? "开启" : "关闭") + "中，请稍等..."
+                });
             } else {
                 buyStatusBtn.disabled = true;
-                snackbar({message: data.msg});
+                snackbar({
+                    message: data.msg
+                });
             }
             setTimeout(() => {
                 fetchStreamLibrary()
@@ -339,93 +369,98 @@ function switchStream(streamId) {
         })
         .catch(error => {
             console.error('检测到错误', error);
-            snackbar({message: '操作出错，请重试！'});
+            snackbar({
+                message: '操作出错，请重试！'
+            });
         });
 }
 
 function renderStreamList(data) {
     const dialog = document.getElementById("deleteDialog");
     const paymentDialog = document.getElementById('paymentDialog');
-    const materialListTbody = document.getElementById('material-list-tbody');
-    materialListTbody.innerHTML = ''; // 清空表格内容
-
+    const container = document.getElementById("streamCardList");
+    if (data.list.length === 0) {
+        container.innerHTML = '<h3>此页没有素材，请先上传</h3>';
+        return;
+    }
+   container.innerHTML = '';
     if (data && data.list) {
         maxPage = data.total / size;
         maxPage = Math.ceil(data.total / size);
         if (maxPage === 0) maxPage = 1;
+        document.getElementById("countText").textContent = "已创建 " + data.total + " 个推流";
         document.getElementById("pageText").textContent = "第" + page + "页，共" + maxPage + "页";
-        if (data.list.length === 0) {
-            materialListTbody.innerHTML = '<tr><td colspan="6" class="mdui-text-center">此页没有推流，请先创建</td></tr>';
-            return;
-        }
         data.list.forEach(item => {
             const expired = item.expired <= 0;
-            const tr = document.createElement('tr');
-            ['name', 'streamUrl', 'streamKey', "materialName"].forEach(key => {
-                const td = document.createElement('td');
-                if (key === 'streamUrl' || key === 'streamKey') {
-                    const a = document.createElement('a');
-                    const tip = document.createElement('mdui-tooltip');
-                    tip.content = "点击复制";
-                    td.addEventListener('click', () => {
-                        navigator.clipboard.writeText(item[key]).then(() => {
-                            snackbar({message: "复制成功"});
-                        });
-                    });
-                    a.innerHTML = truncateString(item[key]);
-                    tip.appendChild(a);
-                    td.appendChild(tip);
-                } else {
-                    td.textContent = truncateString(item[key]);
-                }
-                if (key === 'materialName') {
-                    const tooltip = document.createElement('mdui-tooltip');
-                    const icon = document.createElement('mdui-icon');
-                    if (item.materialType === "HD_VIDEO") {
-                        tooltip.content = "该推流允许使用高清视频或图片素材"
-                        icon.style = "color: orange";
-                        icon.name = "hd";
-                    } else if (item.materialType === "VIDEO") {
-                        tooltip.content = "该推流允许使用视频或图片素材";
-                        icon.style = "color: orange";
-                        icon.name = "ondemand_video";
-                    } else {
-                        tooltip.content = "该推流仅能使用图片素材";
-                        icon.style = "color: gray";
-                        icon.name = "photo";
-                    }
-                    tooltip.appendChild(icon);
-                    td.appendChild(tooltip);
-                }
-                tr.appendChild(td);
-            });
-            const tdExpiredTime = document.createElement('td');
-            if (item.expired <= 0) {
-                tdExpiredTime.textContent = "已到期";
-            } else if (item.expired < 1000 * 60) {
-                tdExpiredTime.textContent = "即将到期";
-            } else if (item.expired < 1000 * 60 * 60) {
-                tdExpiredTime.textContent = (item.expired / (1000 * 60)).toFixed(0) + "分钟";
-            } else {
-                tdExpiredTime.textContent = (item.expired / (1000 * 60 * 60)).toFixed(1) + "小时";
-            }
-            tr.appendChild(tdExpiredTime);
 
-            const switchTd = document.createElement('td');
+            const card = document.createElement('mdui-card');
+            card.style = "width: 360px; background-color: rgba(var(--mdui-color-on-secondary-light, 0.8));";
+
+            const content = document.createElement('div');
+            content.style = "padding: 16px";
+            const titleRow = document.createElement('div');
+            titleRow.style = "display: flex; align-items: center;";
+
+            const tooltip = document.createElement('mdui-tooltip');
+            const icon = document.createElement('mdui-icon');
+            if (item.materialType === "HD_VIDEO") {
+                tooltip.content = "该推流允许使用高清视频或图片素材"
+                icon.style = "color: orange";
+                icon.name = "hd";
+            } else if (item.materialType === "VIDEO") {
+                tooltip.content = "该推流允许使用视频或图片素材";
+                icon.style = "color: orange";
+                icon.name = "ondemand_video";
+            } else {
+                tooltip.content = "该推流仅能使用图片素材";
+                icon.style = "color: gray";
+                icon.name = "photo";
+            }
+            tooltip.appendChild(icon);
+            titleRow.appendChild(tooltip);
+
+            const name = document.createElement('div');
+            name.textContent = item["name"];
+            name.style = "font-size: 18px; font-weight: bold; margin-left: 6px;flex-grow: 1";
+            titleRow.appendChild(name);
+
             const switchBtn = document.createElement('mdui-switch');
-            switchBtn.className = 'div';
-            switchBtn.checked = item.status !== "OFF";
+            switchBtn.style.transform = 'scale(0.8)';
+            switchBtn.checked = item["status"] !== "OFF";
             switchBtn.addEventListener('change', () => {
                 buyStatusBtn = switchBtn;
                 switchStream(item.id);
             });
-            switchTd.appendChild(switchBtn);
-            tr.appendChild(switchTd);
+            titleRow.appendChild(switchBtn);
 
-            const btnTd = document.createElement('td');
+            content.appendChild(titleRow);
 
+            // 信息
+            const stats = document.createElement('div');
+
+            let expiredTime;
+            if (item.expired <= 0) {
+                expiredTime = "已到期";
+            } else if (item.expired < 1000 * 60) {
+                expiredTime = "即将到期";
+            } else if (item.expired < 1000 * 60 * 60) {
+                expiredTime = (item.expired / (1000 * 60)).toFixed(0) + "分钟";
+            } else {
+                expiredTime = (item.expired / (1000 * 60 * 60)).toFixed(1) + "小时";
+            }
+            stats.innerHTML = `
+                <div style="font-size: 15px; color: gray;margin-top: 6px;">推流地址：${truncateString(item["streamUrl"]) || "未知"}</div>
+                <div style="font-size: 15px; color: gray;">推流密钥：${truncateString(item["streamKey"]) || "未知"}</div>
+                <div style="font-size: 15px; color: gray;">素材名称：${item["materialName"] || "未知"}</div>
+                <div style="font-size: 15px; color: gray;">剩余时长：${expiredTime || "未知"}</div>
+            `;
+            stats.style = "margin-bottom: 8px;";
+            content.appendChild(stats);
+
+            // 按钮
+            const btnDiv = document.createElement('div');
+            btnDiv.style = "display: flex; gap: 2px";
             const payButton = document.createElement('mdui-chip');
-
             if (expired) {
                 payButton.innerHTML = '开通';
             } else {
@@ -481,7 +516,7 @@ function renderStreamList(data) {
                 buyStatusBtn = switchBtn;
                 buyStatus = item.status !== "OFF";
             });
-            btnTd.appendChild(payButton);
+            btnDiv.appendChild(payButton);
 
             const changeButton = document.createElement('mdui-chip');
             changeButton.innerHTML = '更改';
@@ -493,7 +528,7 @@ function renderStreamList(data) {
                 changeDialog.open = true;
                 changeId = item.id;
             });
-            btnTd.appendChild(changeButton);
+            btnDiv.appendChild(changeButton);
 
             const logButton = document.createElement('mdui-chip');
             logButton.innerHTML = '日志';
@@ -507,13 +542,15 @@ function renderStreamList(data) {
                 });
                 const url = api + `/stream-log?${params.toString()}`;
                 fetch(url, {
-                    headers: {
-                        Authorization: `Bearer ${token()}`
-                    }
-                })
+                        headers: {
+                            Authorization: `Bearer ${token()}`
+                        }
+                    })
                     .then(response => {
                         if (!response.ok) {
-                            snackbar({message: "获取日志出错"});
+                            snackbar({
+                                message: "获取日志出错"
+                            });
                             throw new Error('错误响应码');
                         }
                         return response.json();
@@ -521,7 +558,9 @@ function renderStreamList(data) {
                     .then(data => {
                         if (data.code === 200) {
                             if (data.log.length === 0) {
-                                snackbar({message: "该推流暂无日志，请先启动"});
+                                snackbar({
+                                    message: "该推流暂无日志，请先启动"
+                                });
                             } else {
                                 data.log.forEach(line => {
                                     const p = document.createElement('p');
@@ -531,7 +570,9 @@ function renderStreamList(data) {
                                 logDialog.open = true;
                             }
                         } else {
-                            snackbar({message: "获取日志失败" + resJson.msg});
+                            snackbar({
+                                message: "获取日志失败" + resJson.msg
+                            });
                         }
                     })
                     .catch(error => {
@@ -540,7 +581,7 @@ function renderStreamList(data) {
                 const closeButton = document.getElementById("logDialogCloseBtn");
                 closeButton.addEventListener("click", () => logDialog.open = false);
             });
-            btnTd.appendChild(logButton);
+            btnDiv.appendChild(logButton);
 
             const deleteButton = document.createElement('mdui-chip');
             deleteButton.innerHTML = '删除';
@@ -558,13 +599,13 @@ function renderStreamList(data) {
                         id: item.id
                     };
                     fetch(api + '/stream', {
-                        method: 'DELETE',
-                        headers: {
-                            'Authorization': 'Bearer ' + token(),
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(params)
-                    })
+                            method: 'DELETE',
+                            headers: {
+                                'Authorization': 'Bearer ' + token(),
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(params)
+                        })
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error('错误响应码');
@@ -573,10 +614,14 @@ function renderStreamList(data) {
                         })
                         .then(data => {
                             if (data.code === 200) {
-                                snackbar({message: "删除成功"});
+                                snackbar({
+                                    message: "删除成功"
+                                });
                                 tr.parentNode.removeChild(tr);
                             } else {
-                                snackbar({message: data.msg});
+                                snackbar({
+                                    message: data.msg
+                                });
                             }
                         })
                         .catch(error => {
@@ -584,19 +629,22 @@ function renderStreamList(data) {
                         });
                 });
             });
-            btnTd.appendChild(deleteButton);
-            tr.appendChild(btnTd);
+            btnDiv.appendChild(deleteButton);
+            content.appendChild(btnDiv);
 
-            materialListTbody.appendChild(tr);
+            card.appendChild(content);
+            container.appendChild(card);
         });
     } else {
-        materialListTbody.innerHTML = '<tr><td colspan="6" class="mdui-text-center">获取推流失败，请刷新列表</td></tr>';
+        container.innerHTML = '<h3>获取推流失败，请刷新列表</h3>';
     }
 }
 
 function buy(type = "ALIPAY", month = 1) {
     if (buyStatus) switchStream(buyId);
-    snackbar({message: '正在创建订单，请稍后...'});
+    snackbar({
+        message: '正在创建订单，请稍后...'
+    });
     let materialType;
     const radio = document.getElementById('radio');
     if (radio.value === "pic") {
@@ -613,13 +661,13 @@ function buy(type = "ALIPAY", month = 1) {
         materialType: materialType
     };
     fetch(api + '/pay', {
-        method: 'POST',
-        headers: {
-            'Authorization': 'Bearer ' + token(),
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(params)
-    })
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + token(),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(params)
+        })
         .then(response => {
             if (!response.ok) {
                 throw new Error('错误响应码');
@@ -647,12 +695,16 @@ function buy(type = "ALIPAY", month = 1) {
                 qrcodeDialog.open = true;
                 pollOrderStatus(data.order, 3000);
             } else {
-                snackbar({message: data.msg});
+                snackbar({
+                    message: data.msg
+                });
             }
         })
         .catch(error => {
             console.error('检测到错误', error);
-            snackbar({message: '请求支付时出错，请重试！'});
+            snackbar({
+                message: '请求支付时出错，请重试！'
+            });
         });
 }
 
@@ -661,7 +713,9 @@ function cdk() {
     const cdkInput = document.getElementById('cdkInput');
     if (!cdkInput.value) {
         cdkConfirmBtn.loading = false;
-        snackbar({message: "兑换码不可为空"});
+        snackbar({
+            message: "兑换码不可为空"
+        });
         return;
     }
     const params = {
@@ -669,13 +723,13 @@ function cdk() {
         cdk: cdkInput.value ? cdkInput.value : undefined
     };
     fetch(api + '/cdk', {
-        method: 'POST',
-        headers: {
-            'Authorization': 'Bearer ' + token(),
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(params)
-    })
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + token(),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(params)
+        })
         .then(response => {
             if (!response.ok) {
                 throw new Error('错误响应码');
@@ -684,7 +738,9 @@ function cdk() {
         })
         .then(data => {
             if (data.code === 200) {
-                snackbar({message: "兑换成功"});
+                snackbar({
+                    message: "兑换成功"
+                });
                 paymentDialog.open = false;
                 fetchStreamLibrary()
                     .then(data => {
@@ -694,13 +750,17 @@ function cdk() {
                         console.error('处理响应时出错:', error);
                     });
             } else {
-                snackbar({message: data.msg});
+                snackbar({
+                    message: data.msg
+                });
             }
             cdkConfirmBtn.loading = false;
         })
         .catch(error => {
             console.error('检测到错误', error);
-            snackbar({message: '处理兑换请求时出错，请重试！'});
+            snackbar({
+                message: '处理兑换请求时出错，请重试！'
+            });
             cdkConfirmBtn.loading = false;
         });
     document.getElementById('cdkDialog').open = false;
@@ -712,7 +772,9 @@ async function pollOrderStatus(orderId, interval = 3000) {
         const data = await checkOrder(orderId);
         if (data.code === 200) {
             qrcodeDialog.open = false;
-            snackbar({message: "支付成功"});
+            snackbar({
+                message: "支付成功"
+            });
             fetchStreamLibrary()
                 .then(data => {
                     renderStreamList(data);
@@ -722,7 +784,9 @@ async function pollOrderStatus(orderId, interval = 3000) {
                 });
             break;
         } else if (data.code !== 5000) {
-            snackbar({message: data.msg});
+            snackbar({
+                message: data.msg
+            });
             qrcodeDialog.open = false;
             break;
         }
@@ -772,7 +836,9 @@ async function fetchStreamLibrary() {
 
 function updatePriceText() {
     if (picPrice === 0 || videoPrice === 0) {
-        snackbar({message: "获取价格出错，请刷新页面"});
+        snackbar({
+            message: "获取价格出错，请刷新页面"
+        });
         return;
     }
     const priceText = document.getElementById('priceText');
