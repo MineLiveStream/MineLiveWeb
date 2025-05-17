@@ -426,7 +426,7 @@ function renderStreamList(data) {
             titleRow.appendChild(name);
 
             const switchBtn = document.createElement('mdui-switch');
-            switchBtn.style.transform = 'scale(0.8)';
+            switchBtn.style.transform = 'scale(0.7)';
             switchBtn.checked = item["status"] !== "OFF";
             switchBtn.addEventListener('change', () => {
                 buyStatusBtn = switchBtn;
