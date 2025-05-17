@@ -379,10 +379,7 @@ function renderStreamList(data) {
     const dialog = document.getElementById("deleteDialog");
     const paymentDialog = document.getElementById('paymentDialog');
     const container = document.getElementById("streamCardList");
-    if (data.list.length === 0) {
-        container.innerHTML = '<h3>此页没有素材，请先上传</h3>';
-        return;
-    }
+
    container.innerHTML = '';
     if (data && data.list) {
         maxPage = data.total / size;
@@ -390,6 +387,10 @@ function renderStreamList(data) {
         if (maxPage === 0) maxPage = 1;
         document.getElementById("countText").textContent = "已创建 " + data.total + " 个推流";
         document.getElementById("pageText").textContent = "第" + page + "页，共" + maxPage + "页";
+        if (data.list.length === 0) {
+            container.innerHTML = '<h3>此页没有素材，请先上传</h3>';
+            return;
+        }
         data.list.forEach(item => {
             const expired = item.expired <= 0;
 
