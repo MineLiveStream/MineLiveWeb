@@ -15,11 +15,9 @@ let maxPage = 1;
 export default function init() {
     const refreshMaterialBtn = document.getElementById('refreshMaterialBtn');
     refreshMaterialBtn.addEventListener('click', function() {
-        refreshMaterialBtn.loading = true;
         refresh();
-        refreshMaterialBtn.loading = false;
         snackbar({
-            message: "刷新成功"
+            message: '刷新成功'
         });
     });
     fetchMaterialLibrary()
@@ -155,9 +153,17 @@ export default function init() {
 }
 
 function refresh() {
+    const refreshMaterialBtn = document.getElementById('refreshMaterialBtn');
+    refreshMaterialBtn.loading = true;
     fetchMaterialLibrary()
         .then(data => {
-            if (data.code === 200) renderMaterialList(data);
+            if (data.code === 200) renderMaterialList(data)
+        })
+        .catch(error => {
+            console.error('刷新错误:', error);
+        })
+        .finally(() => {
+            refreshMaterialBtn.loading = false;
         });
 }
 

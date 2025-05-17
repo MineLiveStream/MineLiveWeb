@@ -517,6 +517,7 @@ async function fetchStreamLibrary() {
 }
 
 function refresh() {
+    document.getElementById('refreshAdminBtn').loading = true;
     fetchStreamLibrary()
         .then(data => {
             if (data && data.code === 401) {
@@ -527,5 +528,8 @@ function refresh() {
         })
         .catch(error => {
             console.error('处理响应时出错:', error);
+        })
+        .finally(() => {
+            document.getElementById('refreshAdminBtn').loading = false;
         });
 }
