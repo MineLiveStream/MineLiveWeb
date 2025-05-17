@@ -6,10 +6,12 @@
       <mdui-top-app-bar-title>MineLive</mdui-top-app-bar-title>
       <div style="flex-grow: 1"></div>
    </mdui-top-app-bar>
-   <div style="display: flex;margin-top: 8px;margin-bottom: 8px">
-      <div style="flex-grow: 1"></div>
-      <img class="img-fluid" src="/src/img/stream.png" alt="alternative" width=400px>
-      <div style="flex-grow: 1"></div>
+   <div style="display: flex;margin-top: 8px;margin-bottom: 8px;flex-wrap: wrap;">
+      <div id="picDiv">
+          <div style="flex-grow: 1"></div>
+          <img class="img-fluid" src="/src/img/stream.png" alt="alternative" width=400px>
+          <div style="flex-grow: 1"></div>
+      </div>
       <div class="mdui-prose" style="margin-bottom: 8px">
          <br><br>
          <h2 id="typewriter" style="font-weight: bold;width: 290px">我的世界，宣传新服</h2>
@@ -31,7 +33,7 @@
    <mdui-divider></mdui-divider>
    <div class="mdui-prose" style="margin: 8px;">
       <h3 style="margin-top: 16px;">为什么选择 MineLive ？</h3>
-      <div style="display: flex; justify-content: space-between; margin: 16px" id="cardBtn">
+      <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between; margin: 16px" id="cardBtn">
          <mdui-card variant="outlined" clickable class="mdui-card">
             <mdui-icon class="mdui-icon" name="access_time_filled"></mdui-icon>
             <h4>分钟计费，随时暂停</h4>
@@ -136,8 +138,6 @@
    align-items: center;
    width: 240px;
    height: 160px;
-   margin-left: 20px;
-   margin-right: 20px;
    }
    .mdui-icon {
    font-size: 32px;

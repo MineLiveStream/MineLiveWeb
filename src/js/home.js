@@ -23,17 +23,17 @@ function isMobile() {
 }
 
 function notice(context) {
-    if (isMobile()) {
-        alert(context);
-    } else snackbar({
-        message: context
-    });
+    snackbar({message: context});
 }
 
 export default function init() {
     if (window.location.hash.includes("login=1")) {
         const loginDialog = document.getElementById('loginDialog');
         loginDialog.open = true;
+    }
+
+    if (isMobile()) {
+        document.getElementById('picDiv').style="display: none;";
     }
 
     new Typewriter("#typewriter", {
