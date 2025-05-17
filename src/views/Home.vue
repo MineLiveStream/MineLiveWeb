@@ -7,10 +7,8 @@
       <div style="flex-grow: 1"></div>
    </mdui-top-app-bar>
    <div style="display: flex;margin-top: 8px;margin-bottom: 8px;flex-wrap: wrap;">
-      <div id="picDiv">
-          <div style="flex-grow: 1"></div>
+      <div id="picDiv" style="display: flex; justify-content: center; flex-grow: 1">
           <img class="img-fluid" src="/src/img/stream.png" alt="alternative" width=400px>
-          <div style="flex-grow: 1"></div>
       </div>
       <div class="mdui-prose" style="margin-bottom: 8px">
          <br><br>
