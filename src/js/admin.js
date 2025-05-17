@@ -8,7 +8,7 @@ import {
 import router from "@/router";
 
 let page = 1;
-const size = 8;
+const size = 9;
 let maxPage = 1;
 let changeId = 0;
 
@@ -47,7 +47,7 @@ export default function init() {
             const materialType = document.getElementById('selectMenu').value;
             let expiredValue = undefined;
             if (expiredTime) {
-                expiredValue = new Date(expiredTime).getTime() - new Date().getTime();
+                expiredValue = Number(expiredTime) * 60 * 60 * 1000;
                 if (expiredValue < 0) expiredValue = 0;
             }
             const params = {
@@ -248,81 +248,53 @@ function truncateString(str) {
 }
 
 function renderStreamList(data) {
-    const materialListTbody = document.getElementById('material-list-tbody');
-    const dialog = document.getElementById("deleteDialog");
-    const dialogCancelBtn = document.getElementById('dialogCancelBtn');
-    const dialogConfirmBtn = document.getElementById('dialogConfirmBtn');
-    const changeDialog = document.getElementById("changeDialog");
-    materialListTbody.innerHTML = '';
-
+    const container = document.getElementById("adminCardList");
+    container.innerHTML = '';
     if (data && data.list) {
         maxPage = Math.ceil(data.total / size);
-        document.getElementById("countText").textContent = "共 " + data.streaming + " 个推流中";
+        document.getElementById("countText").textContent = "当前 " + data.streaming + " 个推流中";
         if (maxPage === 0) maxPage = 1;
         document.getElementById("pageText").textContent = "第" + page + "页，共" + maxPage + "页";
         if (data.list.length === 0) {
-            materialListTbody.innerHTML = '<tr><td colspan="6" class="mdui-text-center">没有推流可展示</td></tr>';
+            container.innerHTML = '<h3>没有推流可展示</h3>';
             return;
         }
         data.list.forEach(item => {
-            const tr = document.createElement('tr');
-            ['name', 'streamUrl', 'streamKey', "materialName", "email"].forEach(key => {
-                const td = document.createElement('td');
-                if (key === 'streamUrl' || key === 'streamKey') {
-                    const a = document.createElement('a');
-                    const tip = document.createElement('mdui-tooltip');
-                    tip.content = "点击复制";
-                    td.addEventListener('click', () => {
-                        navigator.clipboard.writeText(item[key]).then(() => {
-                            snackbar({
-                                message: "复制成功"
-                            });
-                        });
-                    });
-                    a.innerHTML = truncateString(item[key]);
-                    tip.appendChild(a);
-                    td.appendChild(tip);
-                } else {
-                    td.textContent = truncateString(item[key]);
-                }
-                if (key === 'materialName') {
-                    const tooltip = document.createElement('mdui-tooltip');
-                    const icon = document.createElement('mdui-icon');
-                    if (item.materialType === "HD_VIDEO") {
-                        tooltip.content = "该推流允许使用高清视频或图片素材"
-                        icon.style = "color: orange";
-                        icon.name = "hd";
-                    } else if (item.materialType === "VIDEO") {
-                        tooltip.content = "该推流允许使用视频或图片素材"
-                        icon.style = "color: orange";
-                        icon.name = "ondemand_video";
-                    } else {
-                        tooltip.content = "该推流仅能使用图片素材";
-                        icon.style = "color: gray";
-                        icon.name = "photo";
-                    }
-                    tooltip.appendChild(icon);
-                    td.appendChild(tooltip);
-                }
-                tr.appendChild(td);
-            });
+            const expired = item.expired <= 0;
+            const card = document.createElement('mdui-card');
+            card.style = "width: 360px; background-color: rgba(var(--mdui-color-on-secondary-light, 0.8));";
 
-            const tdExpiredTime = document.createElement('td');
-            if (item.expired <= 0) {
-                tdExpiredTime.textContent = "已到期";
-            } else if (item.expired < 1000 * 60) {
-                tdExpiredTime.textContent = "即将到期";
-            } else if (item.expired < 1000 * 60 * 60) {
-                tdExpiredTime.textContent = (item.expired / (1000 * 60)).toFixed(0) + "分钟";
+            const content = document.createElement('div');
+            content.style = "padding: 16px";
+            const titleRow = document.createElement('div');
+            titleRow.style = "display: flex; align-items: center;";
+
+            const tooltip = document.createElement('mdui-tooltip');
+            const icon = document.createElement('mdui-icon');
+            if (item.materialType === "HD_VIDEO") {
+                tooltip.content = "该推流允许使用高清视频或图片素材"
+                icon.style = "color: orange";
+                icon.name = "hd";
+            } else if (item.materialType === "VIDEO") {
+                tooltip.content = "该推流允许使用视频或图片素材";
+                icon.style = "color: orange";
+                icon.name = "ondemand_video";
             } else {
-                tdExpiredTime.textContent = (item.expired / (1000 * 60 * 60)).toFixed(1) + "小时";
+                tooltip.content = "该推流仅能使用图片素材";
+                icon.style = "color: gray";
+                icon.name = "photo";
             }
-            tr.appendChild(tdExpiredTime);
+            tooltip.appendChild(icon);
+            titleRow.appendChild(tooltip);
 
-            const switchTd = document.createElement('td');
+            const name = document.createElement('div');
+            name.textContent = item["name"];
+            name.style = "font-size: 18px; font-weight: bold; margin-left: 6px;flex-grow: 1";
+            titleRow.appendChild(name);
+
             const switchBtn = document.createElement('mdui-switch');
-            switchBtn.className = 'div';
-            switchBtn.checked = item.status !== "OFF";
+            switchBtn.style.transform = 'scale(0.7)';
+            switchBtn.checked = item["status"] !== "OFF";
             switchBtn.addEventListener('change', () => {
                 const params = {
                     id: item.id
@@ -371,10 +343,36 @@ function renderStreamList(data) {
                         });
                     });
             });
-            switchTd.appendChild(switchBtn);
-            tr.appendChild(switchTd);
+            titleRow.appendChild(switchBtn);
 
-            const btnTd = document.createElement('td');
+            content.appendChild(titleRow);
+
+            // 信息
+            const stats = document.createElement('div');
+
+            let expiredTime;
+            if (item.expired <= 0) {
+                expiredTime = "已到期";
+            } else if (item.expired < 1000 * 60) {
+                expiredTime = "即将到期";
+            } else if (item.expired < 1000 * 60 * 60) {
+                expiredTime = (item.expired / (1000 * 60)).toFixed(0) + "分钟";
+            } else {
+                expiredTime = (item.expired / (1000 * 60 * 60)).toFixed(1) + "小时";
+            }
+            stats.innerHTML = `
+                        <div style="font-size: 15px; color: gray;margin-top: 6px;">用户邮箱：${item["email"] || "未知"}</div>
+                        <div style="font-size: 15px; color: gray;">推流地址：${truncateString(item["streamUrl"]) || "未知"}</div>
+                        <div style="font-size: 15px; color: gray;">推流密钥：${truncateString(item["streamKey"]) || "未知"}</div>
+                        <div style="font-size: 15px; color: gray;">素材名称：${item["materialName"] || "未知"}</div>
+                        <div style="font-size: 15px; color: gray;">剩余时长：${expiredTime || "未知"}</div>
+                    `;
+            stats.style = "margin-bottom: 8px;";
+            content.appendChild(stats);
+
+            // 按钮
+            const btnDiv = document.createElement('div');
+            btnDiv.style = "display: flex; gap: 2px";
 
             const changeButton = document.createElement('mdui-chip');
             changeButton.style = "margin-right: 1px";
@@ -385,7 +383,7 @@ function renderStreamList(data) {
                 changeDialog.open = true;
                 changeId = item.id;
             });
-            btnTd.appendChild(changeButton);
+            btnDiv.appendChild(changeButton);
 
             const logButton = document.createElement('mdui-chip');
             logButton.innerHTML = '日志';
@@ -438,18 +436,20 @@ function renderStreamList(data) {
                 const closeButton = document.getElementById("logDialogCloseBtn");
                 closeButton.addEventListener("click", () => logDialog.open = false);
             });
-            btnTd.appendChild(logButton);
+            btnDiv.appendChild(logButton);
 
             const deleteButton = document.createElement('mdui-chip');
             deleteButton.innerHTML = '删除';
+            const deleteDialog = document.getElementById("deleteDialog");
+
             deleteButton.addEventListener('click', () => {
-                dialog.open = true;
-                dialog.description = item.name;
-                dialogCancelBtn.addEventListener('click', () => {
-                    dialog.open = false;
+                deleteDialog.open = true;
+                deleteDialog.description = item.name;
+                document.getElementById("dialogCancelBtn").addEventListener('click', () => {
+                    deleteDialog.open = false;
                 });
                 dialogConfirmBtn.addEventListener('click', () => {
-                    dialog.open = false;
+                    deleteDialog.open = false;
                     const params = {
                         id: item.id
                     };
@@ -484,13 +484,14 @@ function renderStreamList(data) {
                         });
                 });
             });
-            btnTd.appendChild(deleteButton);
-            tr.appendChild(btnTd);
+            btnDiv.appendChild(deleteButton);
+            content.appendChild(btnDiv);
 
-            materialListTbody.appendChild(tr);
+            card.appendChild(content);
+            container.appendChild(card);
         });
     } else {
-        materialListTbody.innerHTML = '<tr><td colspan="6" class="mdui-text-center">获取推流失败，请刷新列表</td></tr>';
+        container.innerHTML = '<h3>获取推流失败，请刷新列表</h3>';
     }
 }
 

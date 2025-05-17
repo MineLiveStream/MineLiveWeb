@@ -9,7 +9,7 @@ import {
 import router from "@/router";
 
 let page = 1;
-const size = 8;
+const size = 9;
 let maxPage = 1;
 
 export default function init() {
@@ -251,7 +251,7 @@ function renderMaterialList(data) {
                                 snackbar({
                                     message: "删除成功"
                                 });
-                                tr.parentNode.removeChild(tr);
+                                refresh();
                             } else {
                                 snackbar({
                                     message: data.msg

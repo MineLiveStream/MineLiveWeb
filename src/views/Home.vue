@@ -68,8 +68,8 @@
       description="祝你天天开心～(^з^)-♡"
       class="example-action">
       <form style="width:400px">
-         <mdui-text-field label="邮箱" id="loginEmail" style="margin-bottom: 24px; margin-top: 8px"></mdui-text-field>
-         <mdui-text-field label="密码" id="loginPwd" type="password" toggle-password style="margin-bottom: 32px"></mdui-text-field>
+         <mdui-text-field variant="outlined" label="邮箱" id="loginEmail" style="margin-bottom: 24px; margin-top: 8px"></mdui-text-field>
+         <mdui-text-field variant="outlined" label="密码" id="loginPwd" type="password" toggle-password style="margin-bottom: 32px"></mdui-text-field>
          <mdui-button full-width id="loginBtn" style="margin-bottom: 28px">登录</mdui-button>
          <div style="display: flex; justify-content: space-between">
             <a id="forgetText">忘记密码</a>
@@ -84,11 +84,11 @@
       description="要记得喝水哦( •̀∀•́ )"
       class="example-action">
       <div style="width:400px">
-         <mdui-text-field label="昵称" id="regName" style="margin-bottom: 12px; margin-top: 8px"></mdui-text-field>
-         <mdui-text-field label="邮箱" id="regEmail" style="margin-bottom: 12px"></mdui-text-field>
-         <mdui-text-field label="密码" id="regPwd" type="password" toggle-password style="margin-bottom: 12px"></mdui-text-field>
+         <mdui-text-field variant="outlined" label="昵称" id="regName" style="margin-bottom: 12px; margin-top: 8px"></mdui-text-field>
+         <mdui-text-field variant="outlined" label="邮箱" id="regEmail" style="margin-bottom: 12px"></mdui-text-field>
+         <mdui-text-field variant="outlined" label="密码" id="regPwd" type="password" toggle-password style="margin-bottom: 12px"></mdui-text-field>
          <div style="display: flex; justify-content: center;margin-bottom: 32px;align-items: center">
-            <mdui-text-field label="验证码" id="regCode" toggle-password style="margin-right: 24px"></mdui-text-field>
+            <mdui-text-field variant="outlined" label="验证码" id="regCode" toggle-password style="margin-right: 24px"></mdui-text-field>
             <mdui-button id="sendRegBtn" style="width:180px">发送验证码</mdui-button>
          </div>
          <mdui-button full-width id="regBtn" style="margin-bottom: 32px">注册</mdui-button>
@@ -102,10 +102,10 @@
       description="这次要记得呢，嗯(｡•ˇ‸ˇ•｡) ！"
       class="example-action">
       <div style="width:400px">
-         <mdui-text-field label="邮箱" id="forgetEmail" style="margin-bottom: 12px;"></mdui-text-field>
-         <mdui-text-field label="密码" id="forgetPwd" type="password" toggle-password style="margin-bottom: 12px"></mdui-text-field>
+         <mdui-text-field variant="outlined" label="邮箱" id="forgetEmail" style="margin-bottom: 12px;"></mdui-text-field>
+         <mdui-text-field variant="outlined" label="密码" id="forgetPwd" type="password" toggle-password style="margin-bottom: 12px"></mdui-text-field>
          <div style="display: flex; justify-content: center;margin-bottom: 32px;align-items: center">
-            <mdui-text-field label="验证码" id="forgetCode" toggle-password style="margin-right: 24px"></mdui-text-field>
+            <mdui-text-field variant="outlined" label="验证码" id="forgetCode" toggle-password style="margin-right: 24px"></mdui-text-field>
             <mdui-button id="sendForgetBtn" style="width:180px">发送验证码</mdui-button>
          </div>
          <mdui-button full-width id="forgetBtn" style="margin-bottom: 32px">确认</mdui-button>

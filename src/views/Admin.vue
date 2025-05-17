@@ -11,41 +11,24 @@
       <mdui-navigation-rail-item slot="bottom" icon="logout" id="logoutBtn" value="logout">登出</mdui-navigation-rail-item>
       <mdui-navigation-rail-item icon="manage_accounts" value="admin" id="adminBtn">管理</mdui-navigation-rail-item>
    </mdui-navigation-rail>
-   <mdui-card style="display: flex; align-items: center; padding: 12px; margin-right: 8px; margin-left: 8px; background-color: rgba(var(--mdui-color-on-secondary-light, 0.8))">
+   <mdui-card style="display: flex; align-items: center; padding: 12px; margin-right: 16px; margin-left: 16px; background-color: rgba(var(--mdui-color-on-secondary-light, 0.8))">
       <p style="margin-left: 12px;margin-right: 16px;font-size: 18px;" id="countText"></p>
-      <form style="flex-grow: 1; max-width: 300px; margin-right: auto;">
+      <form style="flex-grow: 1; max-width: 300px; margin-right: auto; transform: scale(0.8);">
          <mdui-text-field
             clearable
             label="邮箱"
             type="search"
             icon="search"
             id="search"
+            variant="outlined"
             style="width: 100%;">
          </mdui-text-field>
       </form>
       <mdui-button variant="outlined" style="margin-right: 8px;" id="refreshAdminBtn">刷新列表</mdui-button>
       <mdui-button variant="filled" id="clientBtn">接管列表</mdui-button>
    </mdui-card>
-   <mdui-container class="mdui-m-t-2">
-      <mdui-table-fluid>
-         <table class="mdui-table mdui-table-striped">
-            <thead>
-               <tr>
-                  <th>名称</th>
-                  <th>推流地址</th>
-                  <th>推流密钥</th>
-                  <th>素材名称</th>
-                  <th>用户邮箱</th>
-                  <th>剩余时长</th>
-                  <th>当前状态</th>
-                  <th>操作</th>
-               </tr>
-            </thead>
-            <tbody id="material-list-tbody">
-            </tbody>
-         </table>
-      </mdui-table-fluid>
-   </mdui-container>
+   <mdui-container id="adminCardList" style="display: flex; flex-wrap: wrap; gap: 8px; margin-right: 16px; margin-left: 16px; margin-bottom: 8px; margin-top: 8px"></mdui-container>
+
    <mdui-segmented-button-group full-width style="margin-right: 16px; margin-left: 16px;">
       <mdui-segmented-button icon="arrow_backward" id="lastPageBtn"></mdui-segmented-button>
       <mdui-segmented-button id="pageText">第1页，共1页</mdui-segmented-button>
@@ -72,11 +55,11 @@
       close-on-overlay-click
       headline="更新推流"
       class="example-action">
-      <mdui-text-field style="margin-bottom: 16px" label="名称" id="streamName"></mdui-text-field>
-      <mdui-text-field style="margin-bottom: 16px" label="推流地址" id="streamUrl"></mdui-text-field>
-      <mdui-text-field style="margin-bottom: 16px" label="推流密钥" id="streamKey"></mdui-text-field>
-      <mdui-text-field style="margin-bottom: 16px" type="date" label="到期时间" id="expiredTime"></mdui-text-field>
-      <mdui-select label="素材类型" id="selectMenu">
+      <mdui-text-field variant="outlined" style="margin-bottom: 16px" label="名称" id="streamName"></mdui-text-field>
+      <mdui-text-field variant="outlined" style="margin-bottom: 16px" label="推流地址" id="streamUrl"></mdui-text-field>
+      <mdui-text-field variant="outlined" style="margin-bottom: 16px" label="推流密钥" id="streamKey"></mdui-text-field>
+      <mdui-text-field variant="outlined" style="margin-bottom: 16px" type="number" label="到期时间(小时)" id="expiredTime"></mdui-text-field>
+      <mdui-select variant="outlined" label="素材类型" id="selectMenu">
          <mdui-menu-item value="HD_VIDEO">高清视频</mdui-menu-item>
          <mdui-menu-item value="VIDEO">视频</mdui-menu-item>
          <mdui-menu-item value="PIC">图片</mdui-menu-item>

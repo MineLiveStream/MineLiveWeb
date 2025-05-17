@@ -10,7 +10,7 @@ import {
 import router from "@/router";
 
 let page = 1;
-const size = 8;
+const size = 9;
 let maxPage = 1;
 let hdVideoPrice = 0;
 let videoPrice = 0;
@@ -379,8 +379,7 @@ function renderStreamList(data) {
     const dialog = document.getElementById("deleteDialog");
     const paymentDialog = document.getElementById('paymentDialog');
     const container = document.getElementById("streamCardList");
-
-   container.innerHTML = '';
+    container.innerHTML = '';
     if (data && data.list) {
         maxPage = data.total / size;
         maxPage = Math.ceil(data.total / size);
@@ -393,7 +392,6 @@ function renderStreamList(data) {
         }
         data.list.forEach(item => {
             const expired = item.expired <= 0;
-
             const card = document.createElement('mdui-card');
             card.style = "width: 360px; background-color: rgba(var(--mdui-color-on-secondary-light, 0.8));";
 
