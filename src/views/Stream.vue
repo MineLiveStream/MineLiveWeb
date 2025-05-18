@@ -108,11 +108,11 @@
       <div id="qrcode"></div>
       <mdui-button slot="action" variant="text" id="cancelOrderBtn">取消</mdui-button>
    </mdui-dialog>
-   <mdui-dialog fullscreen class="example-fullscreen" id="logDialog">
-      运行日志
-      <div id="logDiv"></div>
-      <br>
-      <mdui-button id="logDialogCloseBtn">关闭</mdui-button>
+    <mdui-dialog fullscreen id="logDialog" headline="运行日志">
+     <div style="display: flex; flex-direction: column; height: 100%;">
+       <div id="logDiv" style="flex: 1; overflow: auto; padding: 12px; display: grid;"></div>
+       <mdui-button id="logDialogCloseBtn">关闭</mdui-button>
+     </div>
    </mdui-dialog>
 </template>
 <script>
