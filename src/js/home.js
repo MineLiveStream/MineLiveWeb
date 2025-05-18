@@ -27,6 +27,9 @@ function notice(context) {
 }
 
 export default function init() {
+    document.getElementById('topAppBar').addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
     if (window.location.hash.includes("login=1")) {
         const loginDialog = document.getElementById('loginDialog');
         loginDialog.open = true;

@@ -1,5 +1,5 @@
 <template>
-   <mdui-top-app-bar scroll-behavior="elevate">
+   <mdui-top-app-bar scroll-behavior="elevate" id="topAppBar">
       <mdui-top-app-bar-title style="font-size: 16px;margin-left: 90px">MineLive > 素材列表</mdui-top-app-bar-title>
    </mdui-top-app-bar>
    <mdui-navigation-rail divider padding-left id="rail" value="material">

@@ -22,6 +22,9 @@ let changeId = 0;
 let materialId = 0;
 
 export default function init() {
+    document.getElementById('topAppBar').addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
     const paymentDialog = document.getElementById('paymentDialog');
     const qrcodeDialog = document.getElementById('qrcodeDialog');
     document.getElementById('materialBtn').addEventListener('click', function() {

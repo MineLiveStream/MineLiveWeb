@@ -1,6 +1,6 @@
 import router from "@/router";
 
-export default function checkAdmin(){
+export default function checkAdmin() {
     const userAdmin = localStorage.getItem('userAdmin');
     if (userAdmin && userAdmin === "true") {
         const adminBtn = document.createElement("mdui-navigation-rail-item");

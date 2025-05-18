@@ -13,6 +13,9 @@ const size = 9;
 let maxPage = 1;
 
 export default function init() {
+    document.getElementById('topAppBar').addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
     const refreshMaterialBtn = document.getElementById('refreshMaterialBtn');
     refreshMaterialBtn.addEventListener('click', function() {
         refresh();

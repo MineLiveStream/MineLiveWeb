@@ -13,6 +13,9 @@ let maxPage = 1;
 let changeId = 0;
 
 export default function init() {
+    document.getElementById('topAppBar').addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
     const admin = localStorage.getItem('userAdmin');
     if (!(admin && admin === "true")) {
         router.push('/stream');

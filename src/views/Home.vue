@@ -1,5 +1,5 @@
 <template>
-   <mdui-top-app-bar padding-top style="background-color: rgba(var(--mdui-color-primary-container, 0.8))">
+   <mdui-top-app-bar padding-top style="background-color: rgba(var(--mdui-color-primary-container, 0.8))" id="topAppBar">
       <div style="flex-grow: 1"></div>
       <img src="/src/img/logo.png" alt="alternative" style="width: 2.5rem; height: 2.5rem;">
       <div style="flex-grow: 1"></div>
