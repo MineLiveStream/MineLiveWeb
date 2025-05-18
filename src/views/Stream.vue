@@ -68,11 +68,12 @@
       close-on-overlay-click
       headline="新增推流"
       class="example-action">
-      <mdui-text-field variant="outlined" style="margin-bottom: 16px" label="备注名称" id="streamName"></mdui-text-field>
-      <mdui-text-field variant="outlined" style="margin-bottom: 16px" label="推流地址" id="streamUrl"></mdui-text-field>
-      <mdui-text-field variant="outlined" style="margin-bottom: 16px" label="推流密钥" id="streamKey"></mdui-text-field>
-      <mdui-select variant="outlined" id="selectMenu" label="素材">
-      </mdui-select>
+      <div style="padding: 12px; display: grid; gap: 16px;">
+          <mdui-text-field variant="outlined" label="备注名称" id="streamName"></mdui-text-field>
+          <mdui-text-field variant="outlined"  label="推流地址" id="streamUrl"></mdui-text-field>
+          <mdui-text-field variant="outlined" label="推流密钥" id="streamKey"></mdui-text-field>
+          <mdui-select variant="outlined" id="selectMenu" label="素材"></mdui-select>
+      </div>
       <mdui-button slot="action" variant="text" id="changeCancelBtn">取消</mdui-button>
       <mdui-button slot="action" variant="tonal" id="changeConfirmBtn">确定</mdui-button>
    </mdui-dialog>
@@ -96,7 +97,7 @@
       headline="使用兑换码"
       description="加群留意活动即可获得！"
       class="example-action">
-      <mdui-text-field variant="outlined" label="兑换码" id="cdkInput" style="margin-bottom: 24px"></mdui-text-field>
+      <mdui-text-field variant="outlined" label="兑换码" id="cdkInput" style="transform: scale(0.9);"></mdui-text-field>
       <mdui-button slot="action" variant="text" id="cdkCancelBtn">取消</mdui-button>
       <mdui-button slot="action" variant="tonal" id="cdkConfirmBtn">确认</mdui-button>
    </mdui-dialog>

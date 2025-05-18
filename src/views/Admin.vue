@@ -55,15 +55,17 @@
       close-on-overlay-click
       headline="更新推流"
       class="example-action">
-      <mdui-text-field variant="outlined" style="margin-bottom: 16px" label="名称" id="streamName"></mdui-text-field>
-      <mdui-text-field variant="outlined" style="margin-bottom: 16px" label="推流地址" id="streamUrl"></mdui-text-field>
-      <mdui-text-field variant="outlined" style="margin-bottom: 16px" label="推流密钥" id="streamKey"></mdui-text-field>
-      <mdui-text-field variant="outlined" style="margin-bottom: 16px" type="number" label="到期时间(小时)" id="expiredTime"></mdui-text-field>
-      <mdui-select variant="outlined" label="素材类型" id="selectMenu">
-         <mdui-menu-item value="HD_VIDEO">高清视频</mdui-menu-item>
-         <mdui-menu-item value="VIDEO">视频</mdui-menu-item>
-         <mdui-menu-item value="PIC">图片</mdui-menu-item>
-      </mdui-select>
+      <div style="padding: 12px; display: grid; gap: 16px;">
+          <mdui-text-field variant="outlined" label="名称" id="streamName"></mdui-text-field>
+          <mdui-text-field variant="outlined" label="推流地址" id="streamUrl"></mdui-text-field>
+          <mdui-text-field variant="outlined" label="推流密钥" id="streamKey"></mdui-text-field>
+          <mdui-text-field variant="outlined" type="number" label="到期时间(小时)" id="expiredTime"></mdui-text-field>
+          <mdui-select variant="outlined" label="素材类型" id="selectMenu">
+             <mdui-menu-item value="HD_VIDEO">高清视频</mdui-menu-item>
+             <mdui-menu-item value="VIDEO">视频</mdui-menu-item>
+             <mdui-menu-item value="PIC">图片</mdui-menu-item>
+          </mdui-select>
+      </div>
       <mdui-button slot="action" variant="text" id="changeCancelBtn">取消</mdui-button>
       <mdui-button slot="action" variant="tonal" id="changeConfirmBtn">确定</mdui-button>
    </mdui-dialog>

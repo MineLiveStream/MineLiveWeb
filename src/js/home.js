@@ -303,13 +303,11 @@ export default function init() {
         const email = forgetEmailInput.value;
         if (!forgetPwdInput.value) {
             notice("密码不可为空");
-            sendForgetBtn.loading = false;
             forgetLoading = false;
             return;
         }
         if (forgetPwdInput.value.length < 6) {
             notice("密码长度必须大于6位");
-            sendForgetBtn.loading = false;
             forgetLoading = false;
             return;
         }
@@ -342,7 +340,6 @@ export default function init() {
                 } else {
                     notice(data.msg);
                 }
-                sendForgetBtn.loading = false;
                 forgetLoading = false;
             })
             .catch(error => {
@@ -390,17 +387,19 @@ export default function init() {
                 forgetBtn.loading = false;
             });
     });
+    let regLoading = false;
     sendRegBtn.addEventListener('click', function() {
-        sendRegBtn.loading = true;
+        if (regLoading) return;
+        regLoading = true;
         const email = regEmailInput.value;
         if (!regPwdInput.value) {
             notice("密码不可为空");
-            sendRegBtn.loading = false;
+            regLoading = false;
             return;
         }
         if (regPwdInput.value.length < 6) {
             notice("密码长度必须大于6位");
-            sendRegBtn.loading = false;
+            regLoading = false;
             return;
         }
         const pwd = sha1(regPwdInput.value);
@@ -421,26 +420,26 @@ export default function init() {
             })
             .then(response => {
                 if (!response.ok) {
-                    sendRegBtn.loading = false;
+                    regLoading = false;
                     throw new Error('错误响应码');
                 }
                 return response.json();
             })
             .then(data => {
                 if (data.code === 200) {
-                    sendRegBtn.loading = false;
+                    regLoading = false;
                     sendRegBtn.disabled = true;
                     sendRegBtn.textContent = "已发送";
                     notice("请检查邮箱验证码");
                 } else {
                     notice(data.msg);
-                    sendRegBtn.loading = false;
+                    regLoading = false;
                 }
             })
             .catch(error => {
                 console.error('检测到错误', error);
                 notice("注册出错，请检查你的网络连接");
-                sendRegBtn.loading = false;
+                regLoading = false;
             });
     });
 
