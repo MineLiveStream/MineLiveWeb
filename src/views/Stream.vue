@@ -12,18 +12,21 @@
       <mdui-navigation-rail-item slot="bottom" icon="logout" id="logoutBtn" value="logout">登出</mdui-navigation-rail-item>
    </mdui-navigation-rail>
    <mdui-card style="display: flex; flex-wrap: wrap; align-items: center; padding: 12px; margin-right: 16px; margin-left: 16px; background-color: rgba(var(--mdui-color-on-secondary-light, 0.8))">
-      <p style="margin-left: 12px;margin-right: 16px;font-size: 18px;" id="countText"></p>
+      <p style="margin-left: 12px;margin-right: 16px;font-size: 18px;" id="countText">已创建 0 个推流</p>
       <div style="flex-grow: 1"></div>
       <mdui-button variant="outlined" style="margin-right: 8px;" id="refreshStreamBtn">刷新列表</mdui-button>
       <mdui-button variant="filled" id="createStreamBtn">创建推流</mdui-button>
    </mdui-card>
    <mdui-container id="streamCardList" style="display: flex; flex-wrap: wrap; gap: 8px; margin-right: 16px; margin-left: 16px; margin-bottom: 8px; margin-top: 8px"></mdui-container>
 
-   <mdui-segmented-button-group full-width style="margin-right: 16px; margin-left: 16px;">
-      <mdui-segmented-button icon="arrow_backward" id="lastPageBtn"></mdui-segmented-button>
-      <mdui-segmented-button id="pageText">第1页，共1页</mdui-segmented-button>
-      <mdui-segmented-button end-icon="arrow_forward" id="nextPageBtn"></mdui-segmented-button>
-   </mdui-segmented-button-group>
+    <mdui-card style="display: flex; justify-content: center; align-items: center; padding: 12px; margin-right: 16px; margin-left: 16px; background-color: rgba(var(--mdui-color-on-secondary-light, 0.8))">
+       <mdui-segmented-button-group>
+          <mdui-segmented-button icon="arrow_backward" id="lastPageBtn"></mdui-segmented-button>
+          <mdui-segmented-button id="pageText">第1页，共1页</mdui-segmented-button>
+          <mdui-segmented-button end-icon="arrow_forward" id="nextPageBtn"></mdui-segmented-button>
+        </mdui-segmented-button-group>
+    </mdui-card>
+
    <mdui-dialog
       id = "deleteDialog"
       close-on-overlay-click
