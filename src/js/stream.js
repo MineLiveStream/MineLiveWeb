@@ -619,7 +619,13 @@ function renderStreamList(data) {
                                 snackbar({
                                     message: "删除成功"
                                 });
-                                tr.parentNode.removeChild(tr);
+                                fetchStreamLibrary()
+                                    .then(data => {
+                                        renderStreamList(data);
+                                    })
+                                    .catch(error => {
+                                        console.error('处理响应时出错:', error);
+                                    });
                             } else {
                                 snackbar({
                                     message: data.msg
