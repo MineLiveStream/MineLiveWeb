@@ -393,7 +393,7 @@ function renderStreamList(data) {
             container.innerHTML = '<h3>此页没有素材，请先上传</h3>';
             return;
         }
-        data.list.content.forEach(item => {
+        data.list.forEach(item => {
             const expired = item.expired <= 0;
             const card = document.createElement('mdui-card');
             card.style = "width: 360px; background-color: rgba(var(--mdui-color-on-secondary-light, 0.8));";
