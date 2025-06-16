@@ -262,7 +262,7 @@ function renderStreamList(data) {
             container.innerHTML = '<h3>没有推流可展示</h3>';
             return;
         }
-        data.list.forEach(item => {
+        data.list.content.forEach(item => {
             const expired = item.expired <= 0;
             const card = document.createElement('mdui-card');
             card.style = "width: 360px; background-color: rgba(var(--mdui-color-on-secondary-light, 0.8));";

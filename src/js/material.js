@@ -190,7 +190,7 @@ function renderMaterialList(data) {
             return;
         }
         container.innerHTML = '';
-        data.list.forEach(item => {
+        data.list.content.forEach(item => {
             const card = document.createElement('mdui-card');
             card.style = "width: 360px; background-color: rgba(var(--mdui-color-on-secondary-light, 0.8));";
 
