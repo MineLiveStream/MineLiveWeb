@@ -47,19 +47,24 @@
       </div>
    </div>
    <mdui-divider></mdui-divider>
-   <div class="mdui-prose">
+    <div class="mdui-prose">
       <br>
-      <p>友情外链
-         &nbsp;<a target="_blank" href="https://minecraft.net/">Minecraft</a>
-         &nbsp;&nbsp;<a target="_blank" href="https://minepay.top/">MinePay</a>
-         &nbsp;&nbsp;<a target="_blank" href="https://mcnav.fun/">McNav</a>
+      <p>
+        友情外链
+        <a target="_blank" href="https://minecraft.net/">Minecraft</a>&nbsp;&nbsp;
+        <a target="_blank" href="https://minepay.top/">MinePay</a>&nbsp;&nbsp;
+        <a target="_blank" href="https://mcnav.fun/">McNav</a>&nbsp;&nbsp;
+        <a target="_blank" href="https://www.minepay.top/">矿世问答</a>
       </p>
-      <div style="height: 8px">
-         <a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2024277949号</a>
-      </div>
+      <p>
+        MIT License &copy; 2024
+        <a target="_blank" href="https://github.com/MineLiveStream/MineLiveWeb">MineLive</a>
+      </p>
+      <p>
+        <a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2024277949号</a>
+      </p>
       <br>
-      <p>MIT License Copyright &copy; 2024 <a target="_blank" href="https://github.com/MineLiveStream/MineLiveWeb">MineLive</a></p>
-   </div>
+    </div>
    <mdui-snackbar class="snackbar" id="textSnackbar"></mdui-snackbar>
    <mdui-dialog
       close-on-overlay-click
