@@ -50,10 +50,9 @@
     <div class="mdui-prose">
       <br>
       <p>
-        友情外链
+        友情外链&nbsp;&nbsp;
         <a target="_blank" href="https://minecraft.net/">Minecraft</a>&nbsp;&nbsp;
         <a target="_blank" href="https://minepay.top/">MinePay</a>&nbsp;&nbsp;
-        <a target="_blank" href="https://mcnav.fun/">McNav</a>&nbsp;&nbsp;
         <a target="_blank" href="https://www.minepay.top/">矿世问答</a>
       </p>
       <p>
