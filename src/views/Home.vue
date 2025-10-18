@@ -53,7 +53,7 @@
         友情外链&nbsp;&nbsp;
         <a target="_blank" href="https://minecraft.net/">Minecraft</a>&nbsp;&nbsp;
         <a target="_blank" href="https://minepay.top/">MinePay</a>&nbsp;&nbsp;
-        <a target="_blank" href="https://www.minepay.top/">矿世问答</a>
+        <a target="_blank" href="https://www.mcnav.net/">MCNav</a>
       </p>
       <p>
         MIT License &copy; 2024
@@ -145,4 +145,5 @@
    font-size: 32px;
    color: rgb(var(--mdui-color-primary));
    }
+
 </style>
